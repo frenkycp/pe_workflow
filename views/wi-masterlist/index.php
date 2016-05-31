@@ -65,26 +65,43 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     
-        <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
+        <?php // \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <!-- <div class="panel panel-default"> -->
+            <!-- <div class="panel-heading">
                 <h2>
                     <i><?= 'Wi Masterlists Table' ?></i>
                 </h2>
-            </div>
+            </div> -->
 
-            <div class="panel-body">
+            <!-- <div class="panel-body"> -->
 
-                <div class="table-responsive">
+                <!-- <div class="table-responsive"> -->
                 <?= GridView::widget([
                 //'layout' => '{summary}{pager}{items}{pager}',
                 'dataProvider' => $dataProvider,
+				'pjax'=>true,
+				'pjaxSettings'=>[
+					'neverTimeout'=>true,
+				], 
                 /* 'pager'        => [
                     'class'          => yii\widgets\LinkPager::className(),
                     'firstPageLabel' => 'First',
                     'lastPageLabel'  => 'Last'                ], */
                 'filterModel' => $searchModel,
+				'panel' => [
+					'type' => 'primary',
+					'heading' => 'WI Masterlists',
+					'before' => ' ',
+					'after' => false,
+				],
+				'toolbar' => [
+					'{export}',
+					//'{toggleData}'
+				],
+				'export' => [
+					'target' => '_self',
+				],
                 //'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
                 'headerRowOptions' => ['class'=>'x'],
                 'columns' => [
@@ -160,12 +177,12 @@ $this->params['breadcrumbs'][] = $this->title;
 			/*'doc_no'*/
                 ],
             ]); ?>
-                </div>
+                <!-- </div> -->
 
-            </div>
+            <!-- </div> -->
 
-        </div>
+        <!-- </div> -->
 
-        <?php \yii\widgets\Pjax::end() ?>
+        <?php //\yii\widgets\Pjax::end() ?>
 
 </div>

@@ -75,7 +75,7 @@ class WiMasterlist extends BaseWiMasterlist
 			$this->doc_class = $result->primaryKey;
 			date_default_timezone_set('Asia/Jakarta');
 			$now = new \DateTime();
-			$this->date_modified = $now->format('Y-m-d h:i:s');
+			$this->date_modified = $now->format('Y-m-d H:i:s');
 			//$this->date_modified = date('Y-m-d h:i:s');
 			$this->user_id = Yii::$app->user->id;
 			return true;
