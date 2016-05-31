@@ -17,6 +17,8 @@ return array(
     'schmunk42\\giiant\\' => array($vendorDir . '/schmunk42/yii2-giiant/src'),
     'rmrevin\\yii\\fontawesome\\' => array($vendorDir . '/rmrevin/yii2-fontawesome'),
     'kartik\\plugins\\fileinput\\' => array($vendorDir . '/kartik-v/bootstrap-fileinput'),
+    'kartik\\mpdf\\' => array($vendorDir . '/kartik-v/yii2-mpdf'),
+    'kartik\\grid\\' => array($vendorDir . '/kartik-v/yii2-grid'),
     'kartik\\file\\' => array($vendorDir . '/kartik-v/yii2-widget-fileinput'),
     'kartik\\base\\' => array($vendorDir . '/kartik-v/yii2-krajee-base'),
     'dmstr\\helpers\\' => array($vendorDir . '/dmstr/yii2-helpers'),

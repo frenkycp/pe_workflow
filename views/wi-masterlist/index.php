@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\GridView;
+//use yii\grid\GridView;
+use kartik\grid\GridView;
 
 /**
 * @var yii\web\View $this
@@ -77,14 +78,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="table-responsive">
                 <?= GridView::widget([
-                'layout' => '{summary}{pager}{items}{pager}',
+                //'layout' => '{summary}{pager}{items}{pager}',
                 'dataProvider' => $dataProvider,
-                'pager'        => [
+                /* 'pager'        => [
                     'class'          => yii\widgets\LinkPager::className(),
                     'firstPageLabel' => 'First',
-                    'lastPageLabel'  => 'Last'                ],
+                    'lastPageLabel'  => 'Last'                ], */
                 'filterModel' => $searchModel,
-                'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
+                //'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
                 'headerRowOptions' => ['class'=>'x'],
                 'columns' => [
 					

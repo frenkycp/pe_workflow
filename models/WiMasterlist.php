@@ -18,7 +18,7 @@ class WiMasterlist extends BaseWiMasterlist
             'doc_no' => 'Doc No',
             'doc_title' => 'Doc. Title',
             'doc_class' => 'Doc. Class',
-            'speaker_model' => 'Speaker Model',
+            'speaker_model' => 'Model',
             'doc_section' => 'Doc. Section',
             'doc_type' => 'Doc. Type',
             'pic_id' => 'PIC',
