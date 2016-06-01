@@ -109,12 +109,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
 					[
 						'class'=>'kartik\grid\SerialColumn',
-						'contentOptions'=>['class'=>'kartik-sheet-style'],
+						'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: center;'],
 						'width'=>'36px',
-						'header'=>'',
+						'header'=>'No.',
 						'headerOptions'=>['class'=>'kartik-sheet-style']
 					],
-					'doc_no',
+					[
+						'attribute' => 'doc_no',
+						'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: center;'],
+					],
+					//'doc_no',
 					'doc_title',
 					'speaker_model:ntext',
 					[
