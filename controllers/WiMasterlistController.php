@@ -50,6 +50,7 @@ class WiMasterlistController extends Controller
 			'searchModel' => $searchModel,
 			'sectionDropdown' => ArrayHelper::map(DocSection::find()->orderBy('section_name')->all(), 'doc_section_id', 'section_name'),
 			'docTypeDropdown' => ArrayHelper::map(DocType::find()->orderBy('type_name')->all(), 'doc_type_id', 'type_name'),
+			'wiMakerDropdown' => ArrayHelper::map(User::find()->where(['role_id' => 4])->orderBy('name')->all(), 'id', 'name'),
 		]);
 	}
 

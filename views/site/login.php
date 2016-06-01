@@ -53,7 +53,7 @@ $fieldOptions2 = [
 
         <?php ActiveForm::end(); ?>
 
-        <div class="social-auth-links text-center">
+        <div class="social-auth-links text-center" style="display: none;">
             <p>- OR -</p>
             <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in
                 using Facebook</a>
@@ -62,7 +62,7 @@ $fieldOptions2 = [
         </div>
         <!-- /.social-auth-links -->
 
-        <a href="#">I forgot my password</a><br>
+        <a href="#" style="display: none;">I forgot my password</a><br>
         <?= Html::a("Register a new membership", ["site/register"], ["class"=>"text-center"]) ?>
 
     </div>
