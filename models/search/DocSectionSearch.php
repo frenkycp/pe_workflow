@@ -18,7 +18,7 @@ class DocSectionSearch extends DocSection
 public function rules()
 {
 return [
-[['doc_section_id'], 'integer'],
+[['doc_section_id', 'flag'], 'integer'],
             [['section_name'], 'safe'],
 ];
 }
@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = DocSection::find();
+$query = DocSection::find()->where(['flag' => 1]);
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,
@@ -57,6 +57,7 @@ return $dataProvider;
 
 $query->andFilterWhere([
             'doc_section_id' => $this->doc_section_id,
+            'flag' => $this->flag,
         ]);
 
         $query->andFilterWhere(['like', 'section_name', $this->section_name]);

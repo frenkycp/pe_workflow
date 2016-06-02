@@ -98,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				],
 				'toolbar' => [
 					'{export}',
-					//'{toggleData}'
+					'{toggleData}'
 				],
 				'export' => [
 					'target' => '_self',
@@ -155,9 +155,6 @@ $this->params['breadcrumbs'][] = $this->title;
 					'date_modified',
 					[
 						'class' => '\kartik\grid\ActionColumn',
-						'deleteOptions' => [
-							'style' => 'display: none;'
-						],
 						'urlCreator' => function($action, $model, $key, $index) {
 							// using the column name as key, not mapping to 'id' like the standard generator
 							$params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];

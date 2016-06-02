@@ -90,7 +90,9 @@ class WiMasterlistController extends Controller
             $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
             $model->addError('_exception', $msg);
 		}
-        return $this->render('create', ['model' => $model]);
+        return $this->render('create', [
+			'model' => $model,
+		]);
 	}
 
 	/**
@@ -120,27 +122,12 @@ class WiMasterlistController extends Controller
 	 */
 	public function actionDelete($masterlist_id)
 	{
-        try {
-            $this->findModel($masterlist_id)->delete();
-        } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-            \Yii::$app->getSession()->setFlash('error', $msg);
-            return $this->redirect(Url::previous());
-        }
-
-        // TODO: improve detection
-        $isPivot = strstr('$masterlist_id',',');
-        if ($isPivot == true) {
-            return $this->redirect(Url::previous());
-        } elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
-			Url::remember(null);
-			$url = \Yii::$app->session['__crudReturnUrl'];
-			\Yii::$app->session['__crudReturnUrl'] = null;
-
-			return $this->redirect($url);
-        } else {
-            return $this->redirect(['index']);
-        }
+		$model = $this->findModel($masterlist_id);
+		$model->flag = 0;
+		if($model->save())
+		{
+			return $this->redirect(['index']);
+		}
 	}
 
 	/**

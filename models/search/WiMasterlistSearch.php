@@ -18,7 +18,7 @@ class WiMasterlistSearch extends WiMasterlist
 public function rules()
 {
 return [
-[['masterlist_id', 'doc_class', 'doc_section', 'doc_type', 'pic_id', 'user_id'], 'integer'],
+[['masterlist_id', 'doc_class', 'doc_section', 'doc_type', 'pic_id', 'user_id', 'flag'], 'integer'],
             [['doc_no', 'doc_title', 'speaker_model', 'date_modified'], 'safe'],
 ];
 }
@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = WiMasterlist::find();
+$query = WiMasterlist::find()->where(['flag' => 1]);
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,
@@ -63,6 +63,7 @@ $query->andFilterWhere([
             'pic_id' => $this->pic_id,
             'date_modified' => $this->date_modified,
             'user_id' => $this->user_id,
+            'flag' => $this->flag,
         ]);
 
         $query->andFilterWhere(['like', 'doc_no', $this->doc_no])

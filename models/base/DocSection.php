@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $doc_section_id
  * @property string $section_name
+ * @property integer $flag
  *
  * @property \app\models\WiMasterlist[] $wiMasterlists
  */
@@ -32,6 +33,7 @@ class DocSection extends \yii\db\ActiveRecord
     {
         return [
             [['section_name'], 'required'],
+            [['flag'], 'integer'],
             [['section_name'], 'string', 'max' => 30]
         ];
     }
@@ -44,6 +46,7 @@ class DocSection extends \yii\db\ActiveRecord
         return [
             'doc_section_id' => 'Doc Section ID',
             'section_name' => 'Section Name',
+            'flag' => 'Flag',
         ];
     }
 

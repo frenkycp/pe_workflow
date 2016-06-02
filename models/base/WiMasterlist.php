@@ -17,6 +17,7 @@ use Yii;
  * @property integer $pic_id
  * @property string $date_modified
  * @property integer $user_id
+ * @property integer $flag
  *
  * @property \app\models\User $pic
  * @property \app\models\User $user
@@ -44,7 +45,7 @@ class WiMasterlist extends \yii\db\ActiveRecord
     {
         return [
             [['doc_no', 'doc_title', 'doc_class', 'speaker_model', 'doc_section', 'doc_type', 'pic_id', 'user_id'], 'required'],
-            [['doc_class', 'doc_section', 'doc_type', 'pic_id', 'user_id'], 'integer'],
+            [['doc_class', 'doc_section', 'doc_type', 'pic_id', 'user_id', 'flag'], 'integer'],
             [['speaker_model'], 'string'],
             [['date_modified'], 'safe'],
             [['doc_no'], 'string', 'max' => 20],
@@ -69,6 +70,7 @@ class WiMasterlist extends \yii\db\ActiveRecord
             'pic_id' => 'Pic ID',
             'date_modified' => 'Date Modified',
             'user_id' => 'User ID',
+            'flag' => 'Flag',
         ];
     }
 

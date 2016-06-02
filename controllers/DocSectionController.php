@@ -113,27 +113,14 @@ class DocSectionController extends Controller
 	 */
 	public function actionDelete($doc_section_id)
 	{
-        try {
-            $this->findModel($doc_section_id)->delete();
-        } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-            \Yii::$app->getSession()->setFlash('error', $msg);
-            return $this->redirect(Url::previous());
-        }
-
-        // TODO: improve detection
-        $isPivot = strstr('$doc_section_id',',');
-        if ($isPivot == true) {
-            return $this->redirect(Url::previous());
-        } elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
-			Url::remember(null);
-			$url = \Yii::$app->session['__crudReturnUrl'];
-			\Yii::$app->session['__crudReturnUrl'] = null;
-
-			return $this->redirect($url);
-        } else {
-            return $this->redirect(['index']);
-        }
+		$model = $this->findModel($doc_section_id);
+		$model->flag = 0;
+		
+		if($model->save())
+		{
+			return $this->redirect(['index']);
+		}
+        
 	}
 
 	/**
