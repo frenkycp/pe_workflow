@@ -36,10 +36,10 @@ use \dmstr\bootstrap\Tabs;
 
                 <p>
                     
-			<?= $form->field($model, 'doc_class_id')->textInput() ?>
+			<?= $form->field($model, 'doc_class_id')->hiddenInput()->label(false) ?>
 			<?= $form->field($model, 'class_code')->textInput(['maxlength' => true]) ?>
 			<?= $form->field($model, 'class_detail')->textInput(['maxlength' => true]) ?>
-			<?= $form->field($model, 'class_count')->textInput() ?>
+			<?= $form->field($model, 'class_count')->hiddenInput(['value' => $model->isNewRecord ? 1 : $model->class_count])->label(false) ?>
                 </p>
                 <?php $this->endBlock(); ?>
                 

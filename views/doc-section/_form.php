@@ -38,7 +38,6 @@ use \dmstr\bootstrap\Tabs;
                     
 			<?= $form->field($model, 'doc_section_id')->hiddenInput()->label(false) ?>
 			<?= $form->field($model, 'section_name')->textInput(['maxlength' => true]) ?>
-			<?= $form->field($model, 'flag')->hiddenInput(['value' => 1])->label(false) ?>
                 </p>
                 <?php $this->endBlock(); ?>
                 

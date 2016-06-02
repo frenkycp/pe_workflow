@@ -18,7 +18,7 @@ class DocClassSearch extends DocClass
 public function rules()
 {
 return [
-[['doc_class_id', 'class_count'], 'integer'],
+[['doc_class_id', 'class_count', 'flag'], 'integer'],
             [['class_code', 'class_detail'], 'safe'],
 ];
 }
@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = DocClass::find();
+$query = DocClass::find()->where(['flag' => 1]);
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,
@@ -58,6 +58,7 @@ return $dataProvider;
 $query->andFilterWhere([
             'doc_class_id' => $this->doc_class_id,
             'class_count' => $this->class_count,
+            'flag' => $this->flag,
         ]);
 
         $query->andFilterWhere(['like', 'class_code', $this->class_code])

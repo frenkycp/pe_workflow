@@ -18,7 +18,7 @@ class DocTypeSearch extends DocType
 public function rules()
 {
 return [
-[['doc_type_id'], 'integer'],
+[['doc_type_id', 'flag'], 'integer'],
             [['type_name'], 'safe'],
 ];
 }
@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = DocType::find();
+$query = DocType::find()->where(['flag' => 1]);
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,
@@ -57,6 +57,7 @@ return $dataProvider;
 
 $query->andFilterWhere([
             'doc_type_id' => $this->doc_type_id,
+            'flag' => $this->flag,
         ]);
 
         $query->andFilterWhere(['like', 'type_name', $this->type_name]);

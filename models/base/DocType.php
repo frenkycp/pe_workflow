@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $doc_type_id
  * @property string $type_name
+ * @property integer $flag
  *
  * @property \app\models\WiMasterlist[] $wiMasterlists
  */
@@ -32,6 +33,7 @@ class DocType extends \yii\db\ActiveRecord
     {
         return [
             [['type_name'], 'required'],
+            [['flag'], 'integer'],
             [['type_name'], 'string', 'max' => 20]
         ];
     }
@@ -44,6 +46,7 @@ class DocType extends \yii\db\ActiveRecord
         return [
             'doc_type_id' => 'Doc Type ID',
             'type_name' => 'Type Name',
+            'flag' => 'Flag',
         ];
     }
 

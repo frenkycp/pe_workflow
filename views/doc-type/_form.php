@@ -36,7 +36,7 @@ use \dmstr\bootstrap\Tabs;
 
                 <p>
                     
-			<?= $form->field($model, 'doc_type_id')->textInput() ?>
+			<?= $form->field($model, 'doc_type_id')->hiddenInput()->label(false) ?>
 			<?= $form->field($model, 'type_name')->textInput(['maxlength' => true]) ?>
                 </p>
                 <?php $this->endBlock(); ?>
