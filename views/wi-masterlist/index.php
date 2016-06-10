@@ -152,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						],
 						'filterInputOptions'=>['placeholder'=>'Any PIC'],
 					],
-					'date_modified',
+					'created_at',
 					[
 						'class' => '\kartik\grid\ActionColumn',
 						'urlCreator' => function($action, $model, $key, $index) {

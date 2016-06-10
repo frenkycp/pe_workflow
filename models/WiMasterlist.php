@@ -60,6 +60,7 @@ class WiMasterlist extends BaseWiMasterlist
     public function beforeSave($insert){
         if(parent::beforeSave($insert)){
 			$result = DocClass::findOne(['doc_class_id' => $this->doc_class]);
+			date_default_timezone_set('Asia/Jakarta');
             if($this->isNewRecord)
             {
 				$tmp_class = $result->class_code;
@@ -73,7 +74,7 @@ class WiMasterlist extends BaseWiMasterlist
 				}
             }
 			$this->doc_class = $result->primaryKey;
-			date_default_timezone_set('Asia/Jakarta');
+			
 			$now = new \DateTime();
 			$this->date_modified = $now->format('Y-m-d H:i:s');
 			//$this->date_modified = date('Y-m-d h:i:s');

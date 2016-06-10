@@ -15,6 +15,8 @@ use Yii;
  * @property integer $doc_section
  * @property integer $doc_type
  * @property integer $pic_id
+ * @property string $remark
+ * @property string $created_at
  * @property string $date_modified
  * @property integer $user_id
  * @property integer $flag
@@ -46,8 +48,8 @@ class WiMasterlist extends \yii\db\ActiveRecord
         return [
             [['doc_no', 'doc_title', 'doc_class', 'speaker_model', 'doc_section', 'doc_type', 'pic_id', 'user_id'], 'required'],
             [['doc_class', 'doc_section', 'doc_type', 'pic_id', 'user_id', 'flag'], 'integer'],
-            [['speaker_model'], 'string'],
-            [['date_modified'], 'safe'],
+            [['speaker_model', 'remark'], 'string'],
+            [['created_at', 'date_modified'], 'safe'],
             [['doc_no'], 'string', 'max' => 20],
             [['doc_title'], 'string', 'max' => 50],
             [['doc_no'], 'unique']
@@ -68,6 +70,8 @@ class WiMasterlist extends \yii\db\ActiveRecord
             'doc_section' => 'Doc Section',
             'doc_type' => 'Doc Type',
             'pic_id' => 'Pic ID',
+            'remark' => 'Remark',
+            'created_at' => 'Created At',
             'date_modified' => 'Date Modified',
             'user_id' => 'User ID',
             'flag' => 'Flag',

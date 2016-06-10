@@ -33,6 +33,10 @@ use yii\widgets\ActiveForm;
 
 		<?php // echo $form->field($model, 'pic_id') ?>
 
+		<?php // echo $form->field($model, 'remark') ?>
+
+		<?php // echo $form->field($model, 'created_at') ?>
+
 		<?php // echo $form->field($model, 'date_modified') ?>
 
 		<?php // echo $form->field($model, 'user_id') ?>

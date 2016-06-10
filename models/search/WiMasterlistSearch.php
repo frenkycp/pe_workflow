@@ -19,7 +19,7 @@ public function rules()
 {
 return [
 [['masterlist_id', 'doc_class', 'doc_section', 'doc_type', 'pic_id', 'user_id', 'flag'], 'integer'],
-            [['doc_no', 'doc_title', 'speaker_model', 'date_modified'], 'safe'],
+            [['doc_no', 'doc_title', 'speaker_model', 'remark', 'created_at', 'date_modified'], 'safe'],
 ];
 }
 
@@ -61,6 +61,7 @@ $query->andFilterWhere([
             'doc_section' => $this->doc_section,
             'doc_type' => $this->doc_type,
             'pic_id' => $this->pic_id,
+            'created_at' => $this->created_at,
             'date_modified' => $this->date_modified,
             'user_id' => $this->user_id,
             'flag' => $this->flag,
@@ -68,7 +69,8 @@ $query->andFilterWhere([
 
         $query->andFilterWhere(['like', 'doc_no', $this->doc_no])
             ->andFilterWhere(['like', 'doc_title', $this->doc_title])
-            ->andFilterWhere(['like', 'speaker_model', $this->speaker_model]);
+            ->andFilterWhere(['like', 'speaker_model', $this->speaker_model])
+            ->andFilterWhere(['like', 'remark', $this->remark]);
 
 return $dataProvider;
 }
