@@ -116,14 +116,31 @@ $this->params['breadcrumbs'][] = $this->title;
 					],
 					[
 						'attribute' => 'doc_no',
+						'headerOptions' => ['style'=>'text-align:center'],
 						'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: center;'],
+						'width'=>'35px',
 					],
 					//'doc_no',
-					'doc_title',
-					'speaker_model:ntext',
+					//'doc_title',
+					[
+						'attribute' => 'doc_title',
+						'headerOptions' => ['style'=>'text-align:center'],
+						'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: left;'],
+						'width'=>'230px',
+					],
+					//'speaker_model:ntext',
+					[
+						'attribute' => 'speaker_model',
+						'headerOptions' => ['style'=>'text-align:center'],
+						'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: left;'],
+						'width'=>'200px',
+					],
 					[
 						'class' => '\kartik\grid\DataColumn',
 						'attribute' => 'doc_section',
+						'headerOptions' => ['style'=>'text-align:center'],
+						'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: center;'],
+						'width'=>'100px',
 						'value' => function ($model) {
 							return $model->getDocSection()->one()->section_name;
 						},
@@ -133,6 +150,9 @@ $this->params['breadcrumbs'][] = $this->title;
 					[
 						'class' => '\kartik\grid\DataColumn',
 						'attribute' => 'doc_type',
+						'headerOptions' => ['style'=>'text-align:center'],
+						'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: center;'],
+						'width'=>'50px',
 						'value' => function ($model) {
 							return $model->getDocType()->one()->type_name;
 						},
@@ -142,6 +162,9 @@ $this->params['breadcrumbs'][] = $this->title;
 					[
 						'class' => '\kartik\grid\DataColumn',
 						'attribute' => 'pic_id',
+						'width'=>'100px',
+						'headerOptions' => ['style'=>'text-align:center'],
+						'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: center;'],
 						'value' => function ($model) {
 							return $model->getPic()->one()->name;
 						},
@@ -152,7 +175,13 @@ $this->params['breadcrumbs'][] = $this->title;
 						],
 						'filterInputOptions'=>['placeholder'=>'Any PIC'],
 					],
-					'created_at',
+					//'created_at',
+					[
+						'attribute' => 'created_at',
+						'headerOptions' => ['style'=>'text-align:center'],
+						'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: center;'],
+						'width'=>'100px',
+					],
 					[
 						'class' => '\kartik\grid\ActionColumn',
 						'urlCreator' => function($action, $model, $key, $index) {
