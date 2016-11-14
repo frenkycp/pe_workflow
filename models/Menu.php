@@ -10,4 +10,12 @@ use \app\models\base\Menu as BaseMenu;
  */
 class Menu extends BaseMenu
 {
+	public function rules()
+	{
+		return [
+				[['name', 'icon'], 'required'],
+				[['order', 'parent_id'], 'integer'],
+				[['name', 'controller', 'action', 'icon'], 'string', 'max' => 50]
+		];
+	}
 }

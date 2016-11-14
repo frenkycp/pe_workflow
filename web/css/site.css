@@ -3,6 +3,10 @@ body {
     height: 100%;
 }
 
+.center-text{
+	text-align: center;
+}
+
 .wrap {
     min-height: 100%;
     height: auto;

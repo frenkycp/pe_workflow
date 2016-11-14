@@ -4,6 +4,7 @@ $params = require(__DIR__ . '/params.php');
 
 $config = [
     'id' => 'basic',
+	'name' => 'YEMI - PE',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
@@ -59,6 +60,7 @@ $config = [
         ],
         */
         'db' => require(__DIR__ . '/db.php'),
+		'db2' => require(__DIR__ . '/db2.php'),
     ],
     'params' => $params,
 ];

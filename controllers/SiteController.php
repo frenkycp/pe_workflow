@@ -5,6 +5,7 @@ namespace app\controllers;
 //use app\components\NodeLogger;
 use app\components\RoleAccessBehaviour;
 use app\models\Action;
+use app\models\Wi;
 use app\models\RegisterForm;
 use app\models\User;
 use Yii;
@@ -39,7 +40,24 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+		$wi_open = Wi::find()->where(['!=', 'wi_status', \Yii::$app->params['STATUS_CLOSE']])->count();
+        $wi_close = Wi::find()->where(['wi_status' => \Yii::$app->params['STATUS_CLOSE']])->count();
+        $wi_checkout = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECKOUT']])->count();
+        $wi_checkin = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECKIN']])->count();
+        $wi_doc_check = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECK_MASTERLIST']])->count();
+        $wi_smile_check = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECK_SMILE']])->count();
+        $wi_detail_check = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECK1']])->count();
+        $wi_waiting_app = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_WAITING_APP']])->count();
+        return $this->render('index',[
+        		'wi_open' => $wi_open,
+        		'wi_close' => $wi_close,
+        		'wi_checkout' => $wi_checkout,
+        		'wi_checkin' => $wi_checkin,
+        		'wi_doc_check' => $wi_doc_check,
+        		'wi_smile_check' => $wi_smile_check,
+        		'wi_detail_check' => $wi_detail_check,
+        		'wi_waiting_app' => $wi_waiting_app,
+		]);
     }
 
     public function actionProfile()

@@ -1,53 +1,106 @@
 <?php
-
-/* @var $this yii\web\View */
-
-$this->title = 'My Yii Application';
+	use yii\helpers\Html;
+	use yii\helpers\Url;
+	
+	$this->title = "HOME";
 ?>
-<div class="site-index">
+<section class="content-header">
+	<h1>
+		Dashboard
+		<small>Control panel</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li class="active">Dashboard</li>
+	</ol>
+</section>
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
-    </div>
-</div>
+<section class="content">
+	
+	<div class="row">
+		<div class="clearfix visible-xs"></div>
+		<div class="col-lg-4 col-lg-offset-2">
+			<div class="small-box bg-red">
+				<div class="inner" style="text-align: center;">
+					<h3><?= $wi_open; ?></h3>
+					<p>WI OPEN</p>
+				</div>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'open']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+			</div>
+		</div>
+		
+		<div class="col-lg-4" style="text-align: center;">
+			<div class="small-box bg-green">
+				<div class="inner">
+					<h3><?= $wi_close; ?></h3>
+					<p>WI CLOSE</p>
+				</div>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'close']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+	
+		<div class="col-lg-2 col-xs-6">
+			<div class="small-box bg-yellow">
+				<div class="inner center-text">
+					<h3><?= $wi_checkout; ?></h3>
+					<p>CHECK OUT</p>
+				</div>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'checkout']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+			</div>
+		</div>
+		
+		<div class="col-lg-2 col-xs-6">
+			<div class="small-box bg-yellow">
+				<div class="inner center-text">
+					<h3><?= $wi_checkin; ?></h3>
+					<p>CHECK IN</p>
+				</div>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'checkin']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+			</div>
+		</div>
+		
+		<div class="col-lg-2 col-xs-6">
+			<div class="small-box bg-yellow">
+				<div class="inner center-text">
+					<h3><?= $wi_doc_check; ?></h3>
+					<p>MASTERLIST CHECK</p>
+				</div>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'check_masterlist']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+			</div>
+		</div>
+		
+		<div class="col-lg-2 col-xs-6">
+			<div class="small-box bg-yellow">
+				<div class="inner center-text">
+					<h3><?= $wi_smile_check; ?></h3>
+					<p>SMILE CHECK</p>
+				</div>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'check_smile']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+			</div>
+		</div>
+		
+		<div class="col-lg-2 col-xs-6">
+			<div class="small-box bg-yellow">
+				<div class="inner center-text">
+					<h3><?= $wi_detail_check; ?></h3>
+					<p>FINAL CHECK</p>
+				</div>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'check1']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+			</div>
+		</div>
+		
+		<div class="col-lg-2 col-xs-6">
+			<div class="small-box bg-yellow">
+				<div class="inner center-text">
+					<h3><?= $wi_waiting_app; ?></h3>
+					<p>WAITING APPROVAL</p>
+				</div>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'waiting_approval']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+			</div>
+		</div>
+		
+	</div>
+	
+</section>

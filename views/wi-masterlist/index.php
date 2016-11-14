@@ -78,6 +78,43 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="panel-body"> -->
 
                 <!-- <div class="table-responsive"> -->
+                <?php
+                $pdfHeader = [
+				  'L' => [
+				    'content' => '',
+				  ],
+				  'C' => [
+				    'content' => 'DOCUMENT MASTERLIST',
+				    'font-size' => 20,
+				    'font-style' => 'B',
+				    'font-family' => 'arial',
+				    'color' => '#333333'
+				  ],
+				  'R' => [
+				    'content' => date('l, d-M-Y'),
+				  ],
+				  'line' => true,
+				];
+
+				$pdfFooter = [
+				  'L' => [
+				    'content' => '',
+				    'font-size' => 10,
+				    'color' => '#333333',
+				    'font-family' => 'arial',
+				  ],
+				  'C' => [
+				    'content' => '',
+				  ],
+				  'R' => [
+				    'content' => '{PAGENO}',
+				    'font-size' => 10,
+				    'color' => '#333333',
+				    'font-family' => 'arial',
+				  ],
+				  'line' => true,
+				];
+                ?>
                 <?= GridView::widget([
                 //'layout' => '{summary}{pager}{items}{pager}',
                 'dataProvider' => $dataProvider,
@@ -103,6 +140,27 @@ $this->params['breadcrumbs'][] = $this->title;
 				'export' => [
 					'target' => '_self',
 					'fontAwesome'=>true,
+				],
+				'exportConfig' => [
+					 GridView::PDF => [
+					    'filename' => 'Document Masterlists',
+					    'config' => [
+					      'methods' => [
+					        'SetHeader' => [
+					          ['odd' => $pdfHeader, 'even' => $pdfHeader]
+					        ],
+					        'SetFooter' => [
+					          ['odd' => $pdfFooter, 'even' => $pdfFooter]
+					        ],
+					      ],
+					      'options' => [
+					        'title' => 'Document Masterlists',
+					        'subject' => 'Document Masterlists',
+					        'keywords' => 'pdf, preceptors, export, other, keywords, here'
+					      ],
+					    ]
+					],
+					GridView::EXCEL => [],
 				],
                 'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
                 //'headerRowOptions' => ['class'=>'x'],
