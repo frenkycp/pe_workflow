@@ -26,10 +26,11 @@ use yii\jui\DatePicker;
         <div class="wi-form">
 
             <?php $form = ActiveForm::begin([
-            'id' => 'Wi',
-            'layout' => 'horizontal',
-            'enableClientValidation' => true,
-            'errorSummaryCssClass' => 'error-summary alert alert-error'
+		            'id' => 'Wi',
+		            'layout' => 'horizontal',
+		            'enableClientValidation' => true,
+		            'errorSummaryCssClass' => 'error-summary alert alert-error',
+            		'options' => ['enctype' => 'multipart/form-data'],
             ]
             );
             ?>
@@ -46,20 +47,21 @@ use yii\jui\DatePicker;
 			<?= $form->field($model, 'wi_title')->textInput(['maxlength' => true]) ?>
 			<?= $form->field($model, 'wi_stagestat')->textInput(['maxlength' => true]) ?>
 			<?= $form->field($model, 'wi_status')->textInput(['maxlength' => true]) ?>
-			<?= $form->field($model, 'wi_issue')->textInput(['maxlength' => true]) ?>
-			<?= $form->field($model, 'wi_rev')->widget(DatePicker::className(),[
+			<?= $form->field($model, 'wi_issue')->widget(DatePicker::className(),[
+					'dateFormat' => 'yyyy-MM-dd',
 					//clientOptions' => ['defaultDate' => date('yyyy-MM-dd')],
 			]) ?>
+			<?= $form->field($model, 'wi_rev')->textInput(['maxlength' => true]) ?>
 			<?= ''//$form->field($model, 'wi_maker')->textInput(['maxlength' => true]) ?>
 			<?= $form->field($model, 'wi_maker')->widget(Select2::className(), [
-					'data' => \yii\helpers\ArrayHelper::map(app\models\User::find()->where(['role_id' => [4,7,8]])->orderBy('name')->all(), 'id', 'name'),
+					'data' => \yii\helpers\ArrayHelper::map(app\models\User::find()->where(['role_id' => [4,7,8]])->orderBy('name')->all(), 'name', 'name'),
 					'options' => ['placeholder' => 'Select a state ...'],
 					'pluginOptions' => [
 							'allowClear' => true
 					],
 			]) ?>
 			<?= ''//$form->field($model, 'wi_filename')->textarea(['rows' => 6]) ?>
-			<?= $form->field($model, 'wiUploadFile')->fileInput() ?>
+			<?= $form->field($model, 'uploadFile')->fileInput() ?>
 			<?= ''//$form->field($model, 'wi_filename2')->textarea(['rows' => 6]) ?>
 			<?= ''//$form->field($model, 'wi_file2')->textarea(['rows' => 6]) ?>
                 </p>

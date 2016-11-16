@@ -40,14 +40,14 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-		$wi_open = Wi::find()->where(['!=', 'wi_status', \Yii::$app->params['STATUS_CLOSE']])->count();
-        $wi_close = Wi::find()->where(['wi_status' => \Yii::$app->params['STATUS_CLOSE']])->count();
-        $wi_checkout = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECKOUT']])->count();
-        $wi_checkin = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECKIN']])->count();
-        $wi_doc_check = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECK_MASTERLIST']])->count();
-        $wi_smile_check = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECK_SMILE']])->count();
-        $wi_detail_check = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_CHECK1']])->count();
-        $wi_waiting_app = Wi::find()->where(['like', 'wi_status', \Yii::$app->params['STATUS_WAITING_APP']])->count();
+		$wi_open = Wi::find()->where(['wi_status' => 'OPEN'])->count();
+        $wi_close = Wi::find()->where(['wi_status' => 'CLOSE'])->count();
+        $wi_checkout = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKOUT])->count();
+        $wi_checkin = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKIN])->count();
+        $wi_doc_check = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_MASTERLIST])->count();
+        $wi_smile_check = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_SMILE])->count();
+        $wi_detail_check = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_FINAL])->count();
+        $wi_waiting_app = Wi::find()->where(['wi_status' => Wi::$_STATUS_WAITING_APPR])->count();
         return $this->render('index',[
         		'wi_open' => $wi_open,
         		'wi_close' => $wi_close,

@@ -35,7 +35,7 @@ class Wi extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'dbworkflow.wi';
+        return 'wi';
     }
 
     /**
@@ -77,8 +77,5 @@ class Wi extends \yii\db\ActiveRecord
             'wi_remark' => 'Wi Remark',
         ];
     }
-
-
-
 
 }

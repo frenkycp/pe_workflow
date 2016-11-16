@@ -11,6 +11,7 @@ use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use dmstr\bootstrap\Tabs;
 use app\models\User;
+use yii\web\UploadedFile;
 
 /**
  * WiController implements the CRUD actions for Wi model.
@@ -96,10 +97,36 @@ class WiController extends Controller
 	 */
 	public function actionUpdate($wi_id)
 	{
+		$tmpFile;
 		$model = $this->findModel($wi_id);
 
-		if ($model->load($_POST) && $model->save()) {
-            return $this->redirect(Url::previous());
+		if ($model->load($_POST)) {
+			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
+			if(!empty($tmpFile)){
+				$model->uploadFile = UploadedFile::getInstance($model, 'uploadFile');
+				$model->wi_filename = $model->uploadFile->baseName . $model->uploadFile->extension;
+				$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . $model->uploadFile->extension;
+			}
+			if($model->save()){
+				if(!empty($tmpFile)){
+					$model->upload();
+				}
+			}
+			if ($model->upload()) {
+				// file is uploaded successfully
+				//return;
+				
+				if($model->save())
+				{
+					return $this->redirect(['index']);
+				}else{
+					echo $model->errors;
+				}
+			}else{
+				echo $model->errors;
+			}
+            //return $this->redirect(Url::previous());
+			
 		} else {
 			return $this->render('update', [
 				'model' => $model,
@@ -148,9 +175,74 @@ class WiController extends Controller
 		}
 	}
 	
+	public function actionCheckin($id)
+	{
+		/* $model = $this->findModel($id);
+		$model->wi_status = \Yii::$app->params['STATUS_CHECKIN'];
+		if($model->save())
+		{
+			return $this->redirect(Url::previous());
+		} */
+		$model = $this->findModel($wi_id);
+		
+		if ($model->load($_POST) && $model->save()) {
+			return $this->redirect(Url::previous());
+		} else {
+			return $this->render('update', [
+					'model' => $model,
+					'action_type' => 'checkin'
+			]);
+		}
+	}
+	
 	public function actionCheckMasterlist($id)
 	{
-		return null;
+		$model = $this->findModel($id);
+		$model->wi_status = \Yii::$app->params['STATUS_CHECK_MASTERLIST'];
+		if($model->save())
+		{
+			return $this->redirect(Url::previous());
+		}
+	}
+	
+	public function actionCheckSmile($id)
+	{
+		$model = $this->findModel($id);
+		$model->wi_status = \Yii::$app->params['STATUS_CHECK_SMILE'];
+		if($model->save())
+		{
+			return $this->redirect(Url::previous());
+		}
+	}
+	
+	public function actionFinalCheck($id)
+	{
+		$model = $this->findModel($id);
+		$model->wi_status = \Yii::$app->params['STATUS_CHECK1'];
+		if($model->save())
+		{
+			return $this->redirect(Url::previous());
+		}
+	}
+	
+	public function actionWaitingApproval($id)
+	{
+		$model = $this->findModel($id);
+		$model->wi_status = \Yii::$app->params['STATUS_WAITING_APP'];
+		if($model->save())
+		{
+			return $this->redirect(Url::previous());
+		}
+	}
+	
+	public function actionReject($id)
+	{
+		$model = $this->findModel($id);
+		$model->wi_status = \Yii::$app->params['STATUS_REJECT'];
+		if($model->save())
+		{
+			return $this->redirect(Url::previous());
+		}
 	}
 
 	/**

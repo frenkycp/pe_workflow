@@ -13,10 +13,14 @@ return [
 	'STATUS_CHECKIN' => 'CHECKIN',
     'STATUS_CHECKOUT' => 'CHECKOUT',
 	'STATUS_REJECT' => 'REJECTED',
+	'STATUS_APPROVED' => 'APPROVED',
 		
 		//Role ID
-		'roleid_admin1' =>5,
+		'roleid_superadmin' => [1, 6],
+		'roleid_wimaker' => 4,
+		'roleid_admin1' => 5,
 		'roleid_admin2' => 6,
 		'roleid_checker' => 7,
 		'roleid_approval' => 8,
+		'roleid_rejector' => array(5, 6, 7, 8),
 ];

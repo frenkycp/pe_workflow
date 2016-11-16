@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 //use yii\grid\GridView;
 use kartik\grid\GridView;
+use app\models\Wi;
 
 /**
 * @var yii\web\View $this
@@ -52,33 +53,32 @@ $this->params['breadcrumbs'][] = $this->title;
     
         <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <!-- <div class="panel panel-default"> -->
+            <!-- <div class="panel-heading">
                 <h2>
-                    <i><?php 
+                    <i><?php /*
 						if(isset($_GET['index_type']))
 						{
 							if($_GET['index_type'] == 'open')
 							{
 								echo 'WI OPEN';
 							}
-							else{
-								
+							else if($_GET['index_type'] == 'my_job'){
+								echo 'MY JOB';
 							}
 						}
 						else
 						{
 							echo 'ALL WI LIST';
-						}
+						} */
 					?></i>
                 </h2>
-            </div>
+            </div> -->
 
-            <div class="panel-body">
-
+            <!-- <div class="panel-body">  -->
                 <div class="table-responsive">
                 <?= GridView::widget([
-                'layout' => '{items}{summary}{pager}',
+                'layout' => '{items} {summary} {pager}',
                 'dataProvider' => $dataProvider,
                 'pager'        => [
                     'class'          => yii\widgets\LinkPager::className(),
@@ -128,19 +128,32 @@ $this->params['breadcrumbs'][] = $this->title;
 		[
             'class' => 'yii\grid\ActionColumn',
 			'header'=>'Actions',
-			'template' => \Yii::$app->user->identity->role->id == 1 ? '{view} {update} {delete}' : '{view} {checkout} {checkin} {check_masterlist} {check_smile}',
+			'template' => \Yii::$app->user->identity->role->id == 1 ? '{view} {update} {delete}' : '{view} {checkout} {checkin} 
+			{check_masterlist} {check_smile} {final_check} {waiting_app} {approval} {reject}',
 			'buttons'=>[
 				'checkout' => function ($url, $model, $key) {
-					return $model->wi_status == "OPEN" ? Html::a('<span class="glyphicon glyphicon-cloud-download" style="padding-left: 5px;"></span>', ['checkout', 'id'=>$model->wi_id],['title'=>'Checkout']) : "";
+					return $model->wi_status == "OPEN" || $model->wi_status == "REJECTED" && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wi_maker'] ? Html::a('<span class="glyphicon glyphicon-cloud-download" style="padding-left: 5px;"></span>', ['checkout', 'id'=>$model->wi_id],['title'=>'Checkout']) : "";
 				},
 				'checkin' => function ($url, $model, $key) {
-					return $model->wi_status == "CHECKOUT BY " . Yii::$app->user->identity->name ? Html::a('<span class="glyphicon glyphicon-cloud-upload" style="padding-left: 5px;"></span>', ['checkin', 'id'=>$model->wi_id],['title'=>'Checkin']) : "";
+					return ($model->wi_status == Wi::$_STATUS_CHECKOUT . " BY " . Yii::$app->user->identity->name) || ($model->wi_status == Wi::$_STATUS_REJECT && $model->wi_maker == Yii::$app->user->identity->name) ? Html::a('<span class="glyphicon glyphicon-cloud-upload" style="padding-left: 5px;"></span>', ['checkin', 'id'=>$model->wi_id],['title'=>'Checkin']) : "";
 				},
 				'check_masterlist' => function ($url, $model, $key) {
-					return $model->wi_status == "CHECKIN"  && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'] ? Html::a('<span class="glyphicon glyphicon-list-alt" style="padding-left: 5px;"></span>', ['check_masterlist', 'id'=>$model->wi_id],['title'=>'Check Masterlist']) : "";
+					return $model->wi_status == Wi::$_STATUS_CHECKIN  && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'] ? Html::a('<span class="glyphicon glyphicon-list-alt" style="padding-left: 5px;"></span>', ['check-masterlist', 'id'=>$model->wi_id],['title'=>'Check Masterlist']) : "";
 				},
 				'check_smile' => function ($url, $model, $key) {
-					return $model->wi_status == Yii::$app->params['STATUS_CHECK_MASTERLIST'] ? Html::a('<span class="glyphicon glyphicon-hdd" style="padding-left: 5px;"></span>', ['check_smile', 'id'=>$model->wi_id],['title'=>'Check SMILE']) : "";
+					return $model->wi_status == Wi::$_STATUS_CHECK_MASTERLIST && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin2'] ? Html::a('<span class="glyphicon glyphicon-hdd" style="padding-left: 5px;"></span>', ['check-smile', 'id'=>$model->wi_id],['title'=>'Check SMILE']) : "";
+				},
+				'final_check' => function ($url, $model, $key) {
+					return $model->wi_status == Wi::$_STATUS_CHECK_SMILE && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_checker'] ? Html::a('<span class="glyphicon glyphicon-scale" style="padding-left: 5px;"></span>', ['final-check', 'id'=>$model->wi_id],['title'=>'Final Check']) : "";
+				},
+				'waiting_app' => function ($url, $model, $key) {
+					return $model->wi_status == Wi::$_STATUS_CHECK_FINAL && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-hourglass" style="padding-left: 5px;"></span>', ['waiting-approval', 'id'=>$model->wi_id],['title'=>'Waiting Approval']) : "";
+				},
+				'approval' => function ($url, $model, $key) {
+					return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] && $_GET['index_type'] == 'my_job' ? Html::a('<span class="glyphicon glyphicon-thumbs-up" style="padding-left: 5px;"></span>', ['approval', 'id'=>$model->wi_id],['title'=>'Approve']) : "";
+				},
+				'reject' => function ($url, $model, $key) {
+					 return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && $_GET['index_type'] == 'my_job' ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
 				},
 			],     
             'urlCreator' => function($action, $model, $key, $index) {
@@ -150,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return Url::toRoute($params);
             },
 			
-            'contentOptions' => ['nowrap'=>'nowrap']
+            'contentOptions' => ['nowrap'=>'nowrap', 'class' => 'center-text']
         ],
 			'wi_model',
 			'wi_section',
@@ -176,9 +189,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ]); ?>
                 </div>
 
-            </div>
+            <!-- </div> -->
 
-        </div>
+        <!-- </div>  -->
 
         <?php \yii\widgets\Pjax::end() ?>
 

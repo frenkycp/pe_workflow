@@ -11,7 +11,18 @@ use \app\models\base\Wi as BaseWi;
  */
 class Wi extends BaseWi
 {
-	public $wiUploadFile;
+	public $uploadFile;
+	
+	public static $_STATUS_OPEN = 'OPEN';
+	public static $_STATUS_CLOSE = 'CLOSE';
+	public static $_STATUS_CHECK_MASTERLIST = 'CHECK MASTERLIST';
+	public static $_STATUS_CHECK_SMILE = 'CHECK SMILE';
+	public static $_STATUS_CHECK_FINAL = 'FINAL CHECK';
+	public static $_STATUS_WAITING_APPR = 'WAITING APPROVAL';
+	public static $_STATUS_CHECKOUT = 'CHECKOUT';
+	public static $_STATUS_CHECKIN = 'CHECKIN';
+	public static $_STATUS_APPROVE = 'APPROVED';
+	public static $_STATUS_REJECT = 'REJECTED';
 	
 	public function attributeLabels()
     {
@@ -30,14 +41,17 @@ class Wi extends BaseWi
             'wi_file' => 'File',
             'wi_filename2' => 'Wi Filename2',
             'wi_file2' => 'Wi File2',
+        	'wi_filename3' => 'Wi Filename3',
+        	'wi_file3' => 'Wi File3',
+        	'wi_remark' => 'Remark',	
         ];
     }
     
     public function rules()
     {
     	return [
-    			[['wiUploadFile'], 'file', 'extensions' => 'xls, xlsx'],
-    			[['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2'], 'string'],
+    			[['uploadFile'], 'file', 'checkExtensionByMimeType'=>false, 'extensions' => 'xls, xlsx, pdf'],
+    			[['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark'], 'string'],
     			[['wi_model'], 'string', 'max' => 200],
     			[['wi_section', 'wi_docno', 'wi_stagestat', 'wi_status', 'wi_issue'], 'string', 'max' => 50],
     			[['wi_title', 'wi_maker'], 'string', 'max' => 100],
@@ -48,7 +62,7 @@ class Wi extends BaseWi
     public function upload()
     {
     	if ($this->validate()) {
-    		$this->wiUploadFile->saveAs('uploads/' . $this->wiUploadFile->baseName . '.' . $this->wiUploadFile->extension);
+    		$this->uploadFile->saveAs(\Yii::getAlias('@webroot') . '/../../workflow/files/wi/' . $this->uploadFile->baseName . '.' . $this->uploadFile->extension);
     		return true;
     	} else {
     		return false;

@@ -14,7 +14,9 @@
 		<li class="active">Dashboard</li>
 	</ol>
 </section>
-
+<?php echo Yii::getAlias('@webroot')?>
+<?php echo Yii::getAlias('@app')?>
+<?php echo Yii::getAlias('@web')?>
 <section class="content">
 	
 	<div class="row">
