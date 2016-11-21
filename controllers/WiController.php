@@ -95,38 +95,35 @@ class WiController extends Controller
 	 * @param integer $wi_id
 	 * @return mixed
 	 */
-	public function actionUpdate($wi_id)
+	public function actionUpdate($id)
 	{
 		$tmpFile;
-		$model = $this->findModel($wi_id);
+		$model = $this->findModel($id);
 
 		if ($model->load($_POST)) {
 			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
 			if(!empty($tmpFile)){
-				$model->uploadFile = UploadedFile::getInstance($model, 'uploadFile');
+				$delete = $model->oldAttributes['uploadFile'];
+				$model->uploadFile = $tmpFile;
 				$model->wi_filename = $model->uploadFile->baseName . $model->uploadFile->extension;
 				$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . $model->uploadFile->extension;
+			}else{
+				$model->uploadFile = $model->oldAttributes['uploadFile'];
 			}
 			if($model->save()){
 				if(!empty($tmpFile)){
-					$model->upload();
+					if(!$model->upload()){
+						return $model->errors;
+					}
 				}
-			}
-			if ($model->upload()) {
-				// file is uploaded successfully
-				//return;
-				
-				if($model->save())
-				{
-					return $this->redirect(['index']);
-				}else{
-					echo $model->errors;
-				}
+				return $this->redirect(Url::previous());
 			}else{
-				echo $model->errors;
+				return $model->errors;
 			}
             //return $this->redirect(Url::previous());
-			
+			return $this->render('update', [
+					'model' => $model,
+			]);
 		} else {
 			return $this->render('update', [
 				'model' => $model,
@@ -177,13 +174,46 @@ class WiController extends Controller
 	
 	public function actionCheckin($id)
 	{
+		$tmpFile;
+		$model = $this->findModel($id);
+		
+		if ($model->load($_POST)) {
+			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
+			if(!empty($tmpFile)){
+				$delete = $model->oldAttributes['uploadFile'];
+				$model->uploadFile = $tmpFile;
+				$model->wi_filename = $model->uploadFile->baseName . $model->uploadFile->extension;
+				$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . $model->uploadFile->extension;
+			}else{
+				$model->uploadFile = $model->oldAttributes['uploadFile'];
+			}
+			if($model->save()){
+				if(!empty($tmpFile)){
+					if(!$model->upload()){
+						return $model->errors;
+					}
+				}
+				return $this->redirect(Url::previous());
+			}else{
+				return $model->errors;
+			}
+			//return $this->redirect(Url::previous());
+			return $this->render('checkin', [
+					'model' => $model,
+			]);
+		} else {
+			return $this->render('checkin', [
+					'model' => $model,
+			]);
+		}
 		/* $model = $this->findModel($id);
 		$model->wi_status = \Yii::$app->params['STATUS_CHECKIN'];
 		if($model->save())
 		{
 			return $this->redirect(Url::previous());
 		} */
-		$model = $this->findModel($wi_id);
+		
+		/* $model = $this->findModel($wi_id);
 		
 		if ($model->load($_POST) && $model->save()) {
 			return $this->redirect(Url::previous());
@@ -192,7 +222,7 @@ class WiController extends Controller
 					'model' => $model,
 					'action_type' => 'checkin'
 			]);
-		}
+		} */
 	}
 	
 	public function actionCheckMasterlist($id)

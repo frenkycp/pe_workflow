@@ -68,7 +68,8 @@ $this->params['breadcrumbs'][] = 'View';
 		[
 			'attribute'=>'wi_file',
             'format'=>'raw',
-			'value' => Html::a($model->wi_filename, 'http://pe12/workflow/' . $model->wi_file, ['style' => in_array($model->wi_status, ['OPEN', 'CLOSE']) ? '' : 'display: none;']),
+			'value' => Html::a($model->wi_filename, Yii::$app->request->hostInfo . '/workflow/' . $model->wi_file, ['style' => in_array($model->wi_status, ['OPEN', 'CLOSE']) ? '' : 'display: none;']),
+			//'value' => Html::a($model->wi_filename, 'http://pe12/workflow/' . $model->wi_file, ['style' => in_array($model->wi_status, ['OPEN', 'CLOSE']) ? '' : 'display: none;']),
 		],
         //'linkToFile',
     ],
