@@ -244,8 +244,9 @@ use yii\helpers\Html;
                             </p>
                         </li>
                         <!-- Menu Body -->
-                        <!--<li class="user-body">
-                             <div class="col-xs-4 text-center">
+                        <li class="user-body">
+                        	<p class="center-text">--||--||--||--||--||--||--||--||--</p>
+                             <!-- <div class="col-xs-4 text-center">
                                 <a href="#">Followers</a>
                             </div>
                             <div class="col-xs-4 text-center">
@@ -253,8 +254,8 @@ use yii\helpers\Html;
                             </div>
                             <div class="col-xs-4 text-center">
                                 <a href="#">Friends</a>
-                            </div> 
-                        </li>-->
+                            </div>  -->
+                        </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">

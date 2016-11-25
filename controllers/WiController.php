@@ -7,8 +7,6 @@ use app\models\search\WiSearch;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
-use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
 use dmstr\bootstrap\Tabs;
 use app\models\User;
 use yii\web\UploadedFile;
@@ -77,8 +75,30 @@ class WiController extends Controller
 		$model = new Wi;
 
 		try {
-            if ($model->load($_POST) && $model->save()) {
-                return $this->redirect(Url::previous());
+            if ($model->load($_POST)) {
+            	$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
+            	if(!empty($tmpFile)){
+            		$delete = $model->oldAttributes['uploadFile'];
+            		$model->uploadFile = $tmpFile;
+            		$model->wi_filename = $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
+            		$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
+            	}else{
+            		$model->uploadFile = $model->oldAttributes['uploadFile'];
+            	}
+            	if($model->save()){
+            		if(!empty($tmpFile)){
+            			if(!$model->upload()){
+            				return $model->errors;
+            			}
+            		}
+            		return $this->redirect(Url::previous());
+            	}else{
+            		return $model->errors;
+            	}
+            	//return $this->redirect(Url::previous());
+            	/* return $this->render('update', [
+            			'model' => $model,
+            	]); */
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }
@@ -95,18 +115,18 @@ class WiController extends Controller
 	 * @param integer $wi_id
 	 * @return mixed
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate($wi_id)
 	{
 		$tmpFile;
-		$model = $this->findModel($id);
+		$model = $this->findModel($wi_id);
 
 		if ($model->load($_POST)) {
 			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
 			if(!empty($tmpFile)){
 				$delete = $model->oldAttributes['uploadFile'];
 				$model->uploadFile = $tmpFile;
-				$model->wi_filename = $model->uploadFile->baseName . $model->uploadFile->extension;
-				$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . $model->uploadFile->extension;
+				$model->wi_filename = $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
+				$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
 			}else{
 				$model->uploadFile = $model->oldAttributes['uploadFile'];
 			}
@@ -162,119 +182,17 @@ class WiController extends Controller
         }
 	}
 	
-	public function actionCheckout($id)
+	public function actionApproval($id)
 	{
 		$model = $this->findModel($id);
-		$model->wi_status = "CHECKOUT BY " . \Yii::$app->user->identity->name;
+		$model->wi_status = wi::$_STATUS_APPROVE;
 		if($model->save())
 		{
 			return $this->redirect(Url::previous());
 		}
 	}
 	
-	public function actionCheckin($id)
-	{
-		$tmpFile;
-		$model = $this->findModel($id);
-		
-		if ($model->load($_POST)) {
-			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
-			if(!empty($tmpFile)){
-				$delete = $model->oldAttributes['uploadFile'];
-				$model->uploadFile = $tmpFile;
-				$model->wi_filename = $model->uploadFile->baseName . $model->uploadFile->extension;
-				$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . $model->uploadFile->extension;
-			}else{
-				$model->uploadFile = $model->oldAttributes['uploadFile'];
-			}
-			if($model->save()){
-				if(!empty($tmpFile)){
-					if(!$model->upload()){
-						return $model->errors;
-					}
-				}
-				return $this->redirect(Url::previous());
-			}else{
-				return $model->errors;
-			}
-			//return $this->redirect(Url::previous());
-			return $this->render('checkin', [
-					'model' => $model,
-			]);
-		} else {
-			return $this->render('checkin', [
-					'model' => $model,
-			]);
-		}
-		/* $model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_CHECKIN'];
-		if($model->save())
-		{
-			return $this->redirect(Url::previous());
-		} */
-		
-		/* $model = $this->findModel($wi_id);
-		
-		if ($model->load($_POST) && $model->save()) {
-			return $this->redirect(Url::previous());
-		} else {
-			return $this->render('update', [
-					'model' => $model,
-					'action_type' => 'checkin'
-			]);
-		} */
-	}
 	
-	public function actionCheckMasterlist($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_CHECK_MASTERLIST'];
-		if($model->save())
-		{
-			return $this->redirect(Url::previous());
-		}
-	}
-	
-	public function actionCheckSmile($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_CHECK_SMILE'];
-		if($model->save())
-		{
-			return $this->redirect(Url::previous());
-		}
-	}
-	
-	public function actionFinalCheck($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_CHECK1'];
-		if($model->save())
-		{
-			return $this->redirect(Url::previous());
-		}
-	}
-	
-	public function actionWaitingApproval($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_WAITING_APP'];
-		if($model->save())
-		{
-			return $this->redirect(Url::previous());
-		}
-	}
-	
-	public function actionReject($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_REJECT'];
-		if($model->save())
-		{
-			return $this->redirect(Url::previous());
-		}
-	}
-
 	/**
 	 * Finds the Wi model based on its primary key value.
 	 * If the model is not found, a 404 HTTP exception will be thrown.

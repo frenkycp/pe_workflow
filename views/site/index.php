@@ -43,20 +43,10 @@
 		<div class="col-lg-2 col-xs-6">
 			<div class="small-box bg-yellow">
 				<div class="inner center-text">
-					<h3><?= $wi_checkout; ?></h3>
-					<p>CHECK OUT</p>
+					<h3><?= $wi_wimaker; ?></h3>
+					<p>WI MAKER</p>
 				</div>
-				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'checkout']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
-			</div>
-		</div>
-		
-		<div class="col-lg-2 col-xs-6">
-			<div class="small-box bg-yellow">
-				<div class="inner center-text">
-					<h3><?= $wi_checkin; ?></h3>
-					<p>CHECK IN</p>
-				</div>
-				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'checkin']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'wi_maker']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>
 		</div>
 		
@@ -97,6 +87,16 @@
 					<p>WAITING APPROVAL</p>
 				</div>
 				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'waiting_approval']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+			</div>
+		</div>
+		
+		<div class="col-lg-2 col-xs-6">
+			<div class="small-box bg-yellow">
+				<div class="inner center-text">
+					<h3><?= $wi_waiting_dist; ?></h3>
+					<p style="font-size:96%;">WAITING DISTRIBUTION</p>
+				</div>
+				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'waiting_dist']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>
 		</div>
 		

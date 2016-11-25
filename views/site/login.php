@@ -41,7 +41,7 @@ $fieldOptions2 = [
 
         <div class="row">
             <div class="col-xs-8">
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <?= ''//$form->field($model, 'rememberMe')->checkbox() ?>
             </div>
             <!-- /.col -->
             <div class="col-xs-4">
@@ -63,7 +63,7 @@ $fieldOptions2 = [
         <!-- /.social-auth-links -->
 
         <a href="#" style="display: none;">I forgot my password</a><br>
-        <?= Html::a("Register a new membership", ["site/register"], ["class"=>"text-center"]) ?>
+        <?= ''//Html::a("Register a new membership", ["site/register"], ["class"=>"text-center"]) ?>
 
     </div>
     <!-- /.login-box-body -->

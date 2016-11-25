@@ -10,8 +10,8 @@ return [
     'STATUS_CHECK_SMILE' => 'CHECK SMILE',
     'STATUS_CHECK1' => 'FINAL CHECK',
 	'STATUS_WAITING_APP' => 'WAITING APPROVAL',
-	'STATUS_CHECKIN' => 'CHECKIN',
-    'STATUS_CHECKOUT' => 'CHECKOUT',
+	'STATUS_CHECKIN' => 'CHECK IN',
+    'STATUS_CHECKOUT' => 'CHECK OUT',
 	'STATUS_REJECT' => 'REJECTED',
 	'STATUS_APPROVED' => 'APPROVED',
 		
@@ -22,5 +22,5 @@ return [
 		'roleid_admin2' => 6,
 		'roleid_checker' => 7,
 		'roleid_approval' => 8,
-		'roleid_rejector' => array(5, 6, 7, 8),
+		'roleid_rejector' => [5, 6, 7, 8],
 ];

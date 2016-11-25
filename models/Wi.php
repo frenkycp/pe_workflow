@@ -14,14 +14,18 @@ class Wi extends BaseWi
 	public $uploadFile;
 	
 	public static $_STATUS_OPEN = 'OPEN';
-	public static $_STATUS_CLOSE = 'CLOSE';
+	public static $_STATUS_CHECKOUT = 'CHECK OUT';
+	public static $_STATUS_CHECKIN = 'CHECK IN';
 	public static $_STATUS_CHECK_MASTERLIST = 'CHECK MASTERLIST';
+	public static $_STATUS_CHECK_MASTERLIST_OK = 'CHECK MASTERLIST OK';
 	public static $_STATUS_CHECK_SMILE = 'CHECK SMILE';
+	public static $_STATUS_CHECK_SMILE_OK = 'CHECK SMILE OK';
 	public static $_STATUS_CHECK_FINAL = 'FINAL CHECK';
+	public static $_STATUS_CHECK_FINAL_OK = 'FINAL CHECK OK';
 	public static $_STATUS_WAITING_APPR = 'WAITING APPROVAL';
-	public static $_STATUS_CHECKOUT = 'CHECKOUT';
-	public static $_STATUS_CHECKIN = 'CHECKIN';
 	public static $_STATUS_APPROVE = 'APPROVED';
+	public static $_STATUS_WAITING_DIST = 'WAITING DISTRIBUTION';
+	public static $_STATUS_CLOSE = 'CLOSE';
 	public static $_STATUS_REJECT = 'REJECTED';
 	
 	public function attributeLabels()
@@ -43,15 +47,17 @@ class Wi extends BaseWi
             'wi_file2' => 'Wi File2',
         	'wi_filename3' => 'Wi Filename3',
         	'wi_file3' => 'Wi File3',
-        	'wi_remark' => 'Remark',	
+        	'wi_remark' => 'Remark',
+        		'wi_dcn' => 'DCN',
         ];
     }
     
     public function rules()
     {
     	return [
-    			[['uploadFile'], 'file', 'checkExtensionByMimeType' => \Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? true : false, 'extensions' => 'xls, xlsx, pdf'],
-    			[['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark'], 'string'],
+    			//[['uploadFile'], 'file', 'checkExtensionByMimeType' => \Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? true : false, 'extensions' => 'xls, xlsx, pdf'],
+    			[['uploadFile'], 'file', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => true, 'extensions' => 'xls, xlsx, pdf'],
+    			[['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'string'],
     			[['wi_model'], 'string', 'max' => 200],
     			[['wi_section', 'wi_docno', 'wi_stagestat', 'wi_status', 'wi_issue'], 'string', 'max' => 50],
     			[['wi_title', 'wi_maker'], 'string', 'max' => 100],
@@ -67,6 +73,11 @@ class Wi extends BaseWi
     	} else {
     		return false;
     	}
+    }
+    
+    public static function getUploadPath()
+    {
+    	return \Yii::getAlias('@webroot') . '/../../workflow/files/wi/';
     }
 	
 	public static function getDb() {

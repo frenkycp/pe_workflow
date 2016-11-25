@@ -45,6 +45,14 @@ use yii\widgets\ActiveForm;
 
 		<?php // echo $form->field($model, 'wi_file2') ?>
 
+		<?php // echo $form->field($model, 'wi_filename3') ?>
+
+		<?php // echo $form->field($model, 'wi_file3') ?>
+
+		<?php // echo $form->field($model, 'wi_remark') ?>
+
+		<?php // echo $form->field($model, 'wi_dcn') ?>
+
 		<div class="form-group">
 			<?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
 			<?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>

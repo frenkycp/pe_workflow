@@ -6,17 +6,20 @@ use yii\bootstrap\Widget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\Menu;
+use app\models\Wi;
 
 class SidebarMenu extends Widget
 {
     public static function getMenu($roleId, $parentId=NULL){
         $output = [];
-        foreach(Menu::find()->where(["parent_id"=>$parentId])->all() as $menu){
+        foreach(Menu::find()->where(["parent_id"=>$parentId])->orderBy('order')->all() as $menu){
             $obj = [
                 "label" => $menu->name,
                 "icon" => $menu->icon,
                 "url" => SidebarMenu::getUrl($menu),
                 "visible" => SidebarMenu::roleHasAccess($roleId, $menu->id),
+            	"controller" => \Yii::$app->controller->id,
+            	"total-jobs" => SidebarMenu::getJobCount(\Yii::$app->user->identity->role_id),
             ];
 
             if(count($menu->menus) != 0){
@@ -26,6 +29,17 @@ class SidebarMenu extends Widget
             $output[] = $obj;
         }
         return $output;
+    }
+    
+    private static function getJobCount($roleid)
+    {
+    	if($roleid == \Yii::$app->params['roleid_wimaker'])
+    	{
+    		return 0;
+    	}else if($roleid == \Yii::$app->params['roleid_admin1'])
+    	{
+    		return Wi::find()->where(['wi_status' => wi::$_STATUS_CHECK_MASTERLIST])->count();
+    	}
     }
 
     private static function roleHasAccess($roleId, $menuId){

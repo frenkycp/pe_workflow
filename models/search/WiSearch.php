@@ -22,7 +22,7 @@ public function rules()
 {
 return [
 [['wi_id'], 'integer'],
-		[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_status', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark'], 'safe'],
+	[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_status', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'safe'],
 ];
 }
 
@@ -53,13 +53,17 @@ $query = Wi::find();
 	{
 		$query = Wi::find()->where(['wi_status' => 'CLOSE']);
 	}
+	else if ($params['index_type'] == 'wi_maker')
+	{
+		$query = Wi::find()->where(['OR', ['wi_status' => Wi::$_STATUS_CHECKOUT], ['wi_status' => Wi::$_STATUS_CHECKIN]]);
+	}
 	else if ($params['index_type'] == 'checkout')
 	{
-		$query = Wi::find()->where(['LIKE', 'wi_status', Wi::$_STATUS_CHECKOUT]);
+		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECKOUT]);
 	}
 	else if ($params['index_type'] == 'checkin')
 	{
-		$query = Wi::find()->where(['LIKE', 'wi_status', Wi::$_STATUS_CHECKIN]);
+		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECKIN]);
 	}
 	else if ($params['index_type'] == 'check_masterlist')
 	{
@@ -77,16 +81,19 @@ $query = Wi::find();
 	{
 		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_WAITING_APPR]);
 	}
-	else if ($params['index_type'] == 'my_job')
+	else if ($params['index_type'] == 'waiting_dist')
+	{
+		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_WAITING_DIST]);
+	}
+	if (\Yii::$app->controller->id == 'my-job')
 	{
 		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_wimaker'])
 		{
-			$query = Wi::find()->where(['OR', ['wi_status' => 'CHECKOUT BY ' . \Yii::$app->user->identity->name], 
-					['AND', ['wi_maker' => \Yii::$app->user->identity->name], ['wi_status' => Wi::$_STATUS_REJECT]]]);
+			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECKOUT, 'wi_maker' => \Yii::$app->user->identity->name]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin1'])
 		{
-			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_MASTERLIST]);
+			$query = Wi::find()->where(['or', ['wi_status' => Wi::$_STATUS_CHECK_MASTERLIST], ['wi_status' => Wi::$_STATUS_WAITING_DIST]]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin2'])
 		{
@@ -99,6 +106,29 @@ $query = Wi::find();
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_approval'])
 		{
 			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_WAITING_APPR]);
+		}
+	}
+	if (\Yii::$app->controller->id == 'available-jobs')
+	{
+		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_wimaker'])
+		{
+			$query = Wi::find()->where(['or', ['wi_status' => Wi::$_STATUS_OPEN], ['wi_status' => Wi::$_STATUS_REJECT]]);
+		}
+		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin1'])
+		{
+			$query = Wi::find()->where(['or', ['wi_status' => Wi::$_STATUS_CHECKIN], ['wi_status' => Wi::$_STATUS_WAITING_APPR]]);
+		}
+		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin2'])
+		{
+			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_MASTERLIST]);
+		}
+		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_checker'])
+		{
+			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_SMILE]);
+		}
+		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_approval'])
+		{
+			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_FINAL]);
 		}
 	}
 	$query->orderBy(['wi_issue' => SORT_DESC]);
@@ -131,6 +161,7 @@ return $dataProvider;
 
 $query->andFilterWhere([
             'wi_id' => $this->wi_id,
+			'wi_issue' => $this->wi_issue,
         ]);
 
         $query->andFilterWhere(['like', 'wi_model', $this->wi_model])
@@ -139,13 +170,16 @@ $query->andFilterWhere([
             ->andFilterWhere(['like', 'wi_title', $this->wi_title])
             ->andFilterWhere(['like', 'wi_stagestat', $this->wi_stagestat])
             ->andFilterWhere(['like', 'wi_status', $this->wi_status])
-            ->andFilterWhere(['like', 'wi_issue', $this->wi_issue])
             ->andFilterWhere(['like', 'wi_rev', $this->wi_rev])
             ->andFilterWhere(['like', 'wi_maker', $this->wi_maker])
             ->andFilterWhere(['like', 'wi_filename', $this->wi_filename])
             ->andFilterWhere(['like', 'wi_file', $this->wi_file])
             ->andFilterWhere(['like', 'wi_filename2', $this->wi_filename2])
-            ->andFilterWhere(['like', 'wi_file2', $this->wi_file2]);
+            ->andFilterWhere(['like', 'wi_file2', $this->wi_file2])
+            ->andFilterWhere(['like', 'wi_filename3', $this->wi_filename3])
+            ->andFilterWhere(['like', 'wi_file3', $this->wi_file3])
+            ->andFilterWhere(['like', 'wi_remark', $this->wi_remark])
+            ->andFilterWhere(['like', 'wi_dcn', $this->wi_dcn]);
 
 return $dataProvider;
 }

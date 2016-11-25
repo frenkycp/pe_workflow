@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2016 at 03:48 AM
+-- Generation Time: Nov 25, 2016 at 09:24 AM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -95,7 +95,34 @@ INSERT INTO `action` (`id`, `controller_id`, `action_id`, `name`) VALUES
 (66, 'wi', 'checkout', 'Checkout'),
 (67, 'wi', 'my-job', 'My Job'),
 (68, 'wi', 'wi-open', 'Wi Open'),
-(69, 'wi', 'check-masterlist', 'Check Masterlist');
+(69, 'wi', 'check-masterlist', 'Check Masterlist'),
+(70, 'wi', 'checkin', 'Checkin'),
+(71, 'wi', 'check-smile', 'Check Smile'),
+(72, 'wi', 'final-check', 'Final Check'),
+(73, 'wi', 'waiting-appr', 'Waiting Appr'),
+(74, 'wi', 'waiting-approval', 'Waiting Approval'),
+(75, 'wi', 'reject', 'Reject'),
+(76, 'wi', 'approval', 'Approval'),
+(77, 'wi', 'download', 'Download'),
+(78, 'wi', 'takejob', 'Takejob'),
+(79, 'wi', 'waiting-dist', 'Waiting Dist'),
+(80, 'wi', 'closing-wi', 'Closing Wi'),
+(81, 'wi', 'available-jobs', 'Available Jobs'),
+(82, 'my-job', 'index', 'Index'),
+(83, 'available-jobs', 'index', 'Index'),
+(84, 'my-job', 'view', 'View'),
+(85, 'available-jobs', 'view', 'View'),
+(86, 'my-job', 'download', 'Download'),
+(87, 'my-job', 'checkin', 'Checkin'),
+(88, 'available-jobs', 'checkout', 'Checkout'),
+(89, 'my-job', 'reject', 'Reject'),
+(90, 'my-job', 'closing-wi', 'Closing Wi'),
+(91, 'available-jobs', 'check-masterlist', 'Check Masterlist'),
+(92, 'available-jobs', 'check-smile', 'Check Smile'),
+(93, 'available-jobs', 'final-check', 'Final Check'),
+(94, 'available-jobs', 'waiting-approval', 'Waiting Approval'),
+(95, 'available-jobs', 'waiting-dist', 'Waiting Dist'),
+(96, 'available-jobs', 'waiting-distribution', 'Waiting Distribution');
 
 -- --------------------------------------------------------
 
@@ -210,14 +237,14 @@ INSERT INTO `menu` (`id`, `name`, `controller`, `action`, `icon`, `order`, `pare
 (3, 'Menu', 'menu', 'index', 'fa fa-circle-o', 3, 2),
 (4, 'Role', 'role', 'index', 'fa fa-circle-o', 4, 2),
 (5, 'User', 'user', 'index', 'fa fa-circle-o', 5, 2),
-(6, 'DCN', 'dcn', 'index', 'fa fa-circle-o', 6, 2),
 (7, 'Masterlist', 'wi-masterlist', 'index', 'fa fa-file', 2, NULL),
 (8, 'Document Section', 'doc-section', 'index', 'fa fa-circle-o', 3, 2),
 (9, 'Document Type', 'doc-type', 'index', 'fa fa-circle-o', 4, 2),
 (10, 'Document Class', 'doc-class', 'index', 'fa fa-circle-o', 5, 2),
 (11, 'WI List', 'wi', 'index', 'fa fa-dot-circle-o', 7, 14),
-(13, 'My Job', 'wi', 'index?index_type=my_job', 'fa fa-tasks', 9, 14),
-(14, 'Work Instruction', '', 'index', 'fa fa-file-archive-o', 12, NULL);
+(13, 'My Job', 'my-job', 'index', 'fa fa-tags', 13, 14),
+(14, 'Work Instruction', '', 'index', 'fa fa-file-archive-o', 12, NULL),
+(15, 'Available Jobs', 'available-jobs', 'index', 'fa fa-tasks', 8, 14);
 
 -- --------------------------------------------------------
 
@@ -303,27 +330,6 @@ INSERT INTO `role_action` (`id`, `role_id`, `action_id`) VALUES
 (469, 2, 41),
 (470, 2, 42),
 (471, 2, 43),
-(581, 6, 61),
-(582, 6, 62),
-(583, 7, 61),
-(584, 7, 62),
-(585, 8, 61),
-(586, 8, 62),
-(888, 4, 12),
-(889, 4, 13),
-(890, 4, 34),
-(891, 4, 14),
-(892, 4, 15),
-(893, 4, 16),
-(894, 4, 17),
-(895, 4, 40),
-(896, 4, 41),
-(897, 4, 61),
-(898, 4, 62),
-(899, 4, 66),
-(900, 4, 61),
-(901, 4, 62),
-(902, 4, 66),
 (903, 1, 12),
 (904, 1, 13),
 (905, 1, 14),
@@ -375,22 +381,131 @@ INSERT INTO `role_action` (`id`, `role_id`, `action_id`) VALUES
 (951, 1, 63),
 (952, 1, 64),
 (953, 1, 65),
-(982, 5, 12),
-(983, 5, 13),
-(984, 5, 14),
-(985, 5, 15),
-(986, 5, 40),
-(987, 5, 41),
-(988, 5, 42),
-(989, 5, 43),
-(990, 5, 44),
-(991, 5, 60),
-(992, 5, 61),
-(993, 5, 62),
-(994, 5, 69),
-(995, 5, 61),
-(996, 5, 62),
-(997, 5, 69);
+(1696, 4, 12),
+(1697, 4, 13),
+(1698, 4, 34),
+(1699, 4, 14),
+(1700, 4, 15),
+(1701, 4, 16),
+(1702, 4, 17),
+(1703, 4, 40),
+(1704, 4, 41),
+(1705, 4, 61),
+(1706, 4, 62),
+(1707, 4, 82),
+(1708, 4, 84),
+(1709, 4, 86),
+(1710, 4, 87),
+(1711, 4, 83),
+(1712, 4, 85),
+(1713, 4, 88),
+(1737, 6, 12),
+(1738, 6, 13),
+(1739, 6, 34),
+(1740, 6, 14),
+(1741, 6, 15),
+(1742, 6, 18),
+(1743, 6, 19),
+(1744, 6, 20),
+(1745, 6, 21),
+(1746, 6, 22),
+(1747, 6, 23),
+(1748, 6, 24),
+(1749, 6, 25),
+(1750, 6, 26),
+(1751, 6, 27),
+(1752, 6, 28),
+(1753, 6, 29),
+(1754, 6, 30),
+(1755, 6, 31),
+(1756, 6, 32),
+(1757, 6, 33),
+(1758, 6, 45),
+(1759, 6, 46),
+(1760, 6, 47),
+(1761, 6, 48),
+(1762, 6, 49),
+(1763, 6, 50),
+(1764, 6, 51),
+(1765, 6, 52),
+(1766, 6, 53),
+(1767, 6, 54),
+(1768, 6, 55),
+(1769, 6, 56),
+(1770, 6, 57),
+(1771, 6, 58),
+(1772, 6, 59),
+(1773, 6, 40),
+(1774, 6, 41),
+(1775, 6, 42),
+(1776, 6, 43),
+(1777, 6, 44),
+(1778, 6, 60),
+(1779, 6, 61),
+(1780, 6, 62),
+(1781, 6, 63),
+(1782, 6, 64),
+(1783, 6, 65),
+(1784, 6, 82),
+(1785, 6, 84),
+(1786, 6, 86),
+(1787, 6, 89),
+(1788, 6, 83),
+(1789, 6, 85),
+(1790, 6, 92),
+(1791, 7, 12),
+(1792, 7, 13),
+(1793, 7, 34),
+(1794, 7, 14),
+(1795, 7, 15),
+(1796, 7, 61),
+(1797, 7, 62),
+(1798, 7, 82),
+(1799, 7, 84),
+(1800, 7, 86),
+(1801, 7, 89),
+(1802, 7, 83),
+(1803, 7, 85),
+(1804, 7, 93),
+(1852, 8, 12),
+(1853, 8, 13),
+(1854, 8, 34),
+(1855, 8, 14),
+(1856, 8, 15),
+(1857, 8, 61),
+(1858, 8, 62),
+(1859, 8, 82),
+(1860, 8, 84),
+(1861, 8, 86),
+(1862, 8, 89),
+(1863, 8, 83),
+(1864, 8, 85),
+(1865, 8, 94),
+(1866, 5, 12),
+(1867, 5, 13),
+(1868, 5, 14),
+(1869, 5, 15),
+(1870, 5, 29),
+(1871, 5, 30),
+(1872, 5, 31),
+(1873, 5, 32),
+(1874, 5, 40),
+(1875, 5, 41),
+(1876, 5, 42),
+(1877, 5, 43),
+(1878, 5, 44),
+(1879, 5, 60),
+(1880, 5, 61),
+(1881, 5, 62),
+(1882, 5, 82),
+(1883, 5, 84),
+(1884, 5, 86),
+(1885, 5, 89),
+(1886, 5, 90),
+(1887, 5, 83),
+(1888, 5, 85),
+(1889, 5, 91),
+(1890, 5, 96);
 
 -- --------------------------------------------------------
 
@@ -417,10 +532,6 @@ INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (151, 2, 9),
 (152, 2, 10),
 (153, 2, 7),
-(247, 4, 1),
-(248, 4, 14),
-(249, 4, 11),
-(250, 4, 13),
 (251, 1, 1),
 (252, 1, 2),
 (253, 1, 3),
@@ -432,11 +543,42 @@ INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (259, 1, 7),
 (260, 1, 14),
 (261, 1, 11),
-(272, 5, 1),
-(273, 5, 7),
-(274, 5, 14),
-(275, 5, 11),
-(276, 5, 13);
+(459, 4, 1),
+(460, 4, 14),
+(461, 4, 11),
+(462, 4, 13),
+(463, 4, 15),
+(472, 6, 1),
+(473, 6, 2),
+(474, 6, 3),
+(475, 6, 4),
+(476, 6, 5),
+(477, 6, 8),
+(478, 6, 9),
+(479, 6, 10),
+(480, 6, 7),
+(481, 6, 14),
+(482, 6, 11),
+(483, 6, 13),
+(484, 6, 15),
+(485, 7, 1),
+(486, 7, 14),
+(487, 7, 11),
+(488, 7, 13),
+(489, 7, 15),
+(506, 8, 1),
+(507, 8, 14),
+(508, 8, 11),
+(509, 8, 13),
+(510, 8, 15),
+(511, 5, 1),
+(512, 5, 2),
+(513, 5, 5),
+(514, 5, 7),
+(515, 5, 14),
+(516, 5, 11),
+(517, 5, 13),
+(518, 5, 15);
 
 -- --------------------------------------------------------
 
@@ -460,14 +602,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `name`, `role_id`, `photo_url`, `last_login`, `last_logout`) VALUES
-(1, 'admin', '773c17687a43dc8f52be7ab42fa27d21', 'Administrator', 1, 'ID6jM8Az7Yh_R6LR44Ezh02VECKTQ_Ya.png', '2016-11-14 08:36:33', '2016-06-01 08:54:29'),
+(1, 'admin', '773c17687a43dc8f52be7ab42fa27d21', 'Administrator', 1, 'ID6jM8Az7Yh_R6LR44Ezh02VECKTQ_Ya.png', '2016-11-25 15:22:41', '2016-11-25 11:43:25'),
 (2, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', 'Regular User', 3, 'default.png', NULL, NULL),
 (3, 'aaa', '47bce5c74f589f4867dbd57e9ca9f808', 'Frenky', 3, NULL, '2016-05-27 08:17:16', '2016-05-27 08:18:49'),
-(4, 'ivan', '2c42e5cf1cdbafea04ed267018ef1511', 'Ivan', 3, NULL, '2016-06-01 08:54:54', '2016-06-01 14:01:18'),
-(5, 'firman', '370239f5667b0b597e5ef2740135be34', 'FIRMAN', 4, 'default.png', '2016-11-11 13:30:32', '2016-11-11 15:25:37'),
-(6, 'ade', 'b8fcb497c479192c260a5c30e9c09a82', 'ADE', 4, 'default.png', '2016-10-08 14:27:08', NULL),
+(4, 'ivan', '2c42e5cf1cdbafea04ed267018ef1511', 'Ivan', 3, NULL, '2016-11-23 11:59:04', '2016-11-23 15:58:48'),
+(5, 'firman', '370239f5667b0b597e5ef2740135be34', 'FIRMAN', 4, 'default.png', '2016-11-24 16:04:25', '2016-11-24 14:24:06'),
+(6, 'ade', 'b8fcb497c479192c260a5c30e9c09a82', 'ADE', 4, 'default.png', '2016-11-25 08:57:55', '2016-11-25 09:06:46'),
 (7, 'divky', 'eb690717f8ee9003e8e7c7c7ade9efdb', 'DIVKY', 4, 'default.png', NULL, NULL),
-(8, 'joe', 'aa241b37d4ece8a1f30b620ca98725f2', 'JOE', 5, 'default.png', '2016-11-11 15:25:44', '2016-05-31 10:06:26'),
+(8, 'joe', 'aa241b37d4ece8a1f30b620ca98725f2', 'JOE', 5, 'default.png', '2016-11-25 11:45:55', '2016-11-25 11:07:59'),
 (9, 'billy', '89c246298be2b6113fb10ba80f3c6956', 'BILLY', 4, 'default.png', NULL, NULL),
 (10, 'anggi', '4a283e1f5eb8628c8631718fe87f5917', 'ANGGI', 4, 'default.png', '2016-09-05 14:32:51', '2016-06-01 08:51:09'),
 (11, 'erwin', '785f0b13d4daf8eee0d11195f58302a4', 'ERWIN', 4, 'default.png', NULL, NULL),
@@ -483,10 +625,10 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role_id`, `photo_url`
 (21, 'dani', '55b7e8b895d047537e672250dd781555', 'DANI', 4, 'default.png', NULL, NULL),
 (22, 'fikri', '5d4864249b21de08642aa6ff4178b346', 'FIKRI', 4, 'default.png', NULL, NULL),
 (23, 'mukhlis', '34cefd67a188a767177bad81e72bc2b2', 'MUKHLIS', 4, 'default.png', NULL, NULL),
-(24, 'satriya', '35d28afc4fee06e82cc2c6d25773f4c3', 'SATRIYA', 7, 'default.png', NULL, NULL),
+(24, 'satriya', '35d28afc4fee06e82cc2c6d25773f4c3', 'SATRIYA', 7, 'default.png', '2016-11-25 11:38:16', '2016-11-25 11:41:43'),
 (25, 'susanto', '8941a2794fea91e669863bea9fd708f3', 'SUSANTO', 4, 'default.png', NULL, NULL),
-(26, 'frenky', '7e8138d4518075d82c23e27a93a17151', 'FRENKY', 6, 'default.png', NULL, NULL),
-(27, 'zamroni', 'b245b79912e5f98b478f47804eb40af1', 'ZAMRONI', 8, 'default.png', NULL, NULL);
+(26, 'frenky', '7e8138d4518075d82c23e27a93a17151', 'FRENKY', 6, 'default.png', '2016-11-25 11:09:46', '2016-11-25 11:39:54'),
+(27, 'zamroni', 'a078479c3d251b9f229c801dfe5363cc', 'ZAMRONI', 8, 'default.png', '2016-11-25 11:43:32', '2016-11-25 11:45:49');
 
 -- --------------------------------------------------------
 
@@ -1264,29 +1406,6 @@ INSERT INTO `wi_masterlist` (`masterlist_id`, `doc_no`, `doc_title`, `doc_class`
 (275, 'A0016', 'PCB MAIN AXIAL', 7, 'NS-SW050', 3, 3, 17, NULL, '2016-09-30 10:47:33', '2016-09-30 10:47:33', 8, 1),
 (276, 'A0017', 'PCB MAIN AXIAL', 7, 'NS-SW100', 3, 3, 17, NULL, '2016-09-30 10:48:01', '2016-09-30 10:48:01', 8, 1);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `wi_status`
---
-
-CREATE TABLE `wi_status` (
-  `id` int(11) NOT NULL,
-  `status_name` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `wi_status`
---
-
-INSERT INTO `wi_status` (`id`, `status_name`) VALUES
-(1, 'OPEN'),
-(2, 'CLOSE'),
-(3, 'DOCUMENT CHECK'),
-(4, 'SMILE CHECK'),
-(5, 'DETAIL CHECK'),
-(6, 'WAITING APPROVAL');
-
 --
 -- Indexes for dumped tables
 --
@@ -1384,12 +1503,6 @@ ALTER TABLE `wi_masterlist`
   ADD KEY `doc_type` (`doc_type`);
 
 --
--- Indexes for table `wi_status`
---
-ALTER TABLE `wi_status`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1397,7 +1510,7 @@ ALTER TABLE `wi_status`
 -- AUTO_INCREMENT for table `action`
 --
 ALTER TABLE `action`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 --
 -- AUTO_INCREMENT for table `doc_class`
 --
@@ -1422,7 +1535,7 @@ ALTER TABLE `doc_type`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `role`
 --
@@ -1432,12 +1545,12 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `role_action`
 --
 ALTER TABLE `role_action`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=998;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1891;
 --
 -- AUTO_INCREMENT for table `role_menu`
 --
 ALTER TABLE `role_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=277;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=519;
 --
 -- AUTO_INCREMENT for table `user`
 --
@@ -1453,11 +1566,6 @@ ALTER TABLE `wi`
 --
 ALTER TABLE `wi_masterlist`
   MODIFY `masterlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=277;
---
--- AUTO_INCREMENT for table `wi_status`
---
-ALTER TABLE `wi_status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- Constraints for dumped tables
 --

@@ -24,6 +24,7 @@ use Yii;
  * @property string $wi_filename3
  * @property string $wi_file3
  * @property string $wi_remark
+ * @property string $wi_dcn
  */
 class Wi extends \yii\db\ActiveRecord
 {
@@ -44,9 +45,10 @@ class Wi extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark'], 'string'],
+            [['wi_issue'], 'safe'],
+            [['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'string'],
             [['wi_model'], 'string', 'max' => 200],
-            [['wi_section', 'wi_docno', 'wi_stagestat', 'wi_status', 'wi_issue'], 'string', 'max' => 50],
+            [['wi_section', 'wi_docno', 'wi_stagestat', 'wi_status'], 'string', 'max' => 50],
             [['wi_title', 'wi_maker'], 'string', 'max' => 100],
             [['wi_rev'], 'string', 'max' => 5]
         ];
@@ -75,7 +77,11 @@ class Wi extends \yii\db\ActiveRecord
             'wi_filename3' => 'Wi Filename3',
             'wi_file3' => 'Wi File3',
             'wi_remark' => 'Wi Remark',
+            'wi_dcn' => 'Wi Dcn',
         ];
     }
+
+
+
 
 }
