@@ -54,6 +54,18 @@ class Wi extends BaseWi
     
     public function rules()
     {
+    	if(\Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'])
+    	{
+    		return [
+    				//[['uploadFile'], 'file', 'checkExtensionByMimeType' => \Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? true : false, 'extensions' => 'xls, xlsx, pdf'],
+    				[['uploadFile'], 'file', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => false, 'extensions' => 'xls, xlsx, pdf'],
+    				[['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'string'],
+    				[['wi_model'], 'string', 'max' => 200],
+    				[['wi_section', 'wi_docno', 'wi_stagestat', 'wi_status', 'wi_issue'], 'string', 'max' => 50],
+    				[['wi_title', 'wi_maker'], 'string', 'max' => 100],
+    				[['wi_rev'], 'string', 'max' => 5]
+    		];
+    	}
     	return [
     			//[['uploadFile'], 'file', 'checkExtensionByMimeType' => \Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? true : false, 'extensions' => 'xls, xlsx, pdf'],
     			[['uploadFile'], 'file', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => true, 'extensions' => 'xls, xlsx, pdf'],

@@ -62,6 +62,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     			wi::$_STATUS_CHECKIN, wi::$_STATUS_CHECKOUT, wi::$_STATUS_CLOSE, wi::$_STATUS_OPEN, wi::$_STATUS_REJECT,
                     			wi::$_STATUS_WAITING_APPR, Wi::$_STATUS_WAITING_DIST
                     	];
+                    	
+                    	if(in_array(\Yii::$app->user->identity->role_id, [1, 2]))
+                    	{
+                    		$template = '{view} {update} {delete}';
+                    	}else{
+                    		if(Yii::$app->controller->id == 'wi')
+                    		{
+                    			$template = '{view}';
+                    		}else{
+                    			$template = '{view} {checkout} {checkin} {check_masterlist} {check_smile} {final_check} {waiting_app} {waiting_dist} {close_wi} {reject} {download}';
+                    		}
+                    	}
                     /*
 						if(isset($_GET['index_type']))
 						{
@@ -134,11 +146,10 @@ $this->params['breadcrumbs'][] = $this->title;
 		[
             'class' => 'yii\grid\ActionColumn',
 			'header'=>'Actions',
-			'template' => \Yii::$app->user->identity->role->id == 1 ? '{view} {update} {delete}' : Yii::$app->controller->id == 'wi' ? '{view}' : '{view} {checkout} {checkin} 
-			{check_masterlist} {check_smile} {final_check} {waiting_app} {waiting_dist} {close_wi} {reject} {download}',
+			'template' => $template,
 			'buttons'=>[
 				'checkout' => function ($url, $model, $key) {
-					return ($model->wi_status == "OPEN" || $model->wi_status == "REJECTED") && (Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker']) ? Html::a('<span class="glyphicon glyphicon-cloud-download" style="padding-left: 5px;"></span>', ['checkout', 'id'=>$model->wi_id], ['title'=>'Checkout']) : "";
+					return in_array($model->wi_status, ['OPEN', 'CLOSE', Wi::$_STATUS_REJECT]) && (Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker']) ? Html::a('<span class="glyphicon glyphicon-cloud-download" style="padding-left: 5px;"></span>', ['checkout', 'id'=>$model->wi_id], ['title'=>'Checkout']) : "";
 				},
 				'checkin' => function ($url, $model, $key) {
 					return ($model->wi_status == Wi::$_STATUS_CHECKOUT && $model->wi_maker == Yii::$app->user->identity->name) ? Html::a('<span class="glyphicon glyphicon-cloud-upload" style="padding-left: 5px;"></span>', ['checkin', 'id'=>$model->wi_id], ['title'=>'Checkin']) : "";
@@ -198,8 +209,19 @@ $this->params['breadcrumbs'][] = $this->title;
 			'wi_docno',
 			'wi_title',
 			//'wi_stagestat',
-			'wi_status',
-			'wi_issue',
+			//'wi_status',
+			[
+					'attribute' => 'wi_status',
+					'value' => 'wi_status',
+					'hAlign' => 'center',
+					'filterType' => GridView::FILTER_TYPEAHEAD,
+					'filterWidgetOptions' => [
+							'pluginOptions' => ['highlight' => true],
+							'dataset' => [['local' => $wiStatusArr]],
+							//'dataset' => [['local' => ['OPEN','OPEN']]],
+            		]
+            ],
+            'wi_issue',
 			'wi_rev',
 			'wi_maker',
 			'wi_dcn:ntext',

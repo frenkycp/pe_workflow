@@ -112,7 +112,7 @@ $query = Wi::find();
 	{
 		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_wimaker'])
 		{
-			$query = Wi::find()->where(['or', ['wi_status' => Wi::$_STATUS_OPEN], ['wi_status' => Wi::$_STATUS_REJECT]]);
+			$query = Wi::find()->where(['wi_status' => ['OPEN', 'CLOSE', Wi::$_STATUS_REJECT]]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin1'])
 		{
