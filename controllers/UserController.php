@@ -77,6 +77,7 @@ class UserController extends Controller
 		try {
             if ($model->load($_POST) ) {
                 $model->password = md5($model->password);
+                $model->name = strtoupper($model->name);
 
                 $image = UploadedFile::getInstance($model, 'photo_url');
                 if ($image != NULL) {
@@ -123,6 +124,7 @@ class UserController extends Controller
 
         if ($model->load($_POST)){
             //password
+        	$model->name = strtoupper($model->name);
             if($model->password != ""){
                 $model->password = md5($model->password);
             }else{
