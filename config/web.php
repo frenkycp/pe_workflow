@@ -19,6 +19,9 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
+    		'session' => [
+    				'name' => 'basic-yemipe'
+    		],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
