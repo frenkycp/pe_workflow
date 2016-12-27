@@ -17,7 +17,7 @@ use kartik\widgets\Select2;
 <div class="panel panel-default">
     <div class="panel-heading">
         <h2>
-                <?= $model->masterlist_id ?>        </h2>
+                <?= $model->doc_no ?>        </h2>
     </div>
 
     <div class="panel-body">

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2016 at 09:23 AM
+-- Generation Time: Dec 27, 2016 at 10:06 AM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -11608,11 +11608,11 @@ INSERT INTO `wi` (`wi_id`, `wi_model`, `wi_section`, `wi_docno`, `wi_title`, `wi
 (246, 'NS-BP101', 'FA', 'NS-BP101SR/WI/SAA', 'ACCESSORIES ASSY', 'MP', 'CLOSE', '2016-08-22', '4', 'DIVKY', 'NS-BP101SR SAA R.4.xls', './files/wi/NS-BP101SR SAA R.4.xls', '', './files/wi/', NULL, NULL, NULL, NULL),
 (247, 'NS-BP182', 'FA', 'NS-BP182SR/WI/SAA', 'ACCESSORIES ASSY', 'MP', 'CLOSE', '2016-07-02', '2', 'DIVKY', 'NS-BP182-WI-SAA Rev 02.xls', './files/wi/NS-BP182-WI-SAA Rev 02.xls', '', './files/wi/', NULL, NULL, NULL, NULL),
 (248, 'NS-BP200', 'FA', 'NS-BP200SR/WI/PA', 'PACKAGE ASSY', 'MP', 'CLOSE', '2016-06-29', '9', 'WILDAN', 'NS-BP200-WI-PA-Rev. 9 -.xls', './files/wi/NS-BP200-WI-PA-Rev. 9 -.xls', '', './files/wi/', NULL, NULL, NULL, NULL),
-(249, 'VXS1ML', 'FA', 'F0082', 'PACKAGE ASSY', 'MP', 'WAITING DISTRIBUTION', '0000-00-00', '1', 'ADE', 'NX-N500 WI PA REV 12.xlsx', './files/wi/NX-N500 WI PA REV 12.xlsx', '', '', NULL, NULL, NULL, '6226518'),
+(249, 'VXS1ML', 'FA', 'F0082', 'PACKAGE ASSY', 'MP', 'CLOSE', '2016-11-25', '1', 'ADE', 'NX-N500 WI PA REV 12.xlsx', './files/wi/NX-N500 WI PA REV 12.xlsx', '', '', NULL, NULL, NULL, '6226518'),
 (250, 'VXS1ML', 'FA', 'F0083', 'SPEAKER FINAL ASSY', 'TP', 'OPEN', '0000-00-00', '0', 'WILDAN', '', '', '', '', NULL, NULL, NULL, NULL),
 (251, 'VXS1ML', 'FA', 'F0084', 'SUB ASSY', 'TP', 'OPEN', '0000-00-00', '0', 'ADE', '', '', '', '', NULL, NULL, NULL, NULL),
 (252, 'VXS3S', 'FA', 'F0085', 'PACKAGE ASSY', 'TP', 'OPEN', '0000-00-00', '0', 'FIRMAN', '', '', '', '', NULL, NULL, NULL, NULL),
-(253, 'VXS3S', 'FA', 'F0086', 'SPEAKER FINAL ASSY', 'TP', 'OPEN', '0000-00-00', '0', 'ADE', '', '', '', '', NULL, NULL, NULL, NULL),
+(253, 'VXS3S', 'FA', 'F0086', 'SPEAKER FINAL ASSY', 'TP', 'CLOSE', '2016-11-28', '1', 'ADE', 'NS-WSW41 WI FA R.03.xlsx', './files/wi/NS-WSW41 WI FA R.03.xlsx', '', '', NULL, NULL, NULL, '6225518, 6226564'),
 (254, 'VXS3S', 'FA', 'F0087', 'ACCESSORIES ASSY', 'TP', 'OPEN', '0000-00-00', '0', 'WILDAN', '', '', '', '', NULL, NULL, NULL, NULL),
 (255, 'CMA1M', 'FA', 'F0088', 'PACKAGE ASSY', 'TP', 'OPEN', '0000-00-00', '0', 'DIVKY', '', '', '', '', NULL, NULL, NULL, NULL),
 (256, 'CMA1M', 'FA', 'F0089', 'FINAL ASSY', 'TP', 'CHECK OUT', NULL, '0', 'FIRMAN', '', '', '', '', NULL, NULL, NULL, NULL),
@@ -11834,6 +11834,52 @@ INSERT INTO `wi` (`wi_id`, `wi_model`, `wi_section`, `wi_docno`, `wi_title`, `wi
 (487, 'VXS3SB, VXS3SW', NULL, 'M0067', 'MANUAL INSERTION PCB EBMW & EBNWRS', NULL, 'OPEN', '0000-00-00', '-', 'EKO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (488, 'QUEEN1', 'FA', 'FA0001', 'FINAL ASSY', 'TP', 'CHECK MASTERLIST', NULL, '1', 'FIRMAN', 'Package Assy ZWVSA105FHX REV.01 (2).xls', './files/wi/Package Assy ZWVSA105FHX REV.01 (2).xls', NULL, NULL, NULL, NULL, NULL, '6226581');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wi_history`
+--
+
+CREATE TABLE `wi_history` (
+  `history_id` int(11) NOT NULL,
+  `wi_id` int(11) NOT NULL,
+  `wi_stagestat` varchar(5) DEFAULT NULL,
+  `wi_status_id` int(2) NOT NULL,
+  `wi_issue` date DEFAULT NULL,
+  `wi_rev` varchar(3) NOT NULL,
+  `wi_maker_id` int(11) NOT NULL,
+  `wi_filename` text,
+  `wi_file` int(11) DEFAULT NULL,
+  `flag` int(1) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wi_remark`
+--
+
+CREATE TABLE `wi_remark` (
+  `remark_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `history_id` int(11) NOT NULL,
+  `remark` text NOT NULL,
+  `flag` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wi_status`
+--
+
+CREATE TABLE `wi_status` (
+  `status_id` int(11) NOT NULL,
+  `status_name` varchar(30) NOT NULL,
+  `remark` text,
+  `flag` int(1) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -11923,6 +11969,25 @@ ALTER TABLE `wi`
   ADD PRIMARY KEY (`wi_id`);
 
 --
+-- Indexes for table `wi_history`
+--
+ALTER TABLE `wi_history`
+  ADD PRIMARY KEY (`history_id`),
+  ADD KEY `wi_id` (`wi_id`);
+
+--
+-- Indexes for table `wi_remark`
+--
+ALTER TABLE `wi_remark`
+  ADD PRIMARY KEY (`remark_id`);
+
+--
+-- Indexes for table `wi_status`
+--
+ALTER TABLE `wi_status`
+  ADD PRIMARY KEY (`status_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -11991,6 +12056,31 @@ ALTER TABLE `user`
 --
 ALTER TABLE `wi`
   MODIFY `wi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=489;
+--
+-- AUTO_INCREMENT for table `wi_history`
+--
+ALTER TABLE `wi_history`
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `wi_remark`
+--
+ALTER TABLE `wi_remark`
+  MODIFY `remark_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `wi_status`
+--
+ALTER TABLE `wi_status`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `wi_history`
+--
+ALTER TABLE `wi_history`
+  ADD CONSTRAINT `wi_history_ibfk_1` FOREIGN KEY (`wi_id`) REFERENCES `wi` (`wi_id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

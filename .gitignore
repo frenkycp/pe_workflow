@@ -1,3 +1,7 @@
 .idea
 composer.phar
 vendor/kartik-v/mpdf/ttfontdata/
+.buildpath
+.gitignore.rej
+.project
+.settings/

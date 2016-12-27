@@ -7,9 +7,9 @@ use yii\helpers\Html;
  * @var app\models\WiMasterlist $model
  */
 
-$this->title = 'Wi Masterlist ' . $model->masterlist_id . ', ' . 'Edit';
+$this->title = 'Wi Masterlist ' . $model->doc_no . ', ' . 'Edit';
 $this->params['breadcrumbs'][] = ['label' => 'Wi Masterlists', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string)$model->masterlist_id, 'url' => ['view', 'masterlist_id' => $model->masterlist_id]];
+$this->params['breadcrumbs'][] = ['label' => (string)$model->doc_no, 'url' => ['view', 'masterlist_id' => $model->masterlist_id]];
 $this->params['breadcrumbs'][] = 'Edit';
 ?>
 <div class="giiant-crud wi-masterlist-update">

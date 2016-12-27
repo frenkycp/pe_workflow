@@ -21,11 +21,12 @@ use Yii;
  * @property integer $user_id
  * @property integer $flag
  *
- * @property \app\models\User $pic
- * @property \app\models\User $user
+ * @property \app\models\DocType $docType
  * @property \app\models\DocSection $docSection
  * @property \app\models\DocClass $docClass
- * @property \app\models\DocType $docType
+ * @property \app\models\User $pic
+ * @property \app\models\User $user
+ * @property \app\models\WiPart[] $wiParts
  */
 class WiMasterlist extends \yii\db\ActiveRecord
 {
@@ -46,7 +47,7 @@ class WiMasterlist extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['doc_no', 'doc_title', 'doc_class', 'speaker_model', 'doc_section', 'doc_type', 'pic_id', 'user_id'], 'required'],
+            [['doc_no', 'doc_title', 'doc_class', 'speaker_model', 'doc_section', 'doc_type', 'pic_id', 'date_modified', 'user_id'], 'required'],
             [['doc_class', 'doc_section', 'doc_type', 'pic_id', 'user_id', 'flag'], 'integer'],
             [['speaker_model', 'remark'], 'string'],
             [['created_at', 'date_modified'], 'safe'],
@@ -81,17 +82,9 @@ class WiMasterlist extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPic()
+    public function getDocType()
     {
-        return $this->hasOne(\app\models\User::className(), ['id' => 'pic_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(\app\models\User::className(), ['id' => 'user_id']);
+        return $this->hasOne(\app\models\DocType::className(), ['doc_type_id' => 'doc_type']);
     }
 
     /**
@@ -113,9 +106,25 @@ class WiMasterlist extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDocType()
+    public function getPic()
     {
-        return $this->hasOne(\app\models\DocType::className(), ['doc_type_id' => 'doc_type']);
+        return $this->hasOne(\app\models\User::className(), ['id' => 'pic_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(\app\models\User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getWiParts()
+    {
+        return $this->hasMany(\app\models\WiPart::className(), ['masterlist_id' => 'masterlist_id']);
     }
 
 
