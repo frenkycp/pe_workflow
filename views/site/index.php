@@ -84,7 +84,7 @@
 			<div class="small-box bg-yellow">
 				<div class="inner center-text">
 					<h3><?= $wi_waiting_app; ?></h3>
-					<p>WAITING APPROVAL</p>
+					<p>WAPPROVAL</p>
 				</div>
 				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'waiting_approval']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>
@@ -94,7 +94,7 @@
 			<div class="small-box bg-yellow">
 				<div class="inner center-text">
 					<h3><?= $wi_waiting_dist; ?></h3>
-					<p style="font-size:96%;">WAITING DISTRIBUTION</p>
+					<p>DISTRIBUTION</p>
 				</div>
 				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'waiting_dist']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>

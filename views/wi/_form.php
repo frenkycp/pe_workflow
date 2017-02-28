@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 use kartik\widgets\DatePicker;
 use yii\base\Widget;
 use yii\helpers\Url;
+use app\models\WiStatus;
 //use yii\jui\DatePicker;
 
 /**
@@ -44,13 +45,17 @@ use yii\helpers\Url;
                 <p>
                     
 			<?= ''//$form->field($model, 'wi_id')->hiddenInput()->label(false) ?>
-			<?= $form->field($model, 'wi_model')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'checkin' ? true : false]) ?>
-			<?= $form->field($model, 'wi_section')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'checkin' ? true : false]) ?>
-			<?= $form->field($model, 'wi_docno')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'checkin' ? true : false]) ?>
-			<?= $form->field($model, 'wi_title')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'checkin' ? true : false]) ?>
+			<?= $form->field($model, 'wi_model')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
+			<?= $form->field($model, 'wi_section')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
+			<?= $form->field($model, 'wi_docno')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
+			<?= $form->field($model, 'wi_title')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
 			<?= $form->field($model, 'wi_stagestat')->textInput(['maxlength' => true]) ?>
-			<?= $form->field($model, 'wi_status')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'checkin' ? true : false]) ?>
-			<div class="form-group field-wi-wi_issue" style="display:<?php echo Yii::$app->controller->action->id == 'checkin' ? 'none' : ''; ?>">
+			<?= '';//$form->field($model, 'wi_status')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
+			<div class='row' style='<?php echo Yii::$app->controller->action->id == 'submit' ? 'display:none;' : ''?>'>
+			<?= $form->field($model, 'wi_status')->dropDownList(ArrayHelper::map(WiStatus::find()->where(['flag' => 1])->orderBy('status_name ASC')->all(), 'status_id', 'status_name')) ?>
+			</div>
+			
+			<div class="form-group field-wi-wi_issue" style="display:<?php echo Yii::$app->controller->action->id == 'submit' ? 'none' : ''; ?>">
 				<label class="control-label col-sm-3" for="wi-wi_issue">Issue Date</label>
 				<div class="col-sm-6">
 					<?= DatePicker::widget([
@@ -69,7 +74,7 @@ use yii\helpers\Url;
 			</div>
 			
 			<?= $form->field($model, 'wi_rev')->textInput(['maxlength' => true]) ?>
-			<?= $form->field($model, 'wi_dcn')->textarea(['rows' => 2]) ?>
+			<?= $form->field($model, 'wi_dcn')->textarea(['rows' => 5, 'style' => 'resize: vertical;']) ?>
 			<?= $form->field($model, 'wi_maker')->widget(Select2::className(), [
 					'data' => \yii\helpers\ArrayHelper::map(app\models\User::find()->where(['role_id' => [4,7,8]])->orderBy('name')->all(), 'name', 'name'),
 					'options' => [
@@ -79,7 +84,7 @@ use yii\helpers\Url;
 					'pluginOptions' => [
 							'allowClear' => true
 					],
-					'disabled' => Yii::$app->controller->action->id == 'checkin' ? true : false,
+					'disabled' => Yii::$app->controller->action->id == 'submit' ? true : false,
 			]) ?>
 			<?= ''//$form->field($model, 'wi_filename')->textarea(['rows' => 6]) ?>
 			<?= $form->field($model, 'uploadFile')->fileInput() ?>
@@ -107,9 +112,9 @@ use yii\helpers\Url;
                 if($model->isNewRecord){
                 	$btnName = 'Create';
                 }else{
-                	if(Yii::$app->controller->action->id == 'checkin')
+                	if(Yii::$app->controller->action->id == 'submit')
                 	{
-                		$btnName = 'Checkin';
+                		$btnName = 'Submit';
                 	}else{
                 		$btnName = 'Save';
                 	}
@@ -120,11 +125,12 @@ use yii\helpers\Url;
                 $btnName,
                 [
                     'id' => 'save-' . $model->formName(),
-                    'class' => 'btn btn-success'
+                    'class' => 'btn btn-success',
+                		'data-confirm' => Yii::t('yii', 'Are you sure you want to continue?'),
                 ]
                 );
                 ?>&nbsp;&nbsp;&nbsp;
-                <?php echo Html::a('Cancel', Url::previous(), ['class' => 'btn btn-danger']) ?>
+                <?php echo Html::a('Cancel', Yii::$app->controller->id == 'my-job' ? Url::to(['/my-job/index']) : Url::previous(), ['class' => 'btn btn-danger']) ?>
 
                 <?php ActiveForm::end(); ?>
 				</div>

@@ -22,7 +22,8 @@ public function rules()
 {
 return [
 [['wi_id'], 'integer'],
-	[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_status', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'safe'],
+		[['wi_id', 'wi_status'], 'integer'],
+		[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'safe'],
 ];
 }
 
@@ -47,88 +48,80 @@ public function search($params)
 $query = Wi::find();
 	if($params['index_type'] == 'open')
 	{
-		$query = Wi::find()->where(['wi_status' => 'OPEN']);
+		$query = Wi::find()->where(['wi_status' => 1]);
 	}
 	else if ($params['index_type'] == 'close')
 	{
-		$query = Wi::find()->where(['wi_status' => 'CLOSE']);
+		$query = Wi::find()->where(['wi_status' => 13]);
 	}
 	else if ($params['index_type'] == 'wi_maker')
 	{
-		$query = Wi::find()->where(['OR', ['wi_status' => Wi::$_STATUS_CHECKOUT], ['wi_status' => Wi::$_STATUS_CHECKIN]]);
-	}
-	else if ($params['index_type'] == 'checkout')
-	{
-		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECKOUT]);
-	}
-	else if ($params['index_type'] == 'checkin')
-	{
-		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECKIN]);
+		$query = Wi::find()->where(['wi_status' => [2, 3, 14]]);
 	}
 	else if ($params['index_type'] == 'check_masterlist')
 	{
-		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_MASTERLIST]);
+		$query = Wi::find()->where(['wi_status' => [4, 5]]);
 	}
 	else if ($params['index_type'] == 'check_smile')
 	{
-		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_SMILE]);
+		$query = Wi::find()->where(['wi_status' => [6, 7]]);
 	}
 	else if ($params['index_type'] == 'check1')
 	{
-		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_FINAL]);
+		$query = Wi::find()->where(['wi_status' => [8, 9]]);
 	}
 	else if ($params['index_type'] == 'waiting_approval')
 	{
-		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_WAITING_APPR]);
+		$query = Wi::find()->where(['wi_status' => [10, 11]]);
 	}
 	else if ($params['index_type'] == 'waiting_dist')
 	{
-		$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_WAITING_DIST]);
+		$query = Wi::find()->where(['wi_status' => 12]);
 	}
 	if (\Yii::$app->controller->id == 'my-job')
 	{
 		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_wimaker'])
 		{
-			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECKOUT, 'wi_maker' => \Yii::$app->user->identity->name]);
+			$query = Wi::find()->where(['wi_status' => 2, 'wi_maker' => \Yii::$app->user->identity->name]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin1'])
 		{
-			$query = Wi::find()->where(['or', ['wi_status' => Wi::$_STATUS_CHECK_MASTERLIST], ['wi_status' => Wi::$_STATUS_WAITING_DIST]]);
+			$query = Wi::find()->where(['wi_status' => [4, 12]]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin2'])
 		{
-			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_SMILE]);
+			$query = Wi::find()->where(['wi_status' => 6]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_checker'])
 		{
-			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_FINAL]);
+			$query = Wi::find()->where(['wi_status' => 8]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_approval'])
 		{
-			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_WAITING_APPR]);
+			$query = Wi::find()->where(['wi_status' => 10]);
 		}
 	}
 	if (\Yii::$app->controller->id == 'available-jobs')
 	{
 		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_wimaker'])
 		{
-			$query = Wi::find()->where(['wi_status' => ['OPEN', 'CLOSE', Wi::$_STATUS_REJECT]]);
+			$query = Wi::find()->where(['wi_status' => [1, 13, 14]]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin1'])
 		{
-			$query = Wi::find()->where(['or', ['wi_status' => Wi::$_STATUS_CHECKIN], ['wi_status' => Wi::$_STATUS_WAITING_APPR]]);
+			$query = Wi::find()->where(['wi_status' => [3, 11]]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin2'])
 		{
-			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_MASTERLIST]);
+			$query = Wi::find()->where(['wi_status' => 5]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_checker'])
 		{
-			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_SMILE]);
+			$query = Wi::find()->where(['wi_status' => 7]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_approval'])
 		{
-			$query = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_FINAL]);
+			$query = Wi::find()->where(['wi_status' => 9]);
 		}
 	}
 	$query->orderBy(['wi_issue' => SORT_DESC]);
@@ -161,6 +154,7 @@ return $dataProvider;
 
 $query->andFilterWhere([
             'wi_id' => $this->wi_id,
+			'wi_status' => $this->wi_status,
 			'wi_issue' => $this->wi_issue,
         ]);
 

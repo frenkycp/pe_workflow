@@ -40,11 +40,28 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = WiPart::find()->joinWith('sapItem')->joinWith('masterlist')->where(['wi_part.flag' => 1]);
+$query = WiPart::find()->joinWith('sapItem')->joinWith('masterlist')->where(['wi_part.flag' => 1])->orderBy('wi_masterlist.doc_no ASC, sap_item.sap_partno ASC');
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,
 ]);
+
+/* $dataProvider->setSort([
+		'attributes' => [
+				//'id',
+				'partNo' => [
+						'asc' => ['sap_item.sap_partno' => SORT_ASC],
+						'desc' => ['sap_item.sap_partno' => SORT_DESC],
+						'label' => 'Part No',
+				],
+				'documentNo' => [
+						'asc' => ['wi_masterlist.doc_no' => SORT_ASC],
+						'desc' => ['wi_masterlist.doc_no' => SORT_DESC],
+						'label' => 'Document No',
+				],
+				//'country_id'
+		]
+]); */
 
 $this->load($params);
 

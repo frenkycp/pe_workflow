@@ -8,6 +8,8 @@ use yii\web\Controller;
 use yii\helpers\Url;
 use dmstr\bootstrap\Tabs;
 use yii\web\UploadedFile;
+use app\models\WiHistory;
+use app\models\WiRemark;
 class MyJobController extends Controller
 {
 	public $enableCsrfValidation = false;
@@ -61,15 +63,106 @@ class MyJobController extends Controller
 		}
 	}
 	
-	public function actionCheckin($id)
+	public function actionAuthorize($id)
 	{
+		date_default_timezone_set ('Asia/Jakarta');
+		$model = $this->findModel($id);
+		$wiHistory = WiHistory::find()->where(['wi_id' => $model->wi_id])->orderBy('id DESC')->one();
+		$status = $model->wi_status;
+		if($status == 4)
+		{
+			$model->wi_status = 5;
+			$wiHistory->check1_date = date('Y-m-d H:i:s');
+		}
+		else if($status == 6)
+		{
+			$model->wi_status = 7;
+			$wiHistory->check2_date = date('Y-m-d H:i:s');
+		}
+		else if($status == 8)
+		{
+			$model->wi_status = 9;
+			$wiHistory->check3_date = date('Y-m-d H:i:s');
+		}
+		else if($status == 10)
+		{
+			$model->wi_status = 11;
+			$wiHistory = $model->getWiHistories()->where(['wi_rev' => $model->wi_rev])->one();
+			WiRemark::updateAll(['status' => 1], ['status' => 0, 'flag' =>1, 'history_id' => $wiHistory->id]);
+			$wiHistory->approved_date = date('Y-m-d H:i:s');
+		}
+		else if($status == 12)
+		{
+			$model->wi_status = 13;
+			$model->wi_issue = date('Y-m-d');
+			$wiHistory->release_date = date('Y-m-d H:i:s');
+		}
+	
+		if($model->save())
+		{
+			if(!$wiHistory->save())
+			{
+				return json_encode($wiHistory->errors);
+			}
+			return $this->redirect(Url::previous());
+		}else{
+			return json_encode($model->errors);
+		}
+	}
+	
+	public function getTotalRemarkOpen($wi_id, $wi_rev)
+	{
+		$wiHistory = $this->getWiHistory($wi_id, $wi_rev);
+		if(!$wiHistory)
+		{
+			$remarkOpen = 0;
+		}else 
+		{
+			$remarkOpen = WiRemark::find()->where(['history_id' => $wiHistory->id, 'status' => 0])->count();
+		}
+		
+		return $remarkOpen;
+	}
+	
+	public function getWiHistory($wi_id, $wi_rev)
+	{
+		$wiHistory = WiHistory::find()->where(['wi_id' => $wi_id, 'wi_rev' => $wi_rev])->one();
+		return $wiHistory;
+	}
+	
+	public function actionSubmit($id)
+	{
+		date_default_timezone_set ('Asia/Jakarta');
 		$tmpFile;
 		$model = $this->findModel($id);
 		$model->wi_maker = \Yii::$app->user->identity->name;
+		$model->wi_status = 3;
+		$remarkOpen = $this->getTotalRemarkOpen($model->wi_id, $model->wi_rev);
+		$wiHistoryTmp = $this->getWiHistory($model->wi_id, $model->wi_rev);
+		$remarkOpen = 0;
+		if(!empty($wiHistoryTmp))
+		{
+			$remarkOpen = count($wiHistoryTmp->getRemarkOpen());
+		}
+		
+		if($remarkOpen > 0)
+		{
+			//\Yii::$app->session->addFlash("warning", "You still have <a target='_blank' href='" . Url::to(['/wi-history/view', 'id' => $wiHistoryTmp->id]) . "'>" . $remarkOpen . "</a> uncompleted tasks. Close it before submit.");
+			\Yii::$app->session->addFlash("warning", "Please give a feedback for each remark to make sure you read it...");
+			return $this->redirect(['index']);
+		}
 	
 		if ($model->load($_POST)) {
 			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
-			$model->wi_status = Wi::$_STATUS_CHECKIN;
+			$tmp = WiHistory::find()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one();
+			if($tmp->release_date != NULL)
+			{
+				\Yii::$app->session->addFlash("warning", "This rev has been releashed on " . $tmp->release_date . ". Please check...!");
+				return $this->render('/wi/checkin', [
+						'model' => $model,
+				]);
+			}
+			
 			if(!empty($tmpFile)){
 				$delete = $model->oldAttributes['uploadFile'];
 				$model->uploadFile = $tmpFile;
@@ -84,15 +177,36 @@ class MyJobController extends Controller
 						return $model->errors;
 					}
 				}
-				//return $this->redirect([Url::previous()]);
-				return $this->render('/wi/view', ['model' => $model]);
+				$wiHistory = new WiHistory();
+				
+				if(!empty($tmp))
+				{
+					$wiHistory = $tmp;
+				}
+				$wiHistory->wi_id = $model->wi_id;
+				$wiHistory->wi_stagestat = $model->wi_stagestat;
+				$wiHistory->revised_date = date('Y-m-d H:i:s');
+				$wiHistory->check1_date = NULL;
+				$wiHistory->check2_date = NULL;
+				$wiHistory->check3_date = NULL;
+				$wiHistory->approved_date = NULL;
+				$wiHistory->release_date = NULL;
+				$wiHistory->wi_rev = $model->wi_rev;
+				$wiHistory->wi_maker_id = \Yii::$app->user->identity->getId();
+				$wiHistory->wi_file = $model->wi_file;
+				$wiHistory->wi_filename = $model->wi_filename;
+				if(!$wiHistory->save())
+				{
+					return json_encode($wiHistory->errors);
+				}
+				return $this->redirect(['index']);
 			}else{
 				return $model->errors;
 			}
 			//return $this->redirect(Url::previous());
-			return $this->render('/wi/checkin', [
+			/*return $this->render('/wi/checkin', [
 					'model' => $model,
-			]);
+			]); */
 		} else {
 			return $this->render('/wi/checkin', [
 					'model' => $model,
@@ -110,16 +224,6 @@ class MyJobController extends Controller
 		}
 	}
 	
-	public function actionClosingWi($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = 'CLOSE';
-		$model->wi_issue = date('Y-m-d');
-		if($model->save())
-		{
-			return $this->redirect(Url::previous());
-		}
-	}
 	
 	protected function findModel($wi_id)
 	{

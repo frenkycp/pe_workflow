@@ -12,7 +12,8 @@ use dmstr\bootstrap\Tabs;
 * @var app\models\WiPart $model
 */
 
-$this->title = 'Wi Part ' . $model->wi_part_id;
+//$this->title = 'Wi Part ' . $model->wi_part_id;
+$this->title = 'View';
 $this->params['breadcrumbs'][] = ['label' => 'Wi Parts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->wi_part_id, 'url' => ['view', 'wi_part_id' => $model->wi_part_id]];
 $this->params['breadcrumbs'][] = 'View';

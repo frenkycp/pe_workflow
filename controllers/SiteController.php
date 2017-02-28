@@ -40,22 +40,22 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-		$wi_open = Wi::find()->where(['wi_status' => 'OPEN'])->count();
-        $wi_close = Wi::find()->where(['wi_status' => 'CLOSE'])->count();
-        $wi_wimaker = Wi::find()->where(['or', ['wi_status' => Wi::$_STATUS_CHECKOUT], ['wi_status' => Wi::$_STATUS_CHECKIN]])->count();
-        $wi_checkout = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKOUT])->count();
-        $wi_checkin = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKIN])->count();
-        $wi_doc_check = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_MASTERLIST])->count();
-        $wi_smile_check = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_SMILE])->count();
-        $wi_detail_check = Wi::find()->where(['wi_status' => Wi::$_STATUS_CHECK_FINAL])->count();
-        $wi_waiting_app = Wi::find()->where(['wi_status' => Wi::$_STATUS_WAITING_APPR])->count();
-        $wi_waiting_dist = Wi::find()->where(['wi_status' => Wi::$_STATUS_WAITING_DIST])->count();
+		$wi_open = Wi::find()->where(['wi_status' => 1])->count();
+        $wi_close = Wi::find()->where(['wi_status' => 13])->count();
+        $wi_wimaker = Wi::find()->where(['wi_status' => [2, 3, 14]])->count();
+        //$wi_checkout = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKOUT])->count();
+        //$wi_checkin = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKIN])->count();
+        $wi_doc_check = Wi::find()->where(['wi_status' => [4, 5]])->count();
+        $wi_smile_check = Wi::find()->where(['wi_status' => [6, 7]])->count();
+        $wi_detail_check = Wi::find()->where(['wi_status' => [8, 9]])->count();
+        $wi_waiting_app = Wi::find()->where(['wi_status' => [10, 11]])->count();
+        $wi_waiting_dist = Wi::find()->where(['wi_status' => 12])->count();
         return $this->render('index',[
         		'wi_open' => $wi_open,
         		'wi_close' => $wi_close,
         		'wi_wimaker' => $wi_wimaker,
-        		'wi_checkout' => $wi_checkout,
-        		'wi_checkin' => $wi_checkin,
+        		//'wi_checkout' => $wi_checkout,
+        		//'wi_checkin' => $wi_checkin,
         		'wi_doc_check' => $wi_doc_check,
         		'wi_smile_check' => $wi_smile_check,
         		'wi_detail_check' => $wi_detail_check,

@@ -27,7 +27,8 @@
         "kartik-v/yii2-widgets": "^3.4",
         "yiisoft/yii2-jui": "*",
         "moonlandsoft/yii2-phpexcel": "*",
-        "kartik-v/yii2-detail-view": "*"
+        "kartik-v/yii2-detail-view": "*",
+        "kartik-v/yii2-export": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -7,6 +7,7 @@ use app\models\search\WiSearch;
 use yii\web\Controller;
 use yii\helpers\Url;
 use dmstr\bootstrap\Tabs;
+use app\models\WiHistory;
 
 class AvailableJobsController extends Controller
 {
@@ -45,66 +46,54 @@ class AvailableJobsController extends Controller
 		]);
 	}
 	
-	public function actionCheckout($id)
+	public function actionRevise($id)
 	{
 		$model = $this->findModel($id);
-		$model->wi_status = Wi::$_STATUS_CHECKOUT;
+		$model->wi_status = 2;
 		$model->wi_maker = \Yii::$app->user->identity->name;
 		if($model->save())
 		{
-			return $this->redirect(Url::previous());
+			return $this->redirect(['index']);
 		}else{
-			return $model->errors;
+			return json_encode($model->errors);
 		}
 	}
 	
-	public function actionCheckMasterlist($id)
+	public function actionTakeJob($id)
 	{
 		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_CHECK_MASTERLIST'];
-		if($model->save())
+		$status = $model->wi_status;
+		if(in_array($status, [1, 13, 14]))
 		{
-			return $this->redirect(Url::previous());
+			$model->wi_status = 2;
+			$model->wi_maker = \Yii::$app->user->identity->name;
 		}
-	}
-	
-	public function actionCheckSmile($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_CHECK_SMILE'];
-		if($model->save())
+		else if($status == 3)
 		{
-			return $this->redirect(Url::previous());
+			$model->wi_status = 4;
 		}
-	}
-	
-	public function actionFinalCheck($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_CHECK1'];
-		if($model->save())
+		else if($status == 5)
 		{
-			return $this->redirect(Url::previous());
+			$model->wi_status = 6;
 		}
-	}
-	
-	public function actionWaitingApproval($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_WAITING_APP'];
-		if($model->save())
+		else if($status == 7)
 		{
-			return $this->redirect(Url::previous());
+			$model->wi_status = 8;
 		}
-	}
-	
-	public function actionWaitingDistribution($id)
-	{
-		$model = $this->findModel($id);
-		$model->wi_status = wi::$_STATUS_WAITING_DIST;
+		else if($status == 9)
+		{
+			$model->wi_status = 10;
+		}
+		else if($status == 11)
+		{
+			$model->wi_status = 12;
+		}
+		
 		if($model->save())
 		{
-			return $this->redirect(Url::previous());
+			return $this->redirect(['index']);
+		}else{
+			return json_encode($model->errors);
 		}
 	}
 	

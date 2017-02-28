@@ -364,4 +364,13 @@ return array (
       '@kartik/detail' => $vendorDir . '/kartik-v/yii2-detail-view',
     ),
   ),
+  'kartik-v/yii2-export' => 
+  array (
+    'name' => 'kartik-v/yii2-export',
+    'version' => '1.2.5.0',
+    'alias' => 
+    array (
+      '@kartik/export' => $vendorDir . '/kartik-v/yii2-export',
+    ),
+  ),
 );
