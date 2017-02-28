@@ -74,6 +74,7 @@ class SiteController extends Controller
 
         if ($model->load($_POST)){
             //password
+            $model->name = strtoupper($model->name);
             if($model->password != ""){
                 $model->password = md5($model->password);
             }else{
