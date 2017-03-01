@@ -88,6 +88,9 @@ class WiRemarkController extends Controller
             	{
             		$wi->wi_status = 7;
             		$wiHistory->check2_date = date('Y-m-d H:i:s');
+            	}else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_checker'])
+            	{
+            		
             	}
             	if(!$wi->save())
             	{

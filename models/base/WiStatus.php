@@ -48,4 +48,7 @@ class WiStatus extends \yii\db\ActiveRecord
         ];
     }
 
+
+
+
 }

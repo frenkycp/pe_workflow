@@ -214,7 +214,7 @@ class MyJobController extends Controller
 		}
 	}
 	
-	public function actionReject($id)
+	/*public function actionReject($id)
 	{
 		$model = $this->findModel($id);
 		$model->wi_status = \Yii::$app->params['STATUS_REJECT'];
@@ -222,7 +222,7 @@ class MyJobController extends Controller
 		{
 			return $this->redirect(Url::previous());
 		}
-	}
+	} */
 	
 	
 	protected function findModel($wi_id)
