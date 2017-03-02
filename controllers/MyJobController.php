@@ -71,22 +71,22 @@ class MyJobController extends Controller
 		$status = $model->wi_status;
 		if($status == 4)
 		{
-			$model->wi_status = 5;
+			$model->wi_status = 6;
 			$wiHistory->check1_date = date('Y-m-d H:i:s');
 		}
 		else if($status == 6)
 		{
-			$model->wi_status = 7;
+			$model->wi_status = 8;
 			$wiHistory->check2_date = date('Y-m-d H:i:s');
 		}
 		else if($status == 8)
 		{
-			$model->wi_status = 9;
+			$model->wi_status = 10;
 			$wiHistory->check3_date = date('Y-m-d H:i:s');
 		}
 		else if($status == 10)
 		{
-			$model->wi_status = 11;
+			$model->wi_status = 12;
 			$wiHistory = $model->getWiHistories()->where(['wi_rev' => $model->wi_rev])->one();
 			WiRemark::updateAll(['status' => 1], ['status' => 0, 'flag' =>1, 'history_id' => $wiHistory->id]);
 			$wiHistory->approved_date = date('Y-m-d H:i:s');
@@ -136,7 +136,7 @@ class MyJobController extends Controller
 		$tmpFile;
 		$model = $this->findModel($id);
 		$model->wi_maker = \Yii::$app->user->identity->name;
-		$model->wi_status = 3;
+		$model->wi_status = 4;
 		$remarkOpen = $this->getTotalRemarkOpen($model->wi_id, $model->wi_rev);
 		$wiHistoryTmp = $this->getWiHistory($model->wi_id, $model->wi_rev);
 		$remarkOpen = 0;
@@ -195,6 +195,7 @@ class MyJobController extends Controller
 				$wiHistory->wi_maker_id = \Yii::$app->user->identity->getId();
 				$wiHistory->wi_file = $model->wi_file;
 				$wiHistory->wi_filename = $model->wi_filename;
+				$wiHistory->purpose = $model->wi_dcn;
 				if(!$wiHistory->save())
 				{
 					return json_encode($wiHistory->errors);

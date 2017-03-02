@@ -43,6 +43,8 @@ use yii\widgets\ActiveForm;
 
 		<?php // echo $form->field($model, 'wi_file') ?>
 
+		<?php // echo $form->field($model, 'purpose') ?>
+
 		<?php // echo $form->field($model, 'flag') ?>
 
 		<div class="form-group">

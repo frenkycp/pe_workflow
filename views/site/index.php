@@ -84,7 +84,7 @@
 			<div class="small-box bg-yellow">
 				<div class="inner center-text">
 					<h3><?= $wi_waiting_app; ?></h3>
-					<p>WAPPROVAL</p>
+					<p>APPROVAL</p>
 				</div>
 				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'waiting_approval']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>

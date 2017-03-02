@@ -20,6 +20,7 @@ use Yii;
  * @property integer $wi_maker_id
  * @property string $wi_filename
  * @property string $wi_file
+ * @property string $purpose
  * @property integer $flag
  *
  * @property \app\models\Wi $wi
@@ -46,7 +47,7 @@ class WiHistory extends \yii\db\ActiveRecord
             [['wi_id', 'wi_rev', 'wi_maker_id'], 'required'],
             [['wi_id', 'wi_maker_id', 'flag'], 'integer'],
             [['revised_date', 'check1_date', 'check2_date', 'check3_date', 'approved_date', 'release_date'], 'safe'],
-            [['wi_filename', 'wi_file'], 'string'],
+            [['wi_filename', 'wi_file', 'purpose'], 'string'],
             [['wi_stagestat'], 'string', 'max' => 5],
             [['wi_rev'], 'string', 'max' => 3]
         ];
@@ -71,6 +72,7 @@ class WiHistory extends \yii\db\ActiveRecord
             'wi_maker_id' => 'Wi Maker ID',
             'wi_filename' => 'Wi Filename',
             'wi_file' => 'Wi File',
+            'purpose' => 'Purpose',
             'flag' => 'Flag',
         ];
     }
@@ -83,8 +85,10 @@ class WiHistory extends \yii\db\ActiveRecord
         return $this->hasOne(\app\models\Wi::className(), ['wi_id' => 'wi_id']);
     }
 
-	public function getWiRemarks()
-	{
-		return $this->hasMany(\app\models\WiRemark::className(), ['history_id' => 'id']);
-	}
+
+    public function getWiRemarks()
+    {
+    	return $this->hasMany(\app\models\WiRemark::className(), ['history_id' => 'id']);
+    }
+
 }

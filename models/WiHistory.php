@@ -11,6 +11,8 @@ use yii\helpers\Url;
  */
 class WiHistory extends BaseWiHistory
 {
+	public $wiDocno;
+	
 	public function attributeLabels()
 	{
 		return [
@@ -28,7 +30,8 @@ class WiHistory extends BaseWiHistory
 				'wi_filename' => 'Wi Filename',
 				'wi_file' => 'Wi File',
 				'flag' => 'Flag',
-				'linkedRev' => 'Rev'
+				'linkedRev' => 'Rev',
+				'wiDocno' => 'Document No',
 		];
 	}
 	
