@@ -39,7 +39,7 @@ class WiRemark extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'history_id', 'status', 'flag'], 'integer'],
-            [['remark'], 'required'],
+            //[['remark'], 'required'],
             [['remark', 'feedback'], 'string'],
             [['remark_date', 'feedback_date'], 'safe']
         ];

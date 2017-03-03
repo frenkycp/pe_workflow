@@ -86,11 +86,12 @@ class WiRemarkController extends Controller
             	$wi->wi_status = 14;
             	if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin2'])
             	{
-            		$wi->wi_status = 7;
+            		$wi->wi_status = 8;
             		$wiHistory->check2_date = date('Y-m-d H:i:s');
             	}else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_checker'])
             	{
-            		
+            		$wi->wi_status = 10;
+            		$wiHistory->check3_date = date('Y-m-d H:i:s');
             	}
             	if(!$wi->save())
             	{
@@ -99,6 +100,10 @@ class WiRemarkController extends Controller
             	if(!$wiHistory->save())
             	{
             		return json_encode($wiHistory->errors);
+            	}
+            	if($model->remark == '' || $model->remark == null)
+            	{
+            		return $this->redirect(Url::previous());
             	}
             	if($model->save())
             	{
