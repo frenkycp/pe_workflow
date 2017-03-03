@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     			wi::$_STATUS_WAITING_APPR, Wi::$_STATUS_WAITING_DIST
                     	]; */
                     	
-                    	if(in_array(\Yii::$app->user->identity->role_id, [1, 2]))
+                    	if(in_array(\Yii::$app->user->identity->role_id, [1, 2, 6]))
                     	{
                     		$template = '{view} {update} {delete}';
                     	}else{

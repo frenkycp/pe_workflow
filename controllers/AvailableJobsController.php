@@ -91,7 +91,7 @@ class AvailableJobsController extends Controller
 		
 		if($model->save())
 		{
-			return $this->redirect(['index']);
+			return $this->redirect(Url::previous());
 		}else{
 			return json_encode($model->errors);
 		}

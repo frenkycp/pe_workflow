@@ -112,6 +112,8 @@ class MenuController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		\Yii::$app->session->addFlash("danger", "Don't delete the menu! Please edit the role instead...");
+		return $this->redirect(Url::previous());
         try {
             $this->findModel($id)->delete();
         } catch (\Exception $e) {
