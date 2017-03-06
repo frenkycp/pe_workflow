@@ -160,6 +160,7 @@ $this->params['breadcrumbs'][] = 'View';
         'hAlign' => 'center',
         'vAlign' => 'middle',
         'width' => '100px',
+        		'hidden' => true,
         ],
         //'statusStr',
         //'flag',

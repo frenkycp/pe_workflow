@@ -104,6 +104,7 @@ class MyJobController extends Controller
 			{
 				return json_encode($wiHistory->errors);
 			}
+			\Yii::$app->session->addFlash("success", "WI " . $model->wi_docno . " has been authorized...");
 			return $this->redirect(Url::previous());
 		}else{
 			return json_encode($model->errors);
@@ -215,15 +216,16 @@ class MyJobController extends Controller
 		}
 	}
 	
-	/*public function actionReject($id)
+	public function actionReject($id)
 	{
 		$model = $this->findModel($id);
-		$model->wi_status = \Yii::$app->params['STATUS_REJECT'];
+		$model->wi_status = 14;
 		if($model->save())
 		{
+			\Yii::$app->session->addFlash("success", "WI " . $model->wi_docno . " has been rejected...");
 			return $this->redirect(Url::previous());
 		}
-	} */
+	} 
 	
 	
 	protected function findModel($wi_id)

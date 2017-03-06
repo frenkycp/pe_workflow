@@ -115,7 +115,7 @@ $wi_history = WiHistory::find()->where(['wi_id' => $wi->wi_id])->orderBy('id DES
                 <?php echo $form->errorSummary($model); ?>
                 <?= Html::submitButton(
                 '<span class="glyphicon glyphicon-check"></span> ' .
-                ($model->isNewRecord ? isset($_GET['wi_id']) ? Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin2'] ? 'Authorize' : 'Reject' : 'Create' : 'Save'),
+                ($model->isNewRecord ? 'Add' : 'Save'),
                 [
                     'id' => 'save-' . $model->formName(),
                     'class' => 'btn btn-success'

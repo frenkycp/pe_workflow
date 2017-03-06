@@ -83,7 +83,7 @@ class WiRemarkController extends Controller
 		try {
             if ($model->load($_POST)) {
             	
-            	$wi->wi_status = 14;
+            	/* $wi->wi_status = 14;
             	if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin2'])
             	{
             		$wi->wi_status = 8;
@@ -92,7 +92,7 @@ class WiRemarkController extends Controller
             	{
             		$wi->wi_status = 10;
             		$wiHistory->check3_date = date('Y-m-d H:i:s');
-            	}
+            	} 
             	if(!$wi->save())
             	{
             		return json_encode($wi->errors);
@@ -104,7 +104,7 @@ class WiRemarkController extends Controller
             	if($model->remark == '' || $model->remark == null)
             	{
             		return $this->redirect(Url::previous());
-            	}
+            	}*/
             	if($model->save())
             	{
             		return $this->redirect(Url::previous());

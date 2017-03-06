@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <!-- <div class="panel-heading">
                 <h2>
                     <i><?php 
-                    	$wiStatusArr = ArrayHelper::map(WiStatus::find()->orderBy('status_name ASC')->all(), 'status_id', 'status_name');
+                    	$wiStatusArr = ArrayHelper::map(WiStatus::find()->where(['flag' => 1])->orderBy('status_name ASC')->all(), 'status_id', 'status_name');
                     	/* $wiStatusArr = [
                     			wi::$_STATUS_APPROVE, wi::$_STATUS_CHECK_FINAL, wi::$_STATUS_CHECK_MASTERLIST, wi::$_STATUS_CHECK_SMILE,
                     			wi::$_STATUS_CHECKIN, wi::$_STATUS_CHECKOUT, wi::$_STATUS_CLOSE, wi::$_STATUS_OPEN, wi::$_STATUS_REJECT,
@@ -67,17 +67,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     	
                     	if(in_array(\Yii::$app->user->identity->role_id, [1, 2]))
                     	{
-                    		$template = '{view} {update} {delete}';
+                    		$template = '{update} {delete}';
                     	}else{
                     		if(Yii::$app->controller->id == 'wi')
                     		{
-                    			$template = '{view}';
+                    			$template = '';
                     			if(Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'])
                     			{
                     				$template = '{view} {take_job}';
                     			}
                     		}else{
-                    			$template = '{view} {take_job} {submit} {reject} {authorize} {download}';
+                    			$template = '{take_job} {submit} {reject} {remark} {authorize}';
                     		}
                     	}
                     /*
@@ -210,12 +210,22 @@ $this->params['breadcrumbs'][] = $this->title;
 				'reject' => function ($url, $model, $key) {
 					 return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ? 
 					 Html::a('<span class="glyphicon glyphicon-alert" style="padding-left: 5px;"></span>',
-					 		['wi-remark/create', 'wi_id'=>$model->wi_id],
+					 		['reject', 'id'=>$model->wi_id],
 					 		[
 					 				'title'=>'Reject',
 					 				'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
 					 		]) : "";
 					 //return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
+				},
+				'remark' => function ($url, $model, $key) {
+				return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
+				Html::a('<span class="glyphicon glyphicon-tags" style="padding-left: 5px;"></span>',
+						['wi-remark/create', 'wi_id'=>$model->wi_id],
+						[
+								'title'=>'Add Remark',
+								//'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
+						]) : "";
+						//return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
 				},
 				'download' => function ($url, $model, $key) {
 					if(($model->wi_status == Wi::$_STATUS_CHECKOUT && $model->wi_maker == Yii::$app->user->identity->name)
@@ -247,7 +257,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'hAlign' => 'center',
             'width'=>'100px',
             'value' => function ($model) {
-            return $model->wi_file == null || $model->wi_file == '' ? $model->wi_docno : Html::a($model->wi_docno, Yii::$app->request->hostInfo . '/workflow/' . $model->wi_file);
+            return Html::a($model->wi_docno, ['wi/view', 'wi_id' => $model->wi_id]);
             },
             'filter' => $sectionDropdown,
             ],
@@ -283,7 +293,22 @@ $this->params['breadcrumbs'][] = $this->title;
 			//'wi_status',
 			[
 					'attribute' => 'wi_status',
-					'value' => 'wiStatus.status_name',
+					'format' => 'html',
+					'value' => function ($model){
+						if($model->wiStatus->status_id == 13)
+						{
+							$labelClass = 'label label-success';
+						}
+						else if($model->wiStatus->status_id == 14 || $model->wiStatus->status_id == 1)
+						{
+							$labelClass = 'label label-danger';
+						}
+						else 
+						{
+							$labelClass = 'label label-warning';
+						}
+						return '<span class="' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
+            		},
 					'hAlign' => 'center',
 					'filter' => $wiStatusArr,
 					'noWrap' => true,
