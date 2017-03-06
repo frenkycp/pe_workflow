@@ -138,7 +138,8 @@ class MyJobController extends Controller
 		$model = $this->findModel($id);
 		$model->wi_maker = \Yii::$app->user->identity->name;
 		$model->wi_status = 4;
-		$remarkOpen = $this->getTotalRemarkOpen($model->wi_id, $model->wi_rev);
+		
+		/* $remarkOpen = $this->getTotalRemarkOpen($model->wi_id, $model->wi_rev);
 		$wiHistoryTmp = $this->getWiHistory($model->wi_id, $model->wi_rev);
 		$remarkOpen = 0;
 		if(!empty($wiHistoryTmp))
@@ -146,12 +147,12 @@ class MyJobController extends Controller
 			$remarkOpen = count($wiHistoryTmp->getRemarkOpen());
 		}
 		
-		if($remarkOpen > 0)
+		 if($remarkOpen > 0)
 		{
 			//\Yii::$app->session->addFlash("warning", "You still have <a target='_blank' href='" . Url::to(['/wi-history/view', 'id' => $wiHistoryTmp->id]) . "'>" . $remarkOpen . "</a> uncompleted tasks. Close it before submit.");
 			\Yii::$app->session->addFlash("warning", "Please give a feedback for each remark to make sure you read it...");
 			return $this->redirect(['index']);
-		}
+		} */
 	
 		if ($model->load($_POST)) {
 			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');

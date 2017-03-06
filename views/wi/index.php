@@ -297,17 +297,17 @@ $this->params['breadcrumbs'][] = $this->title;
 					'value' => function ($model){
 						if($model->wiStatus->status_id == 13)
 						{
-							$labelClass = 'label label-success';
+							$labelClass = 'bg-green';
 						}
 						else if($model->wiStatus->status_id == 14 || $model->wiStatus->status_id == 1)
 						{
-							$labelClass = 'label label-danger';
+							$labelClass = 'bg-red';
 						}
 						else 
 						{
-							$labelClass = 'label label-warning';
+							$labelClass = 'bg-yellow';
 						}
-						return '<span class="' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
+						return '<span style="padding: 0.5px 15px;" class="' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
             		},
 					'hAlign' => 'center',
 					'filter' => $wiStatusArr,
