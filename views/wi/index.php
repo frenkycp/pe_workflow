@@ -72,12 +72,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     		if(Yii::$app->controller->id == 'wi')
                     		{
                     			$template = '';
-                    			if(Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'])
+                    			if(in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_wimaker2']))
                     			{
-                    				$template = '{view} {take_job}';
+                    				$template = '{take_job} {submit}';
                     			}
                     		}else{
-                    			$template = '{take_job} {submit} {reject} {remark} {authorize}';
+                    			$template = '{submit} {reject} {remark} {authorize}';
                     		}
                     	}
                     /*
@@ -168,10 +168,10 @@ $this->params['breadcrumbs'][] = $this->title;
 					Html::a('<span class="glyphicon glyphicon-edit" style="padding-left: 5px;"></span>', ['revise', 'id'=>$model->wi_id], ['title'=>'Revise']) : "";
 				}, */
 				'submit' => function ($url, $model, $key) {
-					return ($model->wi_status == 2 && $model->wi_maker == Yii::$app->user->identity->name) ? Html::a('<span class="glyphicon glyphicon-cloud-upload" style="padding-left: 5px;"></span>',
-							['submit', 'id'=>$model->wi_id],
+					return in_array($model->wi_status, [1, 2, 13, 14]) && in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_wimaker2']) ? Html::a('<span class="glyphicon glyphicon-cloud-upload" style="padding-left: 5px;"></span>',
+							['/my-job/submit', 'id'=>$model->wi_id],
 							[
-									'title'=>'Submit',
+									'title'=>'Revise',
 									'data-confirm' => Yii::t('yii', 'Are you sure you want to submit this item?'),
 							]) : "";
 				},
@@ -256,18 +256,34 @@ $this->params['breadcrumbs'][] = $this->title;
             'attribute' => 'wi_docno',
             'hAlign' => 'center',
             'width'=>'100px',
-            'value' => function ($model) {
-            return Html::a($model->wi_docno, ['wi/view', 'wi_id' => $model->wi_id]);
+            'value' => function ($model)
+            {
+            	$wiDocno = $model->wi_docno;
+            	if(strlen($wiDocno) > 13)
+            	{
+            		$wiDocno = substr($model->wi_docno, 0, 11) . '...';
+            	}
+            	return Html::a($wiDocno, ['wi/view', 'wi_id' => $model->wi_id], ['title' => $model->wi_docno]);
             },
             'filter' => $sectionDropdown,
             ],
 			[
 			'class' => '\kartik\grid\DataColumn',
 			'hAlign' => 'center',
+					'format' => 'raw',
 			'attribute' => 'wi_model',
-			'value' => 'wi_model',
+			'value' => function ($model)
+			{
+            	$wiModel = $model->wi_model;
+				if(strlen($wiModel) > 23)
+				{
+					$wiModel = substr($wiModel, 0, 20) . '...';
+					return '<span title="' . $model->wi_model . '">' . $wiModel . '</span>';
+				}
+				return $wiModel;
+            },
 			//'hidden' => true,
-			'noWrap' => true,
+			//'noWrap' => true,
 			'width' => '180px',
 			],
 			//'wi_section',
@@ -284,7 +300,17 @@ $this->params['breadcrumbs'][] = $this->title;
 			//'wi_title',
 			[
 			'attribute' => 'wi_title',
-			'value' => 'wi_title',
+					'format' => 'raw',
+			'value' => function ($model)
+			{
+            	$wiTitle = $model->wi_title;
+            	if(strlen($wiTitle) > 24)
+            	{
+            		$wiTitle = substr($wiTitle, 0, 21) . '...';
+            		return '<span title="' . $model->wi_title . '">' . $wiTitle . '</span>';
+            	}
+            	return $wiTitle;
+            },
 			'hAlign' => 'center',
 			'noWrap' => true,
 			'width' => '200px',
@@ -314,8 +340,6 @@ $this->params['breadcrumbs'][] = $this->title;
 					'noWrap' => true,
 					'width' => '250px',
             ],
-            //'wi_issue',
-			//'wi_rev',
 			[
 			'class' => '\kartik\grid\DataColumn',
 			'hAlign' => 'center',
@@ -325,7 +349,6 @@ $this->params['breadcrumbs'][] = $this->title;
 			'noWrap' => true,
 			'width' => '50px',
 			],
-			//'wi_maker',
 			[
 			'class' => '\kartik\grid\DataColumn',
 			'hAlign' => 'center',

@@ -46,7 +46,7 @@
 					<h3><?= $wi_wimaker; ?></h3>
 					<p>WI MAKER</p>
 				</div>
-				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'wi_maker']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+				<?= Html::a('More Info ', Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? Url::to(['my-job/index']) : Url::to(['wi/index','index_type' => 'wi_maker']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>
 		</div>
 		
@@ -56,7 +56,7 @@
 					<h3><?= $wi_doc_check; ?></h3>
 					<p>MASTERLIST CHECK</p>
 				</div>
-				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'check_masterlist']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+				<?= Html::a('More Info ', Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'] ? Url::to(['my-job/index','status' => 4]) : Url::to(['wi/index','index_type' => 'check_masterlist']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>
 		</div>
 		
@@ -66,7 +66,7 @@
 					<h3><?= $wi_smile_check; ?></h3>
 					<p>SMILE CHECK</p>
 				</div>
-				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'check_smile']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+				<?= Html::a('More Info ', Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin2'] ? Url::to(['my-job/index']) : Url::to(['wi/index','index_type' => 'check_smile']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>
 		</div>
 		
@@ -76,7 +76,7 @@
 					<h3><?= $wi_detail_check; ?></h3>
 					<p>FINAL CHECK</p>
 				</div>
-				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'check1']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+				<?= Html::a('More Info ', Yii::$app->user->identity->role_id == Yii::$app->params['roleid_checker'] ? Url::to(['my-job/index']) : Url::to(['wi/index','index_type' => 'check1']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>
 		</div>
 		
@@ -86,7 +86,7 @@
 					<h3><?= $wi_waiting_app; ?></h3>
 					<p>APPROVAL</p>
 				</div>
-				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'waiting_approval']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+				<?= Html::a('More Info ', Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Url::to(['my-job/index']) : Url::to(['wi/index','index_type' => 'waiting_approval']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>
 		</div>
 		
@@ -96,7 +96,7 @@
 					<h3><?= $wi_waiting_dist; ?></h3>
 					<p>DISTRIBUTION</p>
 				</div>
-				<?= Html::a('More Info ', Url::to(['wi/index','index_type' => 'waiting_dist']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
+				<?= Html::a('More Info ', Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'] ? Url::to(['my-job/index','status' => 12]) : Url::to(['wi/index','index_type' => 'waiting_dist']), ['target' => '_blank', 'class' => 'small-box-footer']); ?>
 			</div>
 		</div>
 		

@@ -136,8 +136,32 @@ class MyJobController extends Controller
 		date_default_timezone_set ('Asia/Jakarta');
 		$tmpFile;
 		$model = $this->findModel($id);
-		$model->wi_maker = \Yii::$app->user->identity->name;
-		$model->wi_status = 4;
+		
+		//$model->wi_status = 4;
+		if($model->wi_rev == '-' || $model->wi_rev == '' || $model->wi_rev == NULL)
+		{
+			$model->wi_rev = 0;
+		}
+		if($model->wi_status != 2)
+		{
+			if(in_array($model->wi_status, [1, 13]))
+			{
+				$model->wi_rev = '' . ($model->wi_rev + 1);
+			}
+			$model->wi_status = 2;
+			$model->wi_maker = \Yii::$app->user->identity->name;
+			if(!$model->save())
+			{
+				return json_encode($model->errors);
+			}
+		}else{
+			if(\Yii::$app->user->identity->name != $model->wi_maker)
+			{
+				\Yii::$app->session->addFlash("warning", "This WI " . $model->wi_docno . " was revising by " . $model->wi_maker . ". You can't revise this WI until the process done...");
+				return $this->redirect(Url::previous());
+			}
+		}
+		
 		
 		/* $remarkOpen = $this->getTotalRemarkOpen($model->wi_id, $model->wi_rev);
 		$wiHistoryTmp = $this->getWiHistory($model->wi_id, $model->wi_rev);
@@ -173,6 +197,7 @@ class MyJobController extends Controller
 			}else{
 				$model->uploadFile = $model->oldAttributes['uploadFile'];
 			}
+			$model->wi_status = 4;
 			if($model->save()){
 				if(!empty($tmpFile)){
 					if(!$model->upload()){
@@ -202,7 +227,7 @@ class MyJobController extends Controller
 				{
 					return json_encode($wiHistory->errors);
 				}
-				return $this->redirect(['index']);
+				return $this->redirect(Url::previous());
 			}else{
 				return $model->errors;
 			}

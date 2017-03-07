@@ -45,7 +45,7 @@ use app\models\WiStatus;
                 <p>
                     
 			<?= ''//$form->field($model, 'wi_id')->hiddenInput()->label(false) ?>
-			<?= $form->field($model, 'wi_model')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
+			<?= $form->field($model, 'wi_model')->textarea(['rows' => 5, 'style' => 'resize: none;', 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
 			<?= $form->field($model, 'wi_section')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
 			<?= $form->field($model, 'wi_docno')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
 			<?= $form->field($model, 'wi_title')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
@@ -73,7 +73,7 @@ use app\models\WiStatus;
 				</div>
 			</div>
 			
-			<?= $form->field($model, 'wi_rev')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'wi_rev')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
 			<?= $form->field($model, 'wi_dcn')->textarea(['rows' => 5, 'style' => 'resize: vertical;']) ?>
 			<?= $form->field($model, 'wi_maker')->widget(Select2::className(), [
 					'data' => \yii\helpers\ArrayHelper::map(app\models\User::find()->where(['role_id' => [4,7,8]])->orderBy('name')->all(), 'name', 'name'),
@@ -114,7 +114,7 @@ use app\models\WiStatus;
                 }else{
                 	if(Yii::$app->controller->action->id == 'submit')
                 	{
-                		$btnName = 'Submit';
+                		$btnName = 'Authorize';
                 	}else{
                 		$btnName = 'Save';
                 	}
@@ -130,7 +130,8 @@ use app\models\WiStatus;
                 ]
                 );
                 ?>&nbsp;&nbsp;&nbsp;
-                <?php echo Html::a('Cancel', Yii::$app->controller->id == 'my-job' ? Url::to(['/my-job/index']) : Url::previous(), ['class' => 'btn btn-danger']) ?>
+                <?php ''; //echo Html::a('Cancel', Yii::$app->controller->id == 'my-job' ? Url::to(['/my-job/index']) : Url::previous(), ['class' => 'btn btn-danger']) ?>
+                <?php echo Html::a('Cancel', Url::previous(), ['class' => 'btn btn-danger']) ?>
 
                 <?php ActiveForm::end(); ?>
 				</div>

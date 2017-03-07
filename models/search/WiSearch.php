@@ -48,7 +48,7 @@ public function search($params)
 $query = Wi::find();
 	if($params['index_type'] == 'open')
 	{
-		$query = Wi::find()->where(['wi_status' => 1]);
+		$query = Wi::find()->where(['<>', 'wi_status', 13]);
 	}
 	else if ($params['index_type'] == 'close')
 	{
@@ -56,7 +56,7 @@ $query = Wi::find();
 	}
 	else if ($params['index_type'] == 'wi_maker')
 	{
-		$query = Wi::find()->where(['wi_status' => [2, 3, 14]]);
+		$query = Wi::find()->where(['wi_status' => [1, 2, 3, 14]]);
 	}
 	else if ($params['index_type'] == 'check_masterlist')
 	{
@@ -82,11 +82,16 @@ $query = Wi::find();
 	{
 		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_wimaker'])
 		{
-			$query = Wi::find()->where(['wi_status' => 2, 'wi_maker' => \Yii::$app->user->identity->name]);
+			//$query = Wi::find()->where(['wi_status' => [1, 2, 14]]);
+			$query = Wi::find();
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin1'])
 		{
 			$query = Wi::find()->where(['wi_status' => [4, 12]]);
+			if(isset($params['status']))
+			{
+				$query = Wi::find()->where(['wi_status' => $params['status']]);
+			}
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin2'])
 		{
@@ -105,7 +110,7 @@ $query = Wi::find();
 	{
 		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_wimaker'])
 		{
-			$query = Wi::find()->where(['wi_status' => [1, 13, 14]]);
+			$query = Wi::find();
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin1'])
 		{
