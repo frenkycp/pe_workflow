@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     				$template = '{take_job} {submit}';
                     			}
                     		}else{
-                    			$template = '{submit} {reject} {remark} {authorize}';
+                    			$template = '{submit} {reject} {authorize}';
                     		}
                     	}
                     /*
@@ -168,11 +168,14 @@ $this->params['breadcrumbs'][] = $this->title;
 					Html::a('<span class="glyphicon glyphicon-edit" style="padding-left: 5px;"></span>', ['revise', 'id'=>$model->wi_id], ['title'=>'Revise']) : "";
 				}, */
 				'submit' => function ($url, $model, $key) {
-					return in_array($model->wi_status, [1, 2, 13, 14]) && in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_wimaker2']) ? Html::a('<span class="glyphicon glyphicon-cloud-upload" style="padding-left: 5px;"></span>',
+					return  in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_wimaker2']) ? Html::a('REVISE',
 							['/my-job/submit', 'id'=>$model->wi_id],
 							[
-									'title'=>'Revise',
-									'data-confirm' => Yii::t('yii', 'Are you sure you want to submit this item?'),
+									'title'=> in_array($model->wi_status, [1, 2, 13, 14]) ? '' : 'WI still in Workflow...',
+									'data-confirm' => in_array($model->wi_status, [1, 2, 13, 14]) ? Yii::t('yii', 'Are you sure you want to revise WI ' . $model->wi_docno . ' ?') : false,
+									'class' => 'btn btn-primary btn-sm',
+									'onclick' => in_array($model->wi_status, [1, 2, 13, 14]) ? '' : 'return false',
+									'disabled' => in_array($model->wi_status, [1, 2, 13, 14]) ? false : true,
 							]) : "";
 				},
 				'authorize' => function ($url, $model, $key) {
@@ -259,10 +262,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'value' => function ($model)
             {
             	$wiDocno = $model->wi_docno;
-            	if(strlen($wiDocno) > 13)
+            	/* if(strlen($wiDocno) > 13)
             	{
             		$wiDocno = substr($model->wi_docno, 0, 11) . '...';
-            	}
+            	} */
             	return Html::a($wiDocno, ['wi/view', 'wi_id' => $model->wi_id], ['title' => $model->wi_docno]);
             },
             'filter' => $sectionDropdown,

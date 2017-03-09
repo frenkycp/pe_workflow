@@ -227,6 +227,7 @@ class MyJobController extends Controller
 				{
 					return json_encode($wiHistory->errors);
 				}
+				\Yii::$app->session->addFlash("success", "WI " . $model->wi_docno . " Rev. " . $model->wi_rev . ' has been successfully revised by ' . $model->wi_maker);
 				return $this->redirect(Url::previous());
 			}else{
 				return $model->errors;

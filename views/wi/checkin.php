@@ -7,7 +7,7 @@ use yii\helpers\Html;
  * @var app\models\Wi $model
  */
 
-$this->title = 'Wi ' . $model->wi_docno . ', ' . 'Submit';
+$this->title = 'WI ' . $model->wi_docno . ', ' . 'Revise';
 $this->params['breadcrumbs'][] = ['label' => 'Wis', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->wi_id, 'url' => ['view', 'wi_id' => $model->wi_id]];
 $this->params['breadcrumbs'][] = 'Edit';
