@@ -249,7 +249,7 @@ class MyJobController extends Controller
 		$model->wi_status = 14;
 		if($model->save())
 		{
-			\Yii::$app->session->addFlash("success", "WI " . $model->wi_docno . " has been rejected...");
+			\Yii::$app->session->addFlash("danger", "WI " . $model->wi_docno . " Rev. " . $model->wi_rev . " has been rejected...");
 			return $this->redirect(Url::previous());
 		}
 	} 
