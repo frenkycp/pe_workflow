@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     		if(Yii::$app->controller->id == 'wi')
                     		{
                     			$template = '';
-                    			if(in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_wimaker2']))
+                    			if(Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'])
                     			{
                     				$template = '{take_job} {submit}';
                     			}
@@ -168,7 +168,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					Html::a('<span class="glyphicon glyphicon-edit" style="padding-left: 5px;"></span>', ['revise', 'id'=>$model->wi_id], ['title'=>'Revise']) : "";
 				}, */
 				'submit' => function ($url, $model, $key) {
-					return  in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_wimaker2']) ? Html::a('REVISE',
+					return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? Html::a('REVISE',
 							['/my-job/submit', 'id'=>$model->wi_id],
 							[
 									'title'=> in_array($model->wi_status, [1, 2, 13, 14]) ? '' : 'WI still in Workflow...',

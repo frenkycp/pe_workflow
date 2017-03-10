@@ -7,6 +7,10 @@ use yii\bootstrap\ActiveForm;
 /* @var $model \app\models\LoginForm */
 
 $this->title = 'Sign In';
+$this->registerCss('.login-box{width: 360px; margin: auto; padding-top: 160px; height: 720px;} 
+		.login-logo a{color: rgba(249, 249, 249, 0.5); font-size: 45px;} 
+		.login-logo{margin-bottom: 10px;} 
+		.login-box-body{opacity: 0.7}');
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -17,8 +21,10 @@ $fieldOptions2 = [
     'options' => ['class' => 'form-group has-feedback'],
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
-?>
 
+?>
+<div class="login-container" style="background-image: url(<?php echo Yii::$app->urlManager->baseUrl ?>/uploads/pict2.jpg); background-size: cover; background-position-y: -120px">
+<div style="background-color: rgba(0,0,0,0.6)">
 <div class="login-box">
     <div class="login-logo">
         <a href="#"><b>Workflow WI/WG</b></a>
@@ -68,3 +74,5 @@ $fieldOptions2 = [
     </div>
     <!-- /.login-box-body -->
 </div><!-- /.login-box -->
+</div>
+</div><!-- login-container -->
