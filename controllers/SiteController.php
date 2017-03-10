@@ -101,7 +101,7 @@ class SiteController extends Controller
 
             if($model->save()){
                 Yii::$app->session->addFlash("success", "Profile successfully updated.");
-                return $this->redirect(Url::previous());
+                return $this->redirect(['site/index']);
             }else{
                 Yii::$app->session->addFlash("danger", "Profile cannot updated.");
                 return $this->redirect(["profile"]);
