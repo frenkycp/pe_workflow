@@ -88,6 +88,7 @@ $this->params['breadcrumbs'][] = 'View';
     		'format' => 'raw',
     		'value' => $model->wi_file == null || $model->wi_file == '' ? $model->wi_filename : Html::a($model->wi_filename, Yii::$app->request->hostInfo . '/workflow/' . $model->wi_file),
     		],
+    		'purpose',
         //'flag',
     ],
     ]); ?>
