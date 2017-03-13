@@ -152,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		[
             'class' => 'kartik\grid\ActionColumn',
-				'width' => '110px',
+				'width' => '100px',
 			'header'=>'Actions',
 			'template' => $template,
 			'buttons'=>[
@@ -174,7 +174,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							[
 									'title'=> in_array($model->wi_status, [1, 2, 13, 14]) ? '' : 'WI still in Workflow...',
 									'data-confirm' => in_array($model->wi_status, [1, 2, 13, 14]) ? Yii::t('yii', 'Are you sure you want to revise WI ' . $model->wi_docno . ' ?') : false,
-									'class' => 'btn btn-primary btn-sm',
+									'class' => 'btn btn-primary btn-xs',
 									'onclick' => in_array($model->wi_status, [1, 2, 13, 14]) ? '' : 'return false',
 									'disabled' => in_array($model->wi_status, [1, 2, 13, 14]) ? false : true,
 							]) : "";
@@ -183,7 +183,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) & Yii::$app->controller->id == 'my-job' ? 
 					Html::a('OK', ['authorize', 'id'=>$model->wi_id], [
 							//'title'=>'Authorize', 
-							'class' => 'btn btn-success btn-sm',
+							'class' => 'btn btn-success btn-xs',
 							'style' => 'margin-left: 5px;',
 							'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
 					]) : "";
@@ -219,7 +219,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					 		['reject', 'id'=>$model->wi_id],
 					 		[
 					 				//'title'=>'Reject',
-					 				'class' => 'btn btn-danger btn-sm',
+					 				'class' => 'btn btn-danger btn-xs',
 					 				'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
 					 		]) : "";
 					 //return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
@@ -343,7 +343,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						{
 							$labelClass = 'bg-yellow';
 						}
-						return '<span style="padding: 5px 15px;" class="' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
+						return '<span style="padding: 1px 15px;" class="' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
             		},
 					'hAlign' => 'center',
 					'vAlign' => 'middle',
