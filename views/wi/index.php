@@ -104,6 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= GridView::widget([
                 'layout' => '{items} {summary} {pager}',
                 'dataProvider' => $dataProvider,
+                		'resizableColumns'=>false,
                 'pager'        => [
                     'class'          => yii\widgets\LinkPager::className(),
                     'firstPageLabel' => 'First',
@@ -151,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		[
             'class' => 'kartik\grid\ActionColumn',
-				'width' => '80px',
+				'width' => '110px',
 			'header'=>'Actions',
 			'template' => $template,
 			'buttons'=>[
@@ -180,8 +181,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				},
 				'authorize' => function ($url, $model, $key) {
 					return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) & Yii::$app->controller->id == 'my-job' ? 
-					Html::a('<span class="glyphicon glyphicon-check" style="padding-left: 5px;"></span>', ['authorize', 'id'=>$model->wi_id], [
-							'title'=>'Authorize', 
+					Html::a('OK', ['authorize', 'id'=>$model->wi_id], [
+							//'title'=>'Authorize', 
+							'class' => 'btn btn-success btn-sm',
+							'style' => 'margin-left: 5px;',
 							'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
 					]) : "";
 				},
@@ -212,10 +215,11 @@ $this->params['breadcrumbs'][] = $this->title;
 				}, */
 				'reject' => function ($url, $model, $key) {
 					 return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ? 
-					 Html::a('<span class="glyphicon glyphicon-alert" style="padding-left: 5px;"></span>',
+					 Html::a('REJECT',
 					 		['reject', 'id'=>$model->wi_id],
 					 		[
-					 				'title'=>'Reject',
+					 				//'title'=>'Reject',
+					 				'class' => 'btn btn-danger btn-sm',
 					 				'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
 					 		]) : "";
 					 //return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
@@ -258,7 +262,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'attribute' => 'wi_docno',
             'hAlign' => 'center',
-            'width'=>'100px',
+            'vAlign' => 'middle',
+            'width'=>'150px',
             'value' => function ($model)
             {
             	$wiDocno = $model->wi_docno;
@@ -273,7 +278,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 			'class' => '\kartik\grid\DataColumn',
 			'hAlign' => 'center',
-					'format' => 'raw',
+			'vAlign' => 'middle',
+			'format' => 'raw',
 			'attribute' => 'wi_model',
 			'value' => function ($model)
 			{
@@ -315,6 +321,7 @@ $this->params['breadcrumbs'][] = $this->title;
             	return $wiTitle;
             },
 			'hAlign' => 'center',
+			'vAlign' => 'middle',
 			'noWrap' => true,
 			'width' => '200px',
 			],
@@ -336,16 +343,18 @@ $this->params['breadcrumbs'][] = $this->title;
 						{
 							$labelClass = 'bg-yellow';
 						}
-						return '<span style="padding: 0.5px 15px;" class="' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
+						return '<span style="padding: 5px 15px;" class="' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
             		},
 					'hAlign' => 'center',
+					'vAlign' => 'middle',
 					'filter' => $wiStatusArr,
 					'noWrap' => true,
-					'width' => '250px',
+					'width' => '200px',
             ],
 			[
 			'class' => '\kartik\grid\DataColumn',
 			'hAlign' => 'center',
+			'vAlign' => 'middle',
 			'attribute' => 'wi_rev',
 			'value' => 'wi_rev',
 			'hidden' => false,
@@ -355,6 +364,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 			'class' => '\kartik\grid\DataColumn',
 			'hAlign' => 'center',
+			'vAlign' => 'middle',
 			'attribute' => 'wi_maker',
 			'value' => 'wi_maker',
 			'hidden' => false,

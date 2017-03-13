@@ -26,7 +26,7 @@ class WiHistory extends BaseWiHistory
 				'approved_date' => 'Approved Date',
 				'release_date' => 'Release Date',
 				'wi_rev' => 'Wi Rev',
-				'wi_maker_id' => 'Wi Maker ID',
+				'wi_maker_id' => 'Wi Maker',
 				'wi_filename' => 'Wi Filename',
 				'wi_file' => 'Wi File',
 				'flag' => 'Flag',
