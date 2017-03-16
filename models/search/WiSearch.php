@@ -48,7 +48,7 @@ public function search($params)
 $query = Wi::find();
 	if($params['index_type'] == 'open')
 	{
-		$query = Wi::find()->where(['<>', 'wi_status', [3, 13]]);
+		$query = Wi::find()->where(['not in', 'wi_status', [3, 13]]);
 	}
 	else if ($params['index_type'] == 'close')
 	{
