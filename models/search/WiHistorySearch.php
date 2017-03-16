@@ -69,10 +69,10 @@ $query->andFilterWhere([
         ]);
 
         $query->andFilterWhere(['like', 'wi_stagestat', $this->wi_stagestat])
-            ->andFilterWhere(['like', 'wi_rev', $this->wi_rev])
-            ->andFilterWhere(['like', 'wi_filename', $this->wi_filename])
-            ->andFilterWhere(['like', 'wi_file', $this->wi_file])
-            ->andFilterWhere(['like', 'purpose', $this->purpose])
+            ->andFilterWhere(['like', 'wi_history.wi_rev', $this->wi_rev])
+            ->andFilterWhere(['like', 'wi_history.wi_filename', $this->wi_filename])
+            ->andFilterWhere(['like', 'wi_history.wi_file', $this->wi_file])
+            ->andFilterWhere(['like', 'wi_history.purpose', $this->purpose])
             ->andFilterWhere(['like', 'wi.wi_docno', $this->wiDocno]);
 
 return $dataProvider;

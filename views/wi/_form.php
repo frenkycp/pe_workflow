@@ -51,7 +51,7 @@ use app\models\WiStatus;
 			<?= $form->field($model, 'wi_title')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
 			<?= $form->field($model, 'wi_stagestat')->textInput(['maxlength' => true]) ?>
 			<?= '';//$form->field($model, 'wi_status')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
-			<div class='row' style='<?php echo Yii::$app->controller->action->id == 'submit' ? 'display:none;' : ''?>'>
+			<div class='' style='<?php echo Yii::$app->controller->action->id == 'submit' ? 'display:none;' : ''?>'>
 			<?= $form->field($model, 'wi_status')->dropDownList(ArrayHelper::map(WiStatus::find()->where(['flag' => 1])->orderBy('status_name ASC')->all(), 'status_id', 'status_name')) ?>
 			</div>
 			

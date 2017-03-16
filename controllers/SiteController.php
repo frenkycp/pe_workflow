@@ -40,8 +40,8 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-		$wi_open = Wi::find()->where(['<>', 'wi_status', 13])->count();
-        $wi_close = Wi::find()->where(['wi_status' => 13])->count();
+		$wi_open = Wi::find()->where(['<>', 'wi_status', [3, 13]])->count();
+        $wi_close = Wi::find()->where(['wi_status' => [3, 13]])->count();
         $wi_wimaker = Wi::find()->where(['wi_status' => [1, 2, 14]])->count();
         //$wi_checkout = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKOUT])->count();
         //$wi_checkin = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKIN])->count();
