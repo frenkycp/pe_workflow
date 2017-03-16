@@ -198,6 +198,7 @@ class MyJobController extends Controller
 				$model->uploadFile = $model->oldAttributes['uploadFile'];
 			}
 			$model->wi_status = 4;
+			$model->wi_issue = NULL;
 			if($model->save()){
 				if(!empty($tmpFile)){
 					if(!$model->upload()){
@@ -247,6 +248,7 @@ class MyJobController extends Controller
 	public function actionReject($id)
 	{
 		$model = $this->findModel($id);
+		$model->wi_remark = \Yii::$app->user->identity->name;
 		$model->wi_status = 14;
 		if($model->save())
 		{

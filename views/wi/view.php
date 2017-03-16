@@ -67,7 +67,11 @@ $this->params['breadcrumbs'][] = 'View';
         
         
         'wi_stagestat',
-        'wiStatus.status_name',
+        //'wiStatus.status_name',
+    		[
+    				'attribute' => 'wi_status',
+    				'value' => $model->wi_status == 14 ? 'REJECTED BY ' . $model->wi_remark : $model->wiStatus->status_name,
+    ],
         'wi_issue',
 		[
 			'attribute'=>'wi_file',
