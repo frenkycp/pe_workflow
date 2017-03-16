@@ -169,20 +169,20 @@ $this->params['breadcrumbs'][] = 'View';
 
 	<?php $this->beginBlock('WiHistories'); ?> 
 <div style='position: relative'><div style='position:absolute; right: 0px; top 0px;'> 
- <?= Html::a( 
+ <?= ''; /* Html::a( 
            '<span class="glyphicon glyphicon-list"></span> ' . 'List All' . ' Wi Histories', 
            ['wi-history/index'], 
            ['class'=>'btn text-muted btn-xs'] 
-       ) ?> 
- <?= Html::a( 
+       ) */ ?> 
+ <?= '';/* Html::a( 
            '<span class="glyphicon glyphicon-plus"></span> ' . 'New' . ' Wi History', 
            ['wi-history/create', 'WiHistory' => ['wi_id' => $model->wi_id]], 
            ['class'=>'btn btn-success btn-xs'] 
-       ); ?> 
+       ); */ ?> 
 </div></div><?php Pjax::begin(['id'=>'pjax-WiHistories', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-WiHistories ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?> 
 <?= '<div class="table-responsive">' . kartik\grid\GridView::widget([ 
    'layout' => '{summary}{pager}<br/>{items}{pager}', 
-   'dataProvider' => new \yii\data\ActiveDataProvider(['query' => $model->getWiHistories(), 'pagination' => ['pageSize' => 20, 'pageParam'=>'page-wihistories']]), 
+   'dataProvider' => new \yii\data\ActiveDataProvider(['query' => $model->getWiHistories()->where(['flag' => 1]), 'pagination' => ['pageSize' => 20, 'pageParam'=>'page-wihistories']]), 
    'pager'       => [ 
        'class'         => yii\widgets\LinkPager::className(), 
        'firstPageLabel' => 'First', 
@@ -255,7 +255,7 @@ $this->params['breadcrumbs'][] = 'View';
                      		],
                      		[ 
 							   'content' => $this->blocks['WiHistories'], 
-							   'label'  => '<small>Wi Histories <span class="badge badge-default">'.count($model->getWiHistories()->asArray()->all()).'</span></small>', 
+							   'label'  => '<small>Wi Histories <span class="badge badge-default">'.count($model->getWiHistories()->where(['flag' => 1])->asArray()->all()).'</span></small>', 
 							   'active' => false, 
 							],
                      ]

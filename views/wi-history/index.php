@@ -77,7 +77,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
 
                         [
-            'class' => 'yii\grid\ActionColumn',
+            'class' => 'kartik\grid\ActionColumn',
+                        		'width' => '10%',
             'urlCreator' => function($action, $model, $key, $index) {
                 // using the column name as key, not mapping to 'id' like the standard generator
                 $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
@@ -90,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
 [
     'class' => kartik\grid\DataColumn::className(),
     'attribute' => 'wiDocno',
-		'width' => '20%',
+		'width' => '15%',
 		'hAlign' => 'center',
     'value' => function ($model) {
         if ($rel = $model->getWi()->one()) {
@@ -112,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					'attribute' => 'wi_maker_id',
 					'value' => 'user.name',
 					'hAlign' => 'center',
-					'width' => '15%',
+					'width' => '10%',
     ],
 			//'flag',
 			//'revised_date',
@@ -125,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					'attribute' => 'release_date',
 					'format' => 'datetime',
 					'hAlign' => 'center',
-					'width' => '20%',
+					'width' => '15%',
     ],
 			//'purpose',
 			[
@@ -143,8 +144,29 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 				return $model->purpose;
     		},
-			'width' => '40%',
+			'width' => '30%',
 			],
+			//'flag',
+			[
+				'attribute' => 'flag',
+				'format' => 'raw',
+					'hAlign' => 'center',
+					'vAlign' => 'middle',
+					'filter' => [1 => 'Active', 0 => 'Inactive'],
+					'label' => 'Status',
+					'width' => '12%',
+				'value' => function ($model)
+				{
+    				$labelClass = 'label label-danger';
+    				$label = 'Inactive';
+    				if($model->flag == 1)
+    				{
+    					$labelClass = 'label label-success';
+    					$label = 'Active';
+    				}
+    				return '<span class="' . $labelClass . '">' . $label . '</span>';
+    			}
+    		],
 			/*'wi_filename:ntext'*/
 			/*'wi_file:ntext'*/
 			/*'wi_stagestat'*/

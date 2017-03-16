@@ -58,7 +58,7 @@ $form->field($model, 'wi_maker_id')->dropDownList(
 			<?= ''; //$form->field($model, 'wi_filename')->textarea(['rows' => 6]) ?>
 			<?= ''; //$form->field($model, 'wi_file')->textarea(['rows' => 6]) ?>
 			<?= $form->field($model, 'purpose')->textarea(['rows' => 6, 'placeholder' => 'Insert "<br/>" in text for line break (Enter).']) ?>
-			<?= ''; //$form->field($model, 'flag')->textInput() ?>
+			<?= $form->field($model, 'flag')->dropDownList([1 => 'Active', 0 => 'Inactive'], ['prompt' => 'Select status...'])->label('Status') ?>
                 </p>
                 <?php $this->endBlock(); ?>
                 
