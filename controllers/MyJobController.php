@@ -209,6 +209,7 @@ class MyJobController extends Controller
 				if(!empty($tmp))
 				{
 					$wiHistory = $tmp;
+					$wiHistory->flag = 1;
 				}
 				$wiHistory->wi_id = $model->wi_id;
 				$wiHistory->wi_stagestat = $model->wi_stagestat;
