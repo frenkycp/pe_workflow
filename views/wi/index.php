@@ -172,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? Html::a('REVISE',
 							['/my-job/submit', 'id'=>$model->wi_id],
 							[
-									'title'=> in_array($model->wi_status, [1, 2, 13, 14]) ? '' : $model->wi_status == 3 ? 'WI Ending Model...' : 'WI still in Workflow...',
+									'title'=> in_array($model->wi_status, [1, 2, 3, 13, 14]) ? '' : 'WI still in Workflow...',
 									'data-confirm' => in_array($model->wi_status, [1, 2, 13, 14]) ? Yii::t('yii', 'Are you sure you want to revise WI ' . $model->wi_docno . ' ?') : false,
 									'class' => 'btn btn-primary btn-xs',
 									'onclick' => in_array($model->wi_status, [1, 2, 13, 14]) ? '' : 'return false',
