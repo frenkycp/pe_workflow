@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
 use app\models\User;
 use app\models\DocSection;
 use app\models\DocType;
+use app\models\Wi;
 
 /**
  * WiMasterlistController implements the CRUD actions for WiMasterlist model.
@@ -81,8 +82,31 @@ class WiMasterlistController extends Controller
 		$model = new WiMasterlist;
 
 		try {
-            if ($model->load($_POST) && $model->save()) {
-                return $this->redirect(Url::previous());
+            if ($model->load($_POST)) {
+            	if($model->save())
+            	{
+            		if($model->isAutoAdd == 1)
+            		{
+            			$section = DocSection::find($model->doc_section)->one();
+            			
+            			$newWI = new Wi();
+            			$newWI->wi_model = $model->speaker_model;
+            			$newWI->wi_section = $section->section_name;
+            			$newWI->wi_docno = $model->doc_no;
+            			$newWI->wi_title = $model->doc_title;
+            			$newWI->wi_status = 1;
+            			$newWI->wi_rev = '-1';
+            			$newWI->wi_maker = $model->pic->name;
+            			if(!$newWI->save())
+            			{
+            				return json_encode($newWI->errors);
+            			}
+            		}
+            		
+            		\Yii::$app->session->addFlash("success", "Document no " . $model->doc_no . " has been generated...");
+            		return $this->redirect(Url::previous());
+            	}
+                return json_encode($model->errors);
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }

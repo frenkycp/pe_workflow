@@ -11,6 +11,8 @@ use yii\helpers\ArrayHelper;
  */
 class WiMasterlist extends BaseWiMasterlist
 {
+	public $isAutoAdd;
+	
     public function attributeLabels()
     {
         return [
@@ -33,7 +35,7 @@ class WiMasterlist extends BaseWiMasterlist
     {
         return [
             [['doc_title', 'doc_class', 'speaker_model', 'doc_section', 'doc_type', 'pic_id'], 'required'],
-            [['doc_class', 'doc_section', 'doc_type', 'pic_id', 'user_id'], 'integer'],
+            [['doc_class', 'doc_section', 'doc_type', 'pic_id', 'user_id', 'isAutoAdd'], 'integer'],
             [['speaker_model'], 'string'],
             [['date_modified'], 'safe'],
             [['doc_no'], 'string', 'max' => 20],
