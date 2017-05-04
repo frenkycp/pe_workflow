@@ -18,8 +18,8 @@ class WiHistorySearch extends WiHistory
 public function rules()
 {
 return [
-[['id', 'wi_id', 'wi_maker_id', 'flag'], 'integer'],
-            [['wi_stagestat', 'revised_date', 'check1_date', 'check2_date', 'check3_date', 'approved_date', 'release_date', 'wi_rev', 'wi_filename', 'wi_file', 'purpose', 'wiDocno'], 'safe'],
+		[['id', 'wi_id', 'wi_maker_id', 'rejector_id', 'flag'], 'integer'],
+		[['wi_stagestat', 'revised_date', 'check1_date', 'check2_date', 'check3_date', 'approved_date', 'release_date', 'wi_rev', 'wi_filename', 'wi_file', 'purpose', 'reject_date'], 'safe'],
 ];
 }
 
@@ -65,6 +65,8 @@ $query->andFilterWhere([
             'approved_date' => $this->approved_date,
             'release_date' => $this->release_date,
             'wi_maker_id' => $this->wi_maker_id,
+			'reject_date' => $this->reject_date,
+			'rejector_id' => $this->rejector_id,
             'flag' => $this->flag,
         ]);
 

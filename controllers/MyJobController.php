@@ -180,7 +180,7 @@ class MyJobController extends Controller
 	
 		if ($model->load($_POST)) {
 			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
-			$tmp = WiHistory::find()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one();
+			$tmp = WiHistory::find()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->orderBy('id DESC')->one();
 			if($tmp->release_date != NULL)
 			{
 				\Yii::$app->session->addFlash("warning", "This rev has been releashed on " . $tmp->release_date . ". Please check...!");
@@ -207,19 +207,19 @@ class MyJobController extends Controller
 				}
 				$wiHistory = new WiHistory();
 				
-				if(!empty($tmp))
+				/* if(!empty($tmp))
 				{
 					$wiHistory = $tmp;
 					$wiHistory->flag = 1;
-				}
+				} */
 				$wiHistory->wi_id = $model->wi_id;
 				$wiHistory->wi_stagestat = $model->wi_stagestat;
 				$wiHistory->revised_date = date('Y-m-d H:i:s');
-				$wiHistory->check1_date = NULL;
-				$wiHistory->check2_date = NULL;
-				$wiHistory->check3_date = NULL;
-				$wiHistory->approved_date = NULL;
-				$wiHistory->release_date = NULL;
+				//$wiHistory->check1_date = NULL;
+				//$wiHistory->check2_date = NULL;
+				//$wiHistory->check3_date = NULL;
+				//$wiHistory->approved_date = NULL;
+				//$wiHistory->release_date = NULL;
 				$wiHistory->wi_rev = $model->wi_rev;
 				$wiHistory->wi_maker_id = \Yii::$app->user->identity->getId();
 				$wiHistory->wi_file = $model->wi_file;
@@ -247,13 +247,26 @@ class MyJobController extends Controller
 	
 	public function actionReject($id)
 	{
+		date_default_timezone_set ('Asia/Jakarta');
 		$model = $this->findModel($id);
-		$model->wi_remark = \Yii::$app->user->identity->name;
+		//$model->wi_remark = \Yii::$app->user->identity->name;
 		$model->wi_status = 14;
+		
+		$wiHistory = WiHistory::find()->where(['wi_id' => $model->wi_id])->orderBy('id DESC')->one();
 		if($model->save())
 		{
-			\Yii::$app->session->addFlash("danger", "WI " . $model->wi_docno . " Rev. " . $model->wi_rev . " has been rejected...");
-			return $this->redirect(Url::previous());
+			$wiHistory->reject_date = date('Y-m-d H:i:s');
+			$wiHistory->rejector_id = \Yii::$app->user->identity->getId();
+			if($wiHistory->save())
+			{
+				\Yii::$app->session->addFlash("danger", "WI " . $model->wi_docno . " Rev. " . $model->wi_rev . " has been rejected...");
+				return $this->redirect(Url::previous());
+			}else{
+				return json_encode($wiHistory->errors);
+			}
+			
+		}else{
+			return json_encode($model->errors);
 		}
 	} 
 	

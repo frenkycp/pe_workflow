@@ -45,6 +45,10 @@ use yii\widgets\ActiveForm;
 
 		<?php // echo $form->field($model, 'purpose') ?>
 
+		<?php // echo $form->field($model, 'reject_date') ?>
+
+		<?php // echo $form->field($model, 'rejector_id') ?>
+
 		<?php // echo $form->field($model, 'flag') ?>
 
 		<div class="form-group">

@@ -21,9 +21,9 @@ use Yii;
  * @property string $wi_filename
  * @property string $wi_file
  * @property string $purpose
+ * @property string $reject_date
+ * @property integer $rejector_id
  * @property integer $flag
- *
- * @property \app\models\Wi $wi
  */
 class WiHistory extends \yii\db\ActiveRecord
 {
@@ -45,8 +45,8 @@ class WiHistory extends \yii\db\ActiveRecord
     {
         return [
             [['wi_id', 'wi_rev', 'wi_maker_id'], 'required'],
-            [['wi_id', 'wi_maker_id', 'flag'], 'integer'],
-            [['revised_date', 'check1_date', 'check2_date', 'check3_date', 'approved_date', 'release_date'], 'safe'],
+            [['wi_id', 'wi_maker_id', 'rejector_id', 'flag'], 'integer'],
+            [['revised_date', 'check1_date', 'check2_date', 'check3_date', 'approved_date', 'release_date', 'reject_date'], 'safe'],
             [['wi_filename', 'wi_file', 'purpose'], 'string'],
             [['wi_stagestat'], 'string', 'max' => 5],
             [['wi_rev'], 'string', 'max' => 3]
@@ -73,22 +73,22 @@ class WiHistory extends \yii\db\ActiveRecord
             'wi_filename' => 'Wi Filename',
             'wi_file' => 'Wi File',
             'purpose' => 'Purpose',
+            'reject_date' => 'Reject Date',
+            'rejector_id' => 'Rejector ID',
             'flag' => 'Flag',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getWi()
     {
-        return $this->hasOne(\app\models\Wi::className(), ['wi_id' => 'wi_id']);
+    	return $this->hasOne(\app\models\Wi::className(), ['wi_id' => 'wi_id']);
     }
-
-
     public function getWiRemarks()
     {
     	return $this->hasMany(\app\models\WiRemark::className(), ['history_id' => 'id']);
     }
-
+    public function getRejector()
+    {
+    	return $this->hasOne(\app\models\User::className(), ['id' => 'rejector_id']);
+    }
 }

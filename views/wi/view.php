@@ -53,6 +53,20 @@ $this->params['breadcrumbs'][] = 'View';
 
 
     <?php $this->beginBlock('app\models\Wi'); ?>
+    
+    <?php 
+    if(!empty($wiHistory))
+    {
+    	$rejector = 'REJECTED BY ' . $wiHistory->rejector->name . ' ON ' . strtoupper(date('d-M-Y', strtotime($wiHistory->reject_date)));
+    }else{
+    	$rejector = 'REJECTED';
+    	if($model->wi_remark <> '')
+    	{
+    		$rejector = 'REJECTED BY ' . $model->wi_remark;
+    	}
+    	
+    }
+    ?>
 
     <?= DetailView::widget([
     'model' => $model,
@@ -70,7 +84,7 @@ $this->params['breadcrumbs'][] = 'View';
         //'wiStatus.status_name',
     		[
     				'attribute' => 'wi_status',
-    				'value' => $model->wi_status == 14 ? 'REJECTED BY ' . $model->wi_remark : $model->wiStatus->status_name,
+    				'value' => $model->wi_status == 14 ? $rejector : $model->wiStatus->status_name,
     ],
         'wi_issue',
 		[
@@ -223,12 +237,52 @@ $this->params['breadcrumbs'][] = 'View';
    'label' => 'WI Maker',
    //'hidden' => true,
    ],
-		'revised_date', 
-		'check1_date', 
-		'check2_date', 
-		'check3_date', 
-		'approved_date', 
-		'release_date', 
+		//'revised_date',
+		[
+		'attribute' => 'revised_date',
+		'format' => ['date', 'php:d-M-Y'],
+		'label' => 'Revised',
+   		],
+		//'check1_date', 
+		[
+		'attribute' => 'check1_date',
+		'format' => ['date', 'php:d-M-Y'],
+		'label' => 'Masterlist Check',
+		],
+		//'check2_date', 
+		[
+		'attribute' => 'check2_date',
+		'format' => ['date', 'php:d-M-Y'],
+		'label' => 'SMILE Check',
+		],
+		//'check3_date', 
+		[
+		'attribute' => 'check3_date',
+		'format' => ['date', 'php:d-M-Y'],
+		'label' => 'Final Check',
+		],
+		//'approved_date', 
+		[
+		'attribute' => 'approved_date',
+		'format' => ['date', 'php:d-M-Y'],
+		'label' => 'Approved',
+		],
+		//'release_date', 
+		[
+		'attribute' => 'release_date',
+		'format' => ['date', 'php:d-M-Y'],
+		'label' => 'Release',
+		],
+		[
+		'attribute' => 'reject_date',
+		'format' => ['date', 'php:d-M-Y'],
+		'label' => 'Reject',
+		],
+		[
+		'attribute' => 'rejector_id',
+		'value' => 'rejector.name',
+		'label' => 'Reject By',
+		],
        [
        		'attribute' => 'linkedRemark',
        		'format' => 'raw',

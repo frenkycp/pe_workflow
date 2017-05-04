@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use dmstr\bootstrap\Tabs;
 use app\models\User;
 use yii\web\UploadedFile;
+use app\models\WiHistory;
 
 /**
  * WiController implements the CRUD actions for Wi model.
@@ -59,9 +60,11 @@ class WiController extends Controller
         \Yii::$app->session['__crudReturnUrl'] = Url::previous();
         Url::remember();
         Tabs::rememberActiveState();
+        $wiHistory = WiHistory::find()->where(['wi_id' => $wi_id])->andWhere(['not',['rejector_id' => 'null']])->orderBy('id DESC')->one();
 
         return $this->render('view', [
 			'model' => $this->findModel($wi_id),
+        		'wiHistory' => $wiHistory,
 		]);
 	}
 
