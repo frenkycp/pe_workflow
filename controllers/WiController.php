@@ -134,26 +134,26 @@ class WiController extends Controller
 			}else{
 				$model->uploadFile = $model->oldAttributes['uploadFile'];
 			}
-			if($model->wi_status == 14)
-			{
-				$wiHistory = $model->getWiHistories()->where(['wi_rev' => $model->wi_rev])->orderBy('id DESC')->one();
-				if(!empty($wiHistory))
-				{
-					$wiHistory->reject_date = date('Y-m-d H:i:s');
-					$wiHistory->rejector_id = \Yii::$app->user->identity->getId();
-					if(!$wiHistory->save())
-					{
-						return json_encode($wiHistory->errors);
-					}
-				}else{
-					$model->wi_remark = \Yii::$app->user->identity->name;
-				}
-					
-			}
+			
 			if($model->save()){
 				if(!empty($tmpFile)){
 					if(!$model->upload()){
 						return $model->errors;
+					}
+					if($model->wi_status == 14)
+					{
+						$wiHistory = $model->getWiHistories()->where(['wi_rev' => $model->wi_rev])->orderBy('id DESC')->one();
+						if(!empty($wiHistory))
+						{
+							$wiHistory->reject_date = date('Y-m-d H:i:s');
+							$wiHistory->rejector_id = \Yii::$app->user->identity->getId();
+							if(!$wiHistory->save())
+							{
+								return json_encode($wiHistory->errors);
+							}
+						}/* else{
+						$model->wi_remark = \Yii::$app->user->identity->name;
+						} */
 					}
 				}
 				
