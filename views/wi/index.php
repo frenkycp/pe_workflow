@@ -6,6 +6,7 @@ use kartik\grid\GridView;
 use app\models\Wi;
 use yii\helpers\ArrayHelper;
 use app\models\WiStatus;
+use app\models\WiRequest;
 
 /**
 * @var yii\web\View $this
@@ -71,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     	}else{
                     		if(Yii::$app->controller->id == 'wi')
                     		{
-                    			$template = '';
+                    			$template = '{request}';
                     			if(Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'])
                     			{
                     				$template = '{take_job} {submit}';
@@ -164,10 +165,11 @@ $this->params['breadcrumbs'][] = $this->title;
 									'data-confirm' => Yii::t('yii', 'Are you sure you want to process this item?'),
 							]) : '';
 				},
-				/* 'revise' => function ($url, $model, $key) {
-					return in_array($model->wi_status, [1, 13, 14]) && (Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker']) ?
-					Html::a('<span class="glyphicon glyphicon-edit" style="padding-left: 5px;"></span>', ['revise', 'id'=>$model->wi_id], ['title'=>'Revise']) : "";
-				}, */
+				'request' => function ($url, $model, $key) {
+					return strtoupper(Yii::$app->user->identity->role->name) == 'PROD. ADMIN' ? Html::a('REQUEST',
+							['/wi-request/create', 'wi_id' => $model->wi_id], 
+							['class' => 'btn btn-primary btn-xs']) : '';
+				},
 				'submit' => function ($url, $model, $key) {
 					return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? Html::a('REVISE',
 							['/my-job/submit', 'id'=>$model->wi_id],
@@ -188,31 +190,6 @@ $this->params['breadcrumbs'][] = $this->title;
 							'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
 					]) : "";
 				},
-				/* 'check_masterlist' => function ($url, $model, $key) {
-					return $model->wi_status == 3  && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'] ?
-					Html::a('<span class="glyphicon glyphicon-list-alt" style="padding-left: 5px;"></span>', ['check-masterlist', 'id'=>$model->wi_id],['title'=>'Check Masterlist']) : "";
-					//return $model->wi_status == Wi::$_STATUS_CHECKIN  && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'] ? Html::a('<span class="glyphicon glyphicon-pushpin" style="padding-left: 5px;"></span>', ['check-masterlist', 'id'=>$model->wi_id],['title'=>'Check Masterlist']) : "";
-				}, 
-				'check_smile' => function ($url, $model, $key) {
-					return $model->wi_status == Wi::$_STATUS_CHECK_MASTERLIST && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin2'] ? Html::a('<span class="glyphicon glyphicon-hdd" style="padding-left: 5px;"></span>', ['check-smile', 'id'=>$model->wi_id],['title'=>'Check SMILE']) : "";
-					//return $model->wi_status == Wi::$_STATUS_CHECK_MASTERLIST && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin2'] ? Html::a('<span class="glyphicon glyphicon-pushpin" style="padding-left: 5px;"></span>', ['check-smile', 'id'=>$model->wi_id],['title'=>'Check SMILE']) : "";
-				},
-				'final_check' => function ($url, $model, $key) {
-					return $model->wi_status == Wi::$_STATUS_CHECK_SMILE && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_checker'] ? Html::a('<span class="glyphicon glyphicon-scale" style="padding-left: 5px;"></span>', ['final-check', 'id'=>$model->wi_id],['title'=>'Final Check']) : "";
-					//return $model->wi_status == Wi::$_STATUS_CHECK_SMILE && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_checker'] ? Html::a('<span class="glyphicon glyphicon-pushpin" style="padding-left: 5px;"></span>', ['final-check', 'id'=>$model->wi_id],['title'=>'Final Check']) : "";
-				},
-				'waiting_app' => function ($url, $model, $key) {
-					return $model->wi_status == Wi::$_STATUS_CHECK_FINAL && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-hourglass" style="padding-left: 5px;"></span>', ['waiting-approval', 'id'=>$model->wi_id],['title'=>'Waiting Approval']) : "";
-				},
-				'waiting_dist' => function ($url, $model, $key) {
-					return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'] ? Html::a('<span class="glyphicon glyphicon-hourglass" style="padding-left: 5px;"></span>', ['waiting-distribution', 'id'=>$model->wi_id],['title'=>'Waiting Distribution']) : "";
-				},
-				'close_wi' => function ($url, $model, $key) {
-					return $model->wi_status == Wi::$_STATUS_WAITING_DIST && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'] ? Html::a('<span class="glyphicon glyphicon-ok" style="padding-left: 5px;"></span>', ['closing-wi', 'id'=>$model->wi_id],['title'=>'Close']) : "";
-				}, */
-				/* 'approval' => function ($url, $model, $key) {
-					return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] && $_GET['index_type'] == 'my_job' ? Html::a('<span class="glyphicon glyphicon-thumbs-up" style="padding-left: 5px;"></span>', ['approval', 'id'=>$model->wi_id],['title'=>'Approve']) : "";
-				}, */
 				'reject' => function ($url, $model, $key) {
 					 return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ? 
 					 Html::a('REJECT',
@@ -272,7 +249,7 @@ $this->params['breadcrumbs'][] = $this->title;
             	{
             		$wiDocno = substr($model->wi_docno, 0, 11) . '...';
             	} */
-            	return Html::a($wiDocno, ['wi/view', 'wi_id' => $model->wi_id], ['title' => $model->wi_docno]);
+            	return Html::a($wiDocno, ['wi/view', 'wi_id' => $model->wi_id], ['title' => $model->wi_docno, 'style' => 'font-weight: bold;']);
             },
             'filter' => $sectionDropdown,
             ],
@@ -373,7 +350,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'width' => '100px',
 			],
 			//'wi_dcn:ntext',
-			[
+			/* [
 			'class' => '\kartik\grid\DataColumn',
 			'hAlign' => 'center',
 			'attribute' => 'wi_dcn',
@@ -381,7 +358,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'hidden' => true,
 			'noWrap' => true,
 			'width' => '100px',
-			],
+			], */
 			/*'wi_filename:ntext',
 			'wi_file:ntext',
 			'wi_filename2:ntext',
