@@ -71,7 +71,4 @@ class User extends \yii\db\ActiveRecord
         return $this->hasOne(\app\models\Role::className(), ['id' => 'role_id']);
     }
 
-
-
-
 }

@@ -67,7 +67,7 @@ class MyJobController extends Controller
 	{
 		date_default_timezone_set ('Asia/Jakarta');
 		$model = $this->findModel($id);
-		$wiHistory = WiHistory::find()->where(['wi_id' => $model->wi_id])->orderBy('id DESC')->one();
+		$wiHistory = WiHistory::find()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->orderBy('id DESC')->one();
 		$status = $model->wi_status;
 		if($status == 4)
 		{
@@ -87,7 +87,7 @@ class MyJobController extends Controller
 		else if($status == 10)
 		{
 			$model->wi_status = 12;
-			$wiHistory = $model->getWiHistories()->where(['wi_rev' => $model->wi_rev])->one();
+			//$wiHistory = $model->getWiHistories()->where(['wi_rev' => $model->wi_rev])->one();
 			WiRemark::updateAll(['status' => 1], ['status' => 0, 'flag' =>1, 'history_id' => $wiHistory->id]);
 			$wiHistory->approved_date = date('Y-m-d H:i:s');
 		}

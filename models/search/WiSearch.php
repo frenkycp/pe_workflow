@@ -129,19 +129,9 @@ $query = Wi::find();
 			$query = Wi::find()->where(['wi_status' => 9]);
 		}
 	}
-	$query->orderBy(['wi_issue' => SORT_DESC]);
-/* if(strtolower(Yii::$app->user->identity->role->name) == "wi maker"){
-	$query = Wi::find()->where(['wi_status' => 'OPEN']);
-}else if(strtolower(Yii::$app->user->identity->role->name) == "pe admin 1"){
-	$query = Wi::find()->where(['wi_status' => 'CHECK MASTERLIST']);
-}else if(strtolower(Yii::$app->user->identity->role->name) == "pe admin 2"){
-	$query = Wi::find()->where(['wi_status' => 'CHECK SMILE UPDATE']);
-}else if(strtolower(Yii::$app->user->identity->role->name) == "checker"){
-	$query = Wi::find()->where(['wi_status' => 'CHECK 1']);
-}else if(strtolower(Yii::$app->user->identity->role->name) == "approval"){
-	$query = Wi::find()->where(['wi_status' => 'APPROVAL']);
-} */
-
+	
+	$query->orderBy(['wi_docno' => SORT_ASC]);
+	
 $dataProvider = new ActiveDataProvider([
 	'query' => $query,
 	'pagination' => [
@@ -166,6 +156,7 @@ $query->andFilterWhere([
         $query->andFilterWhere(['like', 'wi_model', $this->wi_model])
             ->andFilterWhere(['like', 'wi_section', $this->wi_section])
             ->andFilterWhere(['like', 'wi_docno', $this->wi_docno])
+            ->andFilterWhere(['<>', 'wi_docno', '-'])
             ->andFilterWhere(['like', 'wi_title', $this->wi_title])
             ->andFilterWhere(['like', 'wi_stagestat', $this->wi_stagestat])
             ->andFilterWhere(['like', 'wi_status', $this->wi_status])

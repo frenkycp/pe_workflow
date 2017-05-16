@@ -40,6 +40,10 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+    	if(strtoupper(\Yii::$app->user->identity->role->name) == 'PROD. ADMIN')
+    	{
+    		return $this->render('index2');
+    	}
 		$wi_open = Wi::find()->where(['not in', 'wi_status', [3, 13]])->count();
         $wi_close = Wi::find()->where(['wi_status' => [3, 13]])->count();
         $wi_wimaker = Wi::find()->where(['wi_status' => [1, 2, 14]])->count();

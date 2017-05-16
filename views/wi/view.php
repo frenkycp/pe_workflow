@@ -294,6 +294,87 @@ $this->params['breadcrumbs'][] = 'View';
 ]) . '</div>' ?> 
 <?php Pjax::end() ?> 
 <?php $this->endBlock() ?>
+
+<?php $this->beginBlock('WiRequest'); ?> 
+<div style='position: relative'><div style='position:absolute; right: 0px; top 0px;'> 
+ <?= ''; /* Html::a( 
+           '<span class="glyphicon glyphicon-list"></span> ' . 'List All' . ' Wi Histories', 
+           ['wi-history/index'], 
+           ['class'=>'btn text-muted btn-xs'] 
+       ) */ ?> 
+ <?= '';/* Html::a( 
+           '<span class="glyphicon glyphicon-plus"></span> ' . 'New' . ' Wi History', 
+           ['wi-history/create', 'WiHistory' => ['wi_id' => $model->wi_id]], 
+           ['class'=>'btn btn-success btn-xs'] 
+       ); */ ?> 
+</div></div><?php Pjax::begin(['id'=>'pjax-WiRequest', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-WiRequest ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?> 
+<?= '<div class="table-responsive">' . kartik\grid\GridView::widget([ 
+   'layout' => '{summary}{pager}<br/>{items}{pager}', 
+   'dataProvider' => new \yii\data\ActiveDataProvider(['query' => $model->getWiRequest()->where(['flag' => 1]), 'pagination' => ['pageSize' => 20, 'pageParam'=>'page-wihistories']]), 
+   'pager'       => [ 
+       'class'         => yii\widgets\LinkPager::className(), 
+       'firstPageLabel' => 'First', 
+       'lastPageLabel' => 'Last' 
+   ], 
+   'columns' => [[ 
+   'class'     => 'kartik\grid\ActionColumn', 
+   'template'  => '{view} {update}', 
+   		'width' => '100px',
+   'contentOptions' => ['nowrap'=>'nowrap'], 
+   'urlCreator' => function ($action, $model, $key, $index) { 
+       // using the column name as key, not mapping to 'id' like the standard generator 
+       $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key]; 
+       $params[0] = 'wi-history' . '/' . $action; 
+       return $params; 
+   }, 
+   'buttons'   => [ 
+        
+   ], 
+   'controller' => 'wi-request' 
+], 
+       //'id', 
+		//'wi_rev',
+   		//'linkedRev',
+   		[
+   				'attribute' => 'requestType',
+   				'hAlign' => 'center',
+   				'width' => '150px',
+   		],
+   		[
+		   		'attribute' => 'request_date',
+   				'format' => ['date', 'php:d-M-Y'],
+		   		'hAlign' => 'center',
+		   		'width' => '100px',
+   		],
+   		[
+   				'attribute' => 'requestor_id',
+   				'value' => 'requestor.name',
+   				'label' => 'Requestor',
+   				'hAlign' => 'center',
+   				'width' => '100px',
+   		],
+   		[
+		   		'attribute' => 'request_from',
+		   		'hAlign' => 'center',
+		   		'width' => '100px',
+   		],
+   		[
+		   		'attribute' => 'page_no',
+		   		'hAlign' => 'center',
+		   		'width' => '100px',
+   		],
+   		[
+		   		'attribute' => 'statusStr',
+   				'label' => 'Status',
+		   		'hAlign' => 'center',
+		   		'width' => '100px',
+   		],
+   		
+   
+] 
+]) . '</div>' ?> 
+<?php Pjax::end() ?> 
+<?php $this->endBlock() ?>
     
     <?= Tabs::widget(
                  [
@@ -306,16 +387,21 @@ $this->params['breadcrumbs'][] = 'View';
 							   'content' => $this->blocks['app\models\Wi'],
 							   'active' => true,
 							],
-                     		[
+                     		/* [
                      		'content' => $this->blocks['WiRemarks'],
-                     		'label'  => '<small>Wi Remark <span class="badge badge-default">'.count($model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one() != null ? $model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one()->getWiRemarks()->all() : []).'</span></small>',
+                     		'label'  => '<small>WI Remark <span class="badge badge-default">'.count($model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one() != null ? $model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one()->getWiRemarks()->all() : []).'</span></small>',
                      		'active' => false,
-                     		],
+                     		], */
                      		[ 
 							   'content' => $this->blocks['WiHistories'], 
-							   'label'  => '<small>Wi Histories <span class="badge badge-default">'.count($model->getWiHistories()->where(['flag' => 1])->asArray()->all()).'</span></small>', 
+							   'label'  => '<small>WI Histories <span class="badge badge-default">'.count($model->getWiHistories()->where(['flag' => 1])->asArray()->all()).'</span></small>', 
 							   'active' => false, 
 							],
+                     		[
+                     		'content' => $this->blocks['WiRequest'],
+                     		'label'  => '<small>WI Request <span class="badge badge-default">'.count($model->getWiRequest()->where(['flag' => 1])->asArray()->all()).'</span></small>',
+                     		'active' => false,
+                     		],
                      ]
                 ]
     );

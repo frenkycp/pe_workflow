@@ -98,5 +98,9 @@ class Wi extends \yii\db\ActiveRecord
     	return $this->hasMany(\app\models\WiHistory::className(), ['wi_id' => 'wi_id']);
     }
 
+    public function getWiRequest()
+    {
+    	return $this->hasMany(\app\models\WiRequest::className(), ['wi_id' => 'wi_id']);
+    }
 
 }
