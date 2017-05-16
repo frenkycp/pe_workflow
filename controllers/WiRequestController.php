@@ -133,6 +133,19 @@ class WiRequestController extends Controller
 		}
         return $this->render('create', ['model' => $model]);
 	}
+	
+	public function actionClosing($id)
+	{
+		$model = $this->findModel($id);
+		$wi = $model->getWi()->one();
+		$model->status = 1;
+		if(!$model->save())
+		{
+			return json_encode($model->errors);
+		}
+		\Yii::$app->session->addFlash("success", "Request for Document no.  " . $wi->wi_docno . " on " . date('d-M-Y', strtotime($model->request_date)) . " has been closed...");
+		return $this->redirect(Url::previous());
+	}
 
 	/**
 	 * Updates an existing WiRequest model.

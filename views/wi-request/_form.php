@@ -46,20 +46,25 @@ use kartik\widgets\DatePicker;
 			<?= $form->field($model, 'wi_docno', ['horizontalCssClasses' => [
         		'wrapper' => 'col-sm-3',
     		]])->textInput(['maxlength' => true, 'readonly' => true]) ?>
+    		
     		<?= $form->field($model, 'wi_model')->textarea(['rows' => 2, 'readonly' => true, 'style' => 'resize: none;']) ?>
+    		
     		<?= $form->field($model, 'wi_title', ['horizontalCssClasses' => [
         		'wrapper' => 'col-sm-4',
     		]])->textInput(['maxlength' => true, 'readonly' => true]) ?>
+    		
 			<?= $form->field($model, 'request_type', ['horizontalCssClasses' => [
         		'wrapper' => 'col-sm-3',
-    		]])->dropDownList([1 => 'CHANGE REQUEST', 2 => 'CONTROLLED COPY']) ?>
+    		]])->dropDownList([1 => 'CHANGE REQUEST', 2 => 'CONTROLLED COPY'], ['disabled' => $model->isNewRecord ? false : true]) ?>
+    		
     		<?= $form->field($model, 'requestor_name', ['horizontalCssClasses' => [
         		'wrapper' => 'col-sm-2',
-    		]])->textInput(['readonly' => true, 'value' => Yii::$app->user->identity->name]) ?>
+    		]])->textInput(['readonly' => true, 'value' => $model->isNewRecord ? Yii::$app->user->identity->name : $model->requestor->name]) ?>
+    		
 			<?= $form->field($model, 'request_from', ['horizontalCssClasses' => [
         		'wrapper' => 'col-sm-3',
     		]])->textInput(['maxlength' => true]) ?>
-			<?= '';//$form->field($model, 'request_date')->textInput() ?>
+    		
 			<div class="form-group field-wirequest-request_date">
 				<label class="control-label col-sm-3" for="wirequest-request_date">Request Date</label>
 				<div class="col-sm-3">

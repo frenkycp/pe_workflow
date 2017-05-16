@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'kartik\grid\ActionColumn',
 			'width' => '70px',
 			'header'=>'Actions',
-			'template' => strtolower(Yii::$app->user->identity->role->name) == 'prod. admin' ? '{view} {print}' : '{update} {view} {print}',
+			'template' => strtolower(Yii::$app->user->identity->role->name) == 'prod. admin' ? '{view} {print}' : '{view} {closing}',
 			'buttons' => [
 				'print' => function ($url, $model, $key) {
 					return Html::a('<span class="glyphicon glyphicon-print" style="padding-left: 5px;"></span>',
@@ -90,6 +90,15 @@ $this->params['breadcrumbs'][] = $this->title;
 							'target' => '_blank'
 						]
 					);
+				},
+				'closing' => function ($url, $model, $key) {
+				return Html::a('<span class="glyphicon glyphicon-check" style="padding-left: 5px;"></span>',
+						['closing', 'id' => $model->id],
+						[
+								'title' => 'Closing Request',
+								'data-confirm' => Yii::t('yii', 'Are you sure you want to close this request?'),
+						]
+						);
 				}
 			],
             'urlCreator' => function($action, $model, $key, $index) {
