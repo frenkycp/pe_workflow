@@ -96,6 +96,7 @@ class WiMasterlistController extends Controller
             			$newWI->wi_title = $model->doc_title;
             			$newWI->wi_status = 1;
             			$newWI->wi_rev = '-1';
+            			$newWI->wi_stagestat = 'TP';
             			$newWI->wi_maker = $model->pic->name;
             			if(!$newWI->save())
             			{

@@ -45,7 +45,7 @@ class SiteController extends Controller
     		return $this->render('index2');
     	}
 		$wi_open = Wi::find()->where(['not in', 'wi_status', [3, 13]])->count();
-        $wi_close = Wi::find()->where(['wi_status' => [3, 13]])->count();
+        $wi_close = Wi::find()->where(['wi_status' => [3, 13]])->andWhere("wi_docno <> '-'")->count();
         $wi_wimaker = Wi::find()->where(['wi_status' => [1, 2, 14]])->count();
         //$wi_checkout = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKOUT])->count();
         //$wi_checkin = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKIN])->count();

@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Wi;
+use app\models\WiHistory;
 
 /**
 * WiSearch represents the model behind the search form about `app\models\Wi`.
@@ -15,8 +16,6 @@ class WiSearch extends Wi
 /**
 * @inheritdoc
 */
-
-public $index_type;
 
 public function rules()
 {
@@ -45,68 +44,63 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = Wi::find();
+$query = Wi::find()->select('*, (SELECT wi_history.revised_date FROM wi_history WHERE wi_history.wi_id = wi.wi_id AND wi_history.wi_rev = wi.wi_rev ORDER BY wi_history.id ASC LIMIT 1) as revised_date');
 	if($params['index_type'] == 'open')
 	{
-		$query = Wi::find()->where(['not in', 'wi_status', [3, 13]]);
+		$query = $query->where(['not in', 'wi_status', [3, 13]]);
 	}
 	else if ($params['index_type'] == 'close')
 	{
-		$query = Wi::find()->where(['wi_status' => [3, 13]]);
+		$query = $query->where(['wi_status' => [3, 13]]);
 	}
 	else if ($params['index_type'] == 'wi_maker')
 	{
-		$query = Wi::find()->where(['wi_status' => [1, 2, 3, 14]]);
+		$query = $query->where(['wi_status' => [1, 2, 3, 14]]);
 	}
 	else if ($params['index_type'] == 'check_masterlist')
 	{
-		$query = Wi::find()->where(['wi_status' => [4, 5]]);
+		$query = $query->where(['wi_status' => [4, 5]]);
 	}
 	else if ($params['index_type'] == 'check_smile')
 	{
-		$query = Wi::find()->where(['wi_status' => [6, 7]]);
+		$query = $query->where(['wi_status' => [6, 7]]);
 	}
 	else if ($params['index_type'] == 'check1')
 	{
-		$query = Wi::find()->where(['wi_status' => [8, 9]]);
+		$query = $query->where(['wi_status' => [8, 9]]);
 	}
 	else if ($params['index_type'] == 'waiting_approval')
 	{
-		$query = Wi::find()->where(['wi_status' => [10, 11]]);
+		$query = $query->where(['wi_status' => [10, 11]]);
 	}
 	else if ($params['index_type'] == 'waiting_dist')
 	{
-		$query = Wi::find()->where(['wi_status' => 12]);
+		$query = $query->where(['wi_status' => 12]);
 	}
 	if (\Yii::$app->controller->id == 'my-job')
 	{
-		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_wimaker'])
+		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin1'])
 		{
-			//$query = Wi::find()->where(['wi_status' => [1, 2, 14]]);
-			$query = Wi::find();
-		}
-		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin1'])
-		{
-			$query = Wi::find()->where(['wi_status' => [4, 12]]);
+			$query = $query->where(['wi_status' => [4, 12]]);
 			if(isset($params['status']))
 			{
-				$query = Wi::find()->where(['wi_status' => $params['status']]);
+				$query = $query->where(['wi_status' => $params['status']]);
 			}
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin2'])
 		{
-			$query = Wi::find()->where(['wi_status' => 6]);
+			$query = $query->where(['wi_status' => 6]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_checker'])
 		{
-			$query = Wi::find()->where(['wi_status' => 8]);
+			$query = $query->where(['wi_status' => 8]);
 		}
 		else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_approval'])
 		{
-			$query = Wi::find()->where(['wi_status' => 10]);
+			$query = $query->where(['wi_status' => 10]);
 		}
 	}
-	if (\Yii::$app->controller->id == 'available-jobs')
+	/* if (\Yii::$app->controller->id == 'available-jobs')
 	{
 		if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_wimaker'])
 		{
@@ -128,15 +122,20 @@ $query = Wi::find();
 		{
 			$query = Wi::find()->where(['wi_status' => 9]);
 		}
-	}
+	} */
 	
-	$query->orderBy(['wi_docno' => SORT_ASC]);
+	//$query->orderBy(['wi.wi_rev' => SORT_DESC]);
 	
 $dataProvider = new ActiveDataProvider([
 	'query' => $query,
 	'pagination' => [
 		'pagesize' => 10,
 	],
+	'sort' => ['attributes' => [
+			'wi_docno',
+			'wi_model',
+			'revised_date',
+	]],
 ]);
 
 $this->load($params);

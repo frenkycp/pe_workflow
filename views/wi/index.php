@@ -7,6 +7,7 @@ use app\models\Wi;
 use yii\helpers\ArrayHelper;
 use app\models\WiStatus;
 use app\models\WiRequest;
+use app\models\WiHistory;
 
 /**
 * @var yii\web\View $this
@@ -153,7 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		[
             'class' => 'kartik\grid\ActionColumn',
-				'width' => '120px',
+				'width' => '130px',
 			'header'=>'Actions',
 			'template' => $template,
 			'buttons'=>[
@@ -349,6 +350,19 @@ $this->params['breadcrumbs'][] = $this->title;
 			'noWrap' => true,
 			'width' => '100px',
 			],
+			[
+				'attribute' => 'revised_date',
+					'value' => function ($model){
+            			if($model->revised_date == NULL)
+            			{
+            				return '<span class="text-yellow"><b><i>no history</i></span></b>';
+            			}
+						return date('d-M-Y', strtotime($model->revised_date));
+            		},
+            	'hAlign' => 'center',
+            	'vAlign' => 'middle',
+				'format' => 'raw',
+            ],
 			//'wi_dcn:ntext',
 			/* [
 			'class' => '\kartik\grid\DataColumn',
