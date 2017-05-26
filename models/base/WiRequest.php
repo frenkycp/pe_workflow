@@ -43,10 +43,10 @@ class WiRequest extends \yii\db\ActiveRecord
         return [
             [['wi_id', 'request_type', 'requestor_id', 'status', 'flag'], 'integer'],
             [['request_type', 'request_from', 'page_no', 'reason'], 'required'],
-            [['request_date', 'required_date'], 'safe'],
+        	[['request_date', 'required_date', 'closing_date'], 'safe'],
             [['request_from', 'reason'], 'string', 'max' => 20],
             [['page_no'], 'string', 'max' => 30],
-            [['change_item'], 'string']
+        	[['change_item'], 'string', 'max' => 100]
         ];
     }
 
@@ -62,6 +62,7 @@ class WiRequest extends \yii\db\ActiveRecord
             'request_from' => 'Request From',
             'request_date' => 'Request Date',
             'required_date' => 'Required Date',
+        	'closing_date' => 'Closing Date',
             'page_no' => 'Page No',
             'change_item' => 'Change Item',
             'reason' => 'Reason',

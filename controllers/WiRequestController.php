@@ -136,9 +136,11 @@ class WiRequestController extends Controller
 	
 	public function actionClosing($id)
 	{
+		date_default_timezone_set ('Asia/Jakarta');
 		$model = $this->findModel($id);
 		$wi = $model->getWi()->one();
 		$model->status = 1;
+		$model->closing_date = date('Y-m-d');
 		if(!$model->save())
 		{
 			return json_encode($model->errors);

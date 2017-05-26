@@ -69,34 +69,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     	
                     	if(in_array(\Yii::$app->user->identity->role_id, [1, 2]))
                     	{
-                    		$template = '{update} {delete}';
+                    		$template = '{view} {update} {delete}';
                     	}else{
                     		if(Yii::$app->controller->id == 'wi')
                     		{
-                    			$template = '{request}';
+                    			$template = '{view} {request}';
                     			if(Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'])
                     			{
-                    				$template = '{take_job} {submit}';
+                    				$template = '{take_job} {submit} {view}';
                     			}
                     		}else{
-                    			$template = '{submit} {reject} {authorize} {remark}';
+                    			//$template = '{submit} {reject} {authorize} {remark}&nbsp;&nbsp;&nbsp;{view}';
+                    			$template = '{view} {submit} {reject} {authorize}';
                     		}
                     	}
-                    /*
-						if(isset($_GET['index_type']))
-						{
-							if($_GET['index_type'] == 'open')
-							{
-								echo 'WI OPEN';
-							}
-							else if($_GET['index_type'] == 'my_job'){
-								echo 'MY JOB';
-							}
-						}
-						else
-						{
-							echo 'ALL WI LIST';
-						} */
 					?></i>
                 </h2>
             </div> -->
@@ -146,7 +132,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 								],
                 						]
                 				],
-                				GridView::EXCEL => [],
+                				GridView::EXCEL => [
+                						'filename' => 'WI_List_' . date('Ymd'),
+                				],
                 		],
                 'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
                 'headerRowOptions' => ['class'=>'x'],
@@ -154,8 +142,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		[
             'class' => 'kartik\grid\ActionColumn',
-				'width' => '130px',
+			'width' => '150px',
 			'header'=>'Actions',
+			'vAlign' => 'middle',
 			'template' => $template,
 			'buttons'=>[
 				'take_job' => function ($url, $model, $key) {
@@ -199,19 +188,36 @@ $this->params['breadcrumbs'][] = $this->title;
 					 				//'title'=>'Reject',
 					 				'class' => 'btn btn-danger btn-xs',
 					 				'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
+					 				
 					 		]) : "";
 					 //return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
 				},
 				'remark' => function ($url, $model, $key) {
 				//return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
 				return Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin2'] && Yii::$app->controller->id == 'my-job' ?
-				Html::a('<span class="glyphicon glyphicon-tags" style="padding-left: 5px;"></span>',
+				Html::a('REMARK',
+						['wi-remark/create', 'wi_id'=>$model->wi_id],
+						[
+							'class' => 'btn btn-primary btn-xs',
+							//'style' => 'margin-top: 8px;'
+							//'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
+						]) : "";
+				/* Html::a('<span class="glyphicon glyphicon-tags" style="padding-left: 5px;"></span>',
 						['wi-remark/create', 'wi_id'=>$model->wi_id],
 						[
 								'title'=>'Add Remark',
 								//'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
-						]) : "";
+						]) : ""; */
 						//return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
+				},
+				'view' => function ($url, $model, $key) {
+				//return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
+				return Html::a('VIEW',
+						['wi/view', 'wi_id'=>$model->wi_id],
+						[
+								'class' => 'btn btn-info btn-xs',
+								'style' => 'margin-right: 5px;',
+						]);
 				},
 				'download' => function ($url, $model, $key) {
 					if(($model->wi_status == Wi::$_STATUS_CHECKOUT && $model->wi_maker == Yii::$app->user->identity->name)
@@ -250,7 +256,8 @@ $this->params['breadcrumbs'][] = $this->title;
             	{
             		$wiDocno = substr($model->wi_docno, 0, 11) . '...';
             	} */
-            	return Html::a($wiDocno, ['wi/view', 'wi_id' => $model->wi_id], ['title' => $model->wi_docno, 'style' => 'font-weight: bold;']);
+            	return $wiDocno;
+            	//return Html::a($wiDocno, ['wi/view', 'wi_id' => $model->wi_id], ['title' => $model->wi_docno, 'style' => 'font-weight: bold;']);
             },
             'filter' => $sectionDropdown,
             ],
@@ -352,6 +359,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'revised_date',
+					'label' => '1st Upload',
 					'value' => function ($model){
             			if($model->revised_date == NULL)
             			{
@@ -361,6 +369,7 @@ $this->params['breadcrumbs'][] = $this->title;
             		},
             	'hAlign' => 'center',
             	'vAlign' => 'middle',
+            	'width' => '100px',
 				'format' => 'raw',
             ],
 			//'wi_dcn:ntext',

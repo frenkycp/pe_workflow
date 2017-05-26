@@ -93,7 +93,12 @@ CSS;
     	],
     	[
     		'attribute' => 'required_date',
-    		'value' => date('d-M-Y', strtotime($model->required_date)),
+    		'value' => $model->required_date == NULL ? '-' : date('d-M-Y', strtotime($model->required_date)),
+    	],
+    	[
+    		'attribute' => 'closing_date',
+    		'label' => 'Close Date',
+    		'value' => $model->closing_date == NULL ? '-' : date('d-M-Y', strtotime($model->closing_date)),
     	],
     	'request_from',
         'page_no',

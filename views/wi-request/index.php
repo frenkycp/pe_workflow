@@ -27,7 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="pull-right">
 
                                                     
-            <?= ''; /*
+            <?= '';
+            if(strtolower(Yii::$app->user->identity->role->name) == 'prod. admin')
+            {
+            	$template = '{view} {print}';
+            }
+            if(strtolower(Yii::$app->user->identity->role->name) == 'pe admin 1')
+            {
+            	$template = '{view} {closing}';
+            }
+            if(strtolower(Yii::$app->user->identity->role->name) == 'pe admin 2')
+            {
+            	$template = '{view} {update} {closing} {print}';
+            }
+            /*
             \yii\bootstrap\ButtonDropdown::widget(
                 [
                     'id'       => 'giiant-relations',
@@ -54,19 +67,20 @@ $this->params['breadcrumbs'][] = $this->title;
     
         <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <!-- <div class="panel panel-default"> -->
+            <!-- <div class="panel-heading">
                 <h2>
-                    <i><?= 'Wi Requests' ?></i>
+                    <i><?= ''; //Wi Requests' ?></i>
                 </h2>
-            </div>
+            </div> -->
 
-            <div class="panel-body">
+            <!-- <div class="panel-body"> -->
 
                 <div class="table-responsive">
                 <?= GridView::widget([
                 'layout' => '{summary}{pager}{items}{pager}',
                 'dataProvider' => $dataProvider,
+                		'resizableColumns'=>false,
                 'pager'        => [
                     'class'          => yii\widgets\LinkPager::className(),
                     'firstPageLabel' => 'First',
@@ -74,13 +88,50 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filterModel' => $searchModel,
                 'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
                 'headerRowOptions' => ['class'=>'x'],
+                		'panel' => [
+                				'type' => 'primary',
+                				'heading' => 'WI Request List',
+                				'before' => ' ',
+                				'after' => false,
+                		],
+                		'toolbar' => [
+                				'{export}',
+                				'{toggleData}'
+                		],
+                		'export' => [
+                				'target' => '_self',
+                				'fontAwesome'=>true,
+                		],
+                		'exportConfig' => [
+                				GridView::PDF => [
+                						'filename' => 'WI Request List',
+                						'config' => [
+                								'methods' => [
+                										'SetHeader' => [
+                												['odd' => $pdfHeader, 'even' => $pdfHeader]
+                										],
+                										'SetFooter' => [
+                												['odd' => $pdfFooter, 'even' => $pdfFooter]
+                										],
+                								],
+                								'options' => [
+                										'title' => 'WI Request List',
+                										'subject' => 'WI Request List',
+                										'keywords' => 'pdf, preceptors, export, other, keywords, here'
+                								],
+                						]
+                				],
+                				GridView::EXCEL => [
+                						'filename' => 'WI_Request_Form_List_' . date('Ymd'),
+                				],
+                		],
                 'columns' => [
 
                         [
             'class' => 'kartik\grid\ActionColumn',
-			'width' => '70px',
+			'width' => '90px',
 			'header'=>'Actions',
-			'template' => strtolower(Yii::$app->user->identity->role->name) == 'prod. admin' ? '{view} {print}' : '{view} {closing}',
+			'template' => $template,
 			'buttons' => [
 				'print' => function ($url, $model, $key) {
 					return Html::a('<span class="glyphicon glyphicon-print" style="padding-left: 5px;"></span>',
@@ -114,7 +165,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			    'attribute' => 'wi_docno',
 			    'value' => function ($model) {
 			        if ($rel = $model->getWi()->one()) {
-			            return Html::a($rel->wi_docno, ['wi/view', 'wi_id' => $rel->wi_id,], ['data-pjax' => 0]);
+			            return $rel->wi_docno;//Html::a($rel->wi_docno, ['wi/view', 'wi_id' => $rel->wi_id,], ['data-pjax' => 0]);
 			        } else {
 			            return '';
 			        }
@@ -255,9 +306,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ]); ?>
                 </div>
 
-            </div>
+            <!-- </div> -->
 
-        </div>
+        <!-- </div> -->
 
         <?php \yii\widgets\Pjax::end() ?>
 

@@ -102,7 +102,12 @@ use kartik\widgets\DatePicker;
 			</div>
 			<?= $form->field($model, 'page_no')->textInput(['maxlength' => true]) ?>
 			<?= $form->field($model, 'change_item')->textarea(['rows' => 5, 'style' => 'resize: none;', 'placeholder' => 'Add <br/> to add line break...']) ?>
-			<?= $form->field($model, 'reason')->dropDownList(['HILANG' => 'HILANG', 'RUSAK' => 'RUSAK', 'CORETAN/REVISI' => 'CORETAN/REVISI']) ?>
+			<?= $form->field($model, 'reason', ['horizontalCssClasses' => [
+	        		'wrapper' => 'col-sm-2',
+	    		]])->dropDownList(['HILANG' => 'HILANG', 'RUSAK' => 'RUSAK', 'CORETAN/REVISI' => 'CORETAN/REVISI']) ?>
+			<?= $model->isNewRecord ? '' : $form->field($model, 'status', ['horizontalCssClasses' => [
+	        		'wrapper' => 'col-sm-2',
+	    		]])->dropDownList([0 => 'OPEN', 1 => 'CLOSED']) ?>
     		<?= $form->field($model, 'requestor_id')->hiddenInput(['value' => $model->isNewRecord ? Yii::$app->user->identity->getId() : $model->requestor_id])->label(false); ?>
 			<?= ''; //$form->field($model, 'flag')->textInput() ?>
                 </p>
