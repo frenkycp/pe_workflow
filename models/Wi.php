@@ -29,6 +29,7 @@ class Wi extends BaseWi
 	public static $_STATUS_REJECT = 'REJECTED';
 	
 	public $revised_date;
+	public $release_date;
 	
 	public function attributeLabels()
     {
@@ -77,16 +78,6 @@ class Wi extends BaseWi
     	} else {
     		return false;
     	}
-    }
-    
-    public function getRevisedDate()
-    {
-    	$wiHistory = $this->getWiHistories()->where(['wi_rev' => $this->wi_rev])->orderBy('id DESC')->one();
-    	if(!empty($wiHistory))
-    	{
-    		return date('d-M-Y', strtotime($wiHistory->revised_date));
-    	}
-    	return '<i>no record</i>';
     }
     
     public static function getUploadPath()

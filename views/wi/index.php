@@ -358,41 +358,42 @@ $this->params['breadcrumbs'][] = $this->title;
 			'width' => '100px',
 			],
 			[
-				'attribute' => 'revised_date',
-					'label' => '1st Upload',
-					'value' => function ($model){
-            			if($model->revised_date == NULL)
-            			{
-            				return '<span class="text-yellow"><b><i>no history</i></span></b>';
-            			}
-						return date('d-M-Y', strtotime($model->revised_date));
-            		},
-            	'hAlign' => 'center',
-            	'vAlign' => 'middle',
-            	'width' => '100px',
-				'format' => 'raw',
+			'attribute' => 'revised_date',
+			'label' => 'WI Maker Issue',
+			'value' => function ($model){
+            	if($model->revised_date == NULL)
+            	{
+           			return '<span class="text-aqua"><b><i>no history</i></span></b>';
+           		}
+				return date('d-M-Y', strtotime($model->revised_date));
+           		//return date('Y-m-d H:i:s', strtotime($model->revised_date));
+           	},
+            'hAlign' => 'center',
+            'vAlign' => 'middle',
+            'width' => '100px',
+			'format' => 'raw',
             ],
-			//'wi_dcn:ntext',
-			/* [
-			'class' => '\kartik\grid\DataColumn',
-			'hAlign' => 'center',
-			'attribute' => 'wi_dcn',
-			'value' => 'wi_dcn',
-			'hidden' => true,
-			'noWrap' => true,
-			'width' => '100px',
-			], */
-			/*'wi_filename:ntext',
-			'wi_file:ntext',
-			'wi_filename2:ntext',
-			'wi_file2:ntext',*/
-			
-			/*'wi_stagestat'*/
-			/*'wi_status'*/
-			/*'wi_issue'*/
-			/*'wi_title'*/
-			/*'wi_maker'*/
-			/*'wi_rev'*/
+            [
+			'attribute' => 'release_date',
+			'label' => 'Release Date',
+			'value' => function ($model){
+				if($model->release_date == NULL)
+				{
+					if($model->revised_date != null)
+					{
+						return '<span class="text-light-blue"><b><i>in progress</i></span></b>';
+					}
+	           		return '<span class="text-aqua"><b><i>no history</i></span></b>';
+	           	}
+			return date('d-M-Y', strtotime($model->release_date));
+			//return date('Y-m-d H:i:s', strtotime($model->release_date));
+           	},
+           	'hAlign' => 'center',
+           	'vAlign' => 'middle',
+           	'hidden' => true,
+           	'width' => '90px',
+           	'format' => 'raw',
+            ],
                 ],
             ]); ?>
                 </div>

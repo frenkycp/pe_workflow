@@ -44,7 +44,9 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = Wi::find()->select('*, (SELECT wi_history.revised_date FROM wi_history WHERE wi_history.wi_id = wi.wi_id AND wi_history.wi_rev = wi.wi_rev ORDER BY wi_history.id ASC LIMIT 1) as revised_date');
+$query = Wi::find()->select('*,
+		(SELECT wi_history.revised_date FROM wi_history WHERE wi_history.wi_id = wi.wi_id AND wi_history.wi_rev = wi.wi_rev ORDER BY wi_history.id ASC LIMIT 1) as revised_date,
+		(SELECT wi_history.release_date FROM wi_history WHERE wi_history.wi_id = wi.wi_id AND wi_history.wi_rev = wi.wi_rev ORDER BY wi_history.id DESC LIMIT 1) as release_date');
 	if($params['index_type'] == 'open')
 	{
 		$query = $query->where(['not in', 'wi_status', [3, 13]]);
