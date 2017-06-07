@@ -10,7 +10,19 @@ use \app\models\base\WiRemark as BaseWiRemark;
  */
 class WiRemark extends BaseWiRemark
 {
+
+	public $wi_status;
 	
+	public function rules()
+    {
+        return [
+            [['user_id', 'history_id', 'status', 'flag', 'wi_status'], 'integer'],
+            //[['remark'], 'required'],
+            [['remark', 'feedback'], 'string'],
+            [['remark_date', 'feedback_date'], 'safe']
+        ];
+    }
+
 	public function attributeLabels()
 	{
 		return [

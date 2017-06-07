@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = 'View';
     <p class='pull-left' style="<?= in_array(Yii::$app->user->identity->role_id, [1, Yii::$app->params['roleid_admin2']]) ? '' : 'display:none;'?>">
         <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> ' . 'Edit', ['update', 'wi_id' => $model->wi_id],['class' => 'btn btn-info']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . 'New', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= '';//Html::a('<span class="glyphicon glyphicon-edit"></span> ' . 'Add Remark', ['wi-remark/create', 'wi_id' => $model->wi_id],['class' => 'btn btn-primary']) ?>
     </p>
     <p class="pull-right">
         <?= Html::a('<span class="glyphicon glyphicon-list"></span> ' . 'WI List', ['index'], ['class'=>'btn btn-default']) ?>
@@ -94,6 +95,14 @@ $this->params['breadcrumbs'][] = 'View';
 			'value' => $model->wi_file == null || $model->wi_file == '' ? $model->wi_filename : Html::a($model->wi_filename, Yii::$app->request->hostInfo . '/workflow/' . $model->wi_file),
 			//'value' => Html::a($model->wi_filename, 'http://pe12/workflow/' . $model->wi_file, ['style' => in_array($model->wi_status, ['OPEN', 'CLOSE']) ? '' : 'display: none;']),
 		],
+    		[
+    		'attribute'=>'wi_file2',
+    		'label' => 'DDC',
+    		'format'=>'raw',
+    		//'visible' => $model->wi_status == 13 || in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_superadmin']) ? true : false,
+    		'value' => $model->wi_file2 == null || $model->wi_file2 == '' ? '-' : Html::a($model->wi_filename2, Yii::$app->request->hostInfo . '/workflow/' . $model->wi_file2),
+    		//'value' => Html::a($model->wi_filename, 'http://pe12/workflow/' . $model->wi_file, ['style' => in_array($model->wi_status, ['OPEN', 'CLOSE']) ? '' : 'display: none;']),
+    		],
     		'wi_dcn:ntext',
         //'linkToFile',
     ],
@@ -162,21 +171,22 @@ $this->params['breadcrumbs'][] = 'View';
 				//'remark_date',
 				[
 				'attribute' => 'remark_date',
-				'format' => 'datetime',
+				'format' => ['date', 'php:d-M-Y'],
+				//'format' => 'datetime',
 				'hAlign' => 'center',
 				'vAlign' => 'middle',
-				'width' => '170px',
+				'width' => '150px',
 				],
         'remark:ntext',
         
-        'feedback:ntext',
+        //'feedback:ntext',
         [
         'attribute' => 'statusStr',
         'format' => 'raw',
         'hAlign' => 'center',
         'vAlign' => 'middle',
         'width' => '100px',
-        		'hidden' => true,
+        'hidden' => true,
         ],
         //'statusStr',
         //'flag',
@@ -387,11 +397,11 @@ $this->params['breadcrumbs'][] = 'View';
 							   'content' => $this->blocks['app\models\Wi'],
 							   'active' => true,
 							],
-                     		/* [
+                     		[
                      		'content' => $this->blocks['WiRemarks'],
                      		'label'  => '<small>WI Remark <span class="badge badge-default">'.count($model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one() != null ? $model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one()->getWiRemarks()->all() : []).'</span></small>',
                      		'active' => false,
-                     		], */
+                     		],
                      		[ 
 							   'content' => $this->blocks['WiHistories'], 
 							   'label'  => '<small>WI Histories <span class="badge badge-default">'.count($model->getWiHistories()->where(['flag' => 1])->asArray()->all()).'</span></small>', 

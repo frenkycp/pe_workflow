@@ -176,17 +176,18 @@ $this->params['breadcrumbs'][] = $this->title;
 					Html::a('OK', ['authorize', 'id'=>$model->wi_id], [
 							//'title'=>'Authorize', 
 							'class' => 'btn btn-success btn-xs',
-							'style' => 'margin-left: 5px;',
+							'style' => 'margin: 4px 2px;',
 							'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
 					]) : "";
 				},
 				'reject' => function ($url, $model, $key) {
 					 return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ? 
 					 Html::a('REJECT',
-					 		['reject', 'id'=>$model->wi_id],
+					 		in_array(strtolower(Yii::$app->user->identity->role->name), ['pe admin 1', 'pe admin 2']) ? ['wi-remark/create', 'wi_id'=>$model->wi_id] : ['reject', 'id'=>$model->wi_id],
 					 		[
 					 				//'title'=>'Reject',
 					 				'class' => 'btn btn-danger btn-xs',
+					 				'style' => 'margin: 4px 2px;',
 					 				'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
 					 				
 					 		]) : "";
@@ -194,21 +195,21 @@ $this->params['breadcrumbs'][] = $this->title;
 				},
 				'remark' => function ($url, $model, $key) {
 				//return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
-				return Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin2'] && Yii::$app->controller->id == 'my-job' ?
+				return in_array(Yii::$app->user->identity->role_id, [Yii::$app->params['roleid_admin1'], Yii::$app->params['roleid_admin2']]) && Yii::$app->controller->id == 'my-job' ?
 				Html::a('REMARK',
-						['wi-remark/create', 'wi_id'=>$model->wi_id],
-						[
-							'class' => 'btn btn-primary btn-xs',
-							//'style' => 'margin-top: 8px;'
-							//'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
-						]) : "";
+					['wi-remark/create', 'wi_id'=>$model->wi_id],
+					[
+						'class' => 'btn btn-primary btn-xs',
+						'style' => 'margin: 4px 2px;'
+						//'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
+					]) : "";
 				/* Html::a('<span class="glyphicon glyphicon-tags" style="padding-left: 5px;"></span>',
 						['wi-remark/create', 'wi_id'=>$model->wi_id],
 						[
 								'title'=>'Add Remark',
 								//'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
-						]) : ""; */
-						//return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
+						]
+				) : ""; */
 				},
 				'view' => function ($url, $model, $key) {
 				//return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
@@ -216,7 +217,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						['wi/view', 'wi_id'=>$model->wi_id],
 						[
 								'class' => 'btn btn-info btn-xs',
-								'style' => 'margin-right: 5px;',
+								'style' => 'margin: 4px 2px;',
 						]);
 				},
 				'download' => function ($url, $model, $key) {

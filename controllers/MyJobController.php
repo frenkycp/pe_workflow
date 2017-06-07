@@ -104,7 +104,7 @@ class MyJobController extends Controller
 			{
 				return json_encode($wiHistory->errors);
 			}
-			\Yii::$app->session->addFlash("success", "WI " . $model->wi_docno . " has been authorized...");
+			\Yii::$app->session->addFlash("success", 'Document <b><a href="' . Url::to(['wi/view', 'wi_id'=>$model->wi_id]) . '">' . $model->wi_docno . ' Rev. ' . $model->wi_rev . '</a></b> has been authorized...');
 			return $this->redirect(Url::previous());
 		}else{
 			return json_encode($model->errors);
@@ -259,7 +259,7 @@ class MyJobController extends Controller
 			$wiHistory->rejector_id = \Yii::$app->user->identity->getId();
 			if($wiHistory->save())
 			{
-				\Yii::$app->session->addFlash("danger", "WI " . $model->wi_docno . " Rev. " . $model->wi_rev . " has been rejected...");
+				\Yii::$app->session->addFlash("danger", 'Document <b><a href="' . Url::to(['wi/view', 'wi_id'=>$model->wi_id]) . '">' . $model->wi_docno . ' Rev. ' . $model->wi_rev . '</a></b> has been rejected...');
 				return $this->redirect(Url::previous());
 			}else{
 				return json_encode($wiHistory->errors);

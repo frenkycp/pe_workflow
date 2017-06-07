@@ -79,40 +79,32 @@ class WiRemarkController extends Controller
 		$wiHistory = WiHistory::find()->where(['wi_id' => $_GET['wi_id']])->orderBy('id DESC')->one();
 		$model->history_id = $wiHistory->id;
 		$model->user_id = \Yii::$app->user->identity->getId();
+		if(strtolower(\Yii::$app->user->identity->role->name) != 'pe admin 2')
+		{
+			$model->wi_status = 2;
+		}
+		//$model->wi_status = 2;
 
 		try {
             if ($model->load($_POST)) {
+            	if($model->remark != '')
+            	{
+            		$model->remark_date = date('Y-m-d H:i:s');
+            		if(!$model->save())
+            		{
+            			return json_encode($model->errors);
+            		}
+            	}
             	
-            	/* $wi->wi_status = 14;
-            	if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_admin2'])
+            	if($model->wi_status == 2)
             	{
-            		$wi->wi_status = 8;
-            		$wiHistory->check2_date = date('Y-m-d H:i:s');
-            	}else if(\Yii::$app->user->identity->role_id == \Yii::$app->params['roleid_checker'])
-            	{
-            		$wi->wi_status = 10;
-            		$wiHistory->check3_date = date('Y-m-d H:i:s');
-            	} 
-            	if(!$wi->save())
-            	{
-            		return json_encode($wi->errors);
-            	}
-            	if(!$wiHistory->save())
-            	{
-            		return json_encode($wiHistory->errors);
-            	}
-            	if($model->remark == '' || $model->remark == null)
-            	{
-            		return $this->redirect(Url::previous());
-            	}*/
-            	if($model->save())
-            	{
-            		return $this->redirect(Url::previous());
+            		return $this->redirect(Url::to(['/my-job/reject', 'id' => $wi->wi_id]));
             	}
             	else
             	{
-            		return json_encode($model->errors);
+            		return $this->redirect(Url::to(['/my-job/authorize', 'id' => $wi->wi_id]));
             	}
+            	
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }

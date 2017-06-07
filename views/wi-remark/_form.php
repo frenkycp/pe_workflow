@@ -96,7 +96,10 @@ $wi_history = WiHistory::find()->where(['wi_id' => $wi->wi_id])->orderBy('id DES
 			<?= $form->field($model, 'feedback')->textarea(['rows' => 6, 'style' => 'resize: vertical;', 'readonly' => Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? false : true]) ?>
 			<?= '';//$form->field($model, 'status')->textInput() ?>
 			<?= '';//$form->field($model, 'flag')->textInput() ?>
-                </p>
+            <?= $model->isNewRecord ? $form->field($model, 'wi_status')->dropDownList(
+                [1 => 'OKE', 2 => 'REJECT']
+            )->label('WI Status') : '';
+            ?>
                 <?php $this->endBlock(); ?>
                 
                 <?=
@@ -114,11 +117,11 @@ $wi_history = WiHistory::find()->where(['wi_id' => $wi->wi_id])->orderBy('id DES
                 <hr/>
                 <?php echo $form->errorSummary($model); ?>
                 <?= Html::submitButton(
-                '<span class="glyphicon glyphicon-check"></span> ' .
-                ($model->isNewRecord ? 'Add' : 'Save'),
+                 empty($_GET['wi_id']) ? '<span class="glyphicon glyphicon-check"></span> ' : ' ' .
+                ($model->isNewRecord ? empty($_GET['wi_id']) ? 'Add' : 'Reject' : 'Save'),
                 [
                     'id' => 'save-' . $model->formName(),
-                    'class' => 'btn btn-success'
+                    'class' => empty($_GET['wi_id']) ? 'btn btn-success' : 'btn btn-danger'
                 ]
                 );
                 ?>
