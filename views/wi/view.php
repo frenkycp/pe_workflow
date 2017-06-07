@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = 'View';
     <p class='pull-left' style="<?= in_array(Yii::$app->user->identity->role_id, [1, Yii::$app->params['roleid_admin2']]) ? '' : 'display:none;'?>">
         <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> ' . 'Edit', ['update', 'wi_id' => $model->wi_id],['class' => 'btn btn-info']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . 'New', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= '';//Html::a('<span class="glyphicon glyphicon-edit"></span> ' . 'Add Remark', ['wi-remark/create', 'wi_id' => $model->wi_id],['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-edit"></span> ' . 'Add Remark', ['wi-remark/create', 'wi_id' => $model->wi_id],['class' => 'btn btn-primary']) ?>
     </p>
     <p class="pull-right">
         <?= Html::a('<span class="glyphicon glyphicon-list"></span> ' . 'WI List', ['index'], ['class'=>'btn btn-default']) ?>
