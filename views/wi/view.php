@@ -122,7 +122,7 @@ $this->params['breadcrumbs'][] = 'View';
 	<?php Pjax::begin(['id'=>'pjax-WiRemarks', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-WiRemarks ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
 <?= '<div class="table-responsive">' . kartik\grid\GridView::widget([
 		'layout' => '{summary}{pager}<br/>{items}{pager}',
-		'dataProvider' => new \yii\data\ActiveDataProvider(['query' => $model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one() != NULL ? $model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one()->getWiRemarks() : WiRemark::find(-1), 'pagination' => ['pageSize' => 20, 'pageParam'=>'page-wiremarks']]),
+		'dataProvider' => new \yii\data\ActiveDataProvider(['query' => !empty($wi_rmk) ? $wi_rmk : WiRemark::find(-1), 'pagination' => ['pageSize' => 20, 'pageParam'=>'page-wiremarks']]),
 		'pager'        => [
 				'class' => yii\widgets\LinkPager::className(),
 				'firstPageLabel' => 'First',
@@ -399,7 +399,7 @@ $this->params['breadcrumbs'][] = 'View';
 							],
                      		[
                      		'content' => $this->blocks['WiRemarks'],
-                     		'label'  => '<small>WI Remark <span class="badge badge-default">'.count($model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one() != null ? $model->getWiHistories()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->one()->getWiRemarks()->all() : []).'</span></small>',
+                     		'label'  => '<small>WI Remark <span class="badge badge-default">'.$wi_rmk->count().'</span></small>',
                      		'active' => false,
                      		],
                      		[ 

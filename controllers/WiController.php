@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Wi;
+use app\models\WiRemark;
 use app\models\search\WiSearch;
 use yii\web\Controller;
 use yii\web\HttpException;
@@ -60,11 +61,21 @@ class WiController extends Controller
         \Yii::$app->session['__crudReturnUrl'] = Url::previous();
         Url::remember();
         Tabs::rememberActiveState();
+        $wi = $this->findModel($wi_id);
         $wiHistory = WiHistory::find()->where(['wi_id' => $wi_id])->andWhere(['not',['rejector_id' => 'null']])->orderBy('id DESC')->one();
-
+        $allHistory = WiHistory::find()->where(['wi_id' => $wi_id, 'wi_rev' => $wi->wi_rev])->all();
+        foreach ($allHistory as $hist)
+        {
+        	$historyID[] = $hist->id;
+        }
+        
+        $wiRemark = WiRemark::find()->where(['history_id' => $historyID]);
+        
         return $this->render('view', [
 			'model' => $this->findModel($wi_id),
         		'wiHistory' => $wiHistory,
+        		'historyID' => $historyID,
+        		'wi_rmk' => $wiRemark,
 		]);
 	}
 
