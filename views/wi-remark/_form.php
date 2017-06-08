@@ -115,13 +115,46 @@ $wi_history = WiHistory::find()->where(['wi_id' => $wi->wi_id])->orderBy('id DES
     );
     ?>
                 <hr/>
-                <?php echo $form->errorSummary($model); ?>
-                <?= Html::submitButton(
-                 empty($_GET['wi_id']) ? '<span class="glyphicon glyphicon-check"></span> ' : ' ' .
-                ($model->isNewRecord ? empty($_GET['wi_id']) ? 'Add' : 'Reject' : 'Save'),
+                <?php 
+                echo $form->errorSummary($model);
+                $submitClass = 'btn btn-success';
+                if($model->isNewRecord)
+                {
+                    $submitLabel = 'Add';
+                    if(strtolower(Yii::$app->user->identity->role->name) == 'pe admin 2')
+                    {
+                        if(empty($_GET['remark_only']))
+                        {
+                            $submitLabel = 'Continue';
+                            $submitClass = 'btn btn-success';
+                        }
+                    }
+                    else
+                    {
+                        if(!empty($_GET['wi_id']))
+                        {
+                            $submitClass = 'btn btn-danger';
+                            $submitLabel = 'Reject';
+                            
+                            
+                        }
+                        else
+                        {
+                            $submitLabel = 'Reject';
+                            $submitClass = 'btn btn-danger';
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    $submitLabel = 'Save';
+                }
+                ?>
+                <?= Html::submitButton($submitLabel,
                 [
                     'id' => 'save-' . $model->formName(),
-                    'class' => empty($_GET['wi_id']) ? 'btn btn-success' : 'btn btn-danger'
+                    'class' => empty($_GET['wi_id']) ? 'btn btn-success' : strtolower(Yii::$app->user->identity->role->name) == 'pe admin 2' ? 'btn btn-success' : 'btn btn-danger'
                 ]
                 );
                 ?>

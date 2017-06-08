@@ -96,6 +96,11 @@ class WiRemarkController extends Controller
             		}
             	}
             	
+            	if(!empty($_GET['remark_only']))
+            	{
+            		return $this->redirect(Url::previous());
+            	}
+            	
             	if($model->wi_status == 2)
             	{
             		return $this->redirect(Url::to(['/my-job/reject', 'id' => $wi->wi_id]));
