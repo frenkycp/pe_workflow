@@ -38,6 +38,10 @@ class WiHistory extends BaseWiHistory
 	public function getLinkedRev()
 	{
 		$wi = Wi::find($this->wi_id);
+		if(strtolower(\Yii::$app->user->identity->role->name) == 'prod. admin')
+		{
+			return $this->wi_rev;
+		}
 		return '<a href="' . \Yii::$app->request->hostInfo . '/workflow/' . $this->wi_file . '">' . $this->wi_rev . '</a>';
 	}
 	
