@@ -80,9 +80,12 @@ class WiMasterlistController extends Controller
 	public function actionCreate()
 	{
 		$model = new WiMasterlist;
-
+		
+		
 		try {
             if ($model->load($_POST)) {
+            	//$section = $model->getDocSection()->one()->section_name;
+            	//return $model->docSection->section_name;
             	if($model->save())
             	{
             		if($model->isAutoAdd == 1)
@@ -91,7 +94,7 @@ class WiMasterlistController extends Controller
             			
             			$newWI = new Wi();
             			$newWI->wi_model = $model->speaker_model;
-            			$newWI->wi_section = $section->section_name;
+            			$newWI->wi_section = $model->docSection->section_name;
             			$newWI->wi_docno = $model->doc_no;
             			$newWI->wi_title = $model->doc_title;
             			$newWI->wi_status = 1;
