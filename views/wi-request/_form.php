@@ -4,12 +4,18 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use \dmstr\bootstrap\Tabs;
 use kartik\widgets\DatePicker;
+use yii\helpers\Url;
 
 /**
 * @var yii\web\View $this
 * @var app\models\WiRequest $model
 * @var yii\widgets\ActiveForm $form
 */
+$isClosing = false;
+if(Yii::$app->controller->action->id == 'closing')
+{
+	$isClosing = true;
+}
 
 ?>
 
@@ -27,7 +33,8 @@ use kartik\widgets\DatePicker;
             'id' => 'WiRequest',
             'layout' => 'horizontal',
             'enableClientValidation' => true,
-            'errorSummaryCssClass' => 'error-summary alert alert-error'
+            'errorSummaryCssClass' => 'error-summary alert alert-error',
+            		'options' => ['enctype' => 'multipart/form-data'],
             ]
             );
             ?>
@@ -63,21 +70,21 @@ use kartik\widgets\DatePicker;
     		
 			<?= $form->field($model, 'request_from', ['horizontalCssClasses' => [
         		'wrapper' => 'col-sm-3',
-    		]])->textInput(['maxlength' => true]) ?>
+    		]])->textInput(['maxlength' => true, 'readonly' => $isClosing ? true : false]) ?>
     		
 			<div class="form-group field-wirequest-request_date">
 				<label class="control-label col-sm-3" for="wirequest-request_date">Request Date</label>
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<?= DatePicker::widget([
 							'name' => 'WiRequest[request_date]',
-							'type' => DatePicker::TYPE_COMPONENT_APPEND,
+							'type' => DatePicker::TYPE_INPUT,
 							//'value' => $model->wi_issue != '' ? $model->wi_issue : date('Y-m-d'),
 							'value' => $model->isNewRecord ? date('Y-m-d') : $model->request_date,
 							'pluginOptions' => [
 									'autoclose'=>true,
 									'format' => 'yyyy-mm-dd'
 							],
-							'options' => ['class' => 'form-control'],
+							'options' => ['class' => 'form-control', 'disabled' => Yii::$app->controller->action->id == 'closing' ? true : false],
 					])
 					?>
 				</div>
@@ -85,31 +92,32 @@ use kartik\widgets\DatePicker;
 			<?= '';//$form->field($model, 'requirred_date')->textInput() ?>
 			<div class="form-group field-wirequest-required_date">
 				<label class="control-label col-sm-3" for="wirequest-required_date">Required Date</label>
-				<div class="col-sm-3">
+				<div class="col-sm-2">
 					<?= DatePicker::widget([
 							'name' => 'WiRequest[required_date]',
-							'type' => DatePicker::TYPE_COMPONENT_APPEND,
+							'type' => DatePicker::TYPE_INPUT,
 							//'value' => $model->wi_issue != '' ? $model->wi_issue : date('Y-m-d'),
 							'value' => $model->required_date,
 							'pluginOptions' => [
 									'autoclose'=>true,
 									'format' => 'yyyy-mm-dd'
 							],
-							'options' => ['class' => 'form-control'],
+							'options' => ['class' => 'form-control', 'disabled' => Yii::$app->controller->action->id == 'closing' ? true : false],
 					])
 					?>
 				</div>
 			</div>
-			<?= $form->field($model, 'page_no')->textInput(['maxlength' => true]) ?>
-			<?= $form->field($model, 'change_item')->textarea(['rows' => 5, 'style' => 'resize: none;', 'placeholder' => 'Add <br/> to add line break...']) ?>
+			<?= $form->field($model, 'page_no')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'closing' ? true : false]) ?>
+			<?= $form->field($model, 'change_item')->textarea(['rows' => 5, 'readonly' => Yii::$app->controller->action->id == 'closing' ? true : false, 'style' => 'resize: none;', 'placeholder' => 'Add <br/> to add line break...']) ?>
 			<?= $form->field($model, 'reason', ['horizontalCssClasses' => [
 	        		'wrapper' => 'col-sm-2',
-	    		]])->dropDownList(['HILANG' => 'HILANG', 'RUSAK' => 'RUSAK', 'CORETAN/REVISI' => 'CORETAN/REVISI']) ?>
+	    		]])->dropDownList(['HILANG' => 'HILANG', 'RUSAK' => 'RUSAK', 'CORETAN/REVISI' => 'CORETAN/REVISI'], ['disabled' => Yii::$app->controller->action->id == 'closing' ? true : false]) ?>
 			<?= $model->isNewRecord ? '' : $form->field($model, 'status', ['horizontalCssClasses' => [
 	        		'wrapper' => 'col-sm-2',
-	    		]])->dropDownList([0 => 'OPEN', 1 => 'CLOSED']) ?>
-    		<?= $form->field($model, 'requestor_id')->hiddenInput(['value' => $model->isNewRecord ? Yii::$app->user->identity->getId() : $model->requestor_id])->label(false); ?>
-			<?= ''; //$form->field($model, 'flag')->textInput() ?>
+	    		]])->dropDownList([0 => 'OPEN', 1 => 'CLOSED'], ['disabled' => Yii::$app->controller->action->id == 'closing' ? true : false]) ?>
+    		
+			<?= $model->isNewRecord ? '' : $form->field($model, 'uploadFile')->fileInput() ?>
+			<?= $form->field($model, 'requestor_id')->hiddenInput(['value' => $model->isNewRecord ? Yii::$app->user->identity->getId() : $model->requestor_id])->label(false); ?>
                 </p>
                 <?php $this->endBlock(); ?>
                 
@@ -126,16 +134,35 @@ use kartik\widgets\DatePicker;
     );
     ?>
                 <hr/>
+                <?php 
+                if($isClosing)
+                {
+                	$btnName = 'Closing';
+                }
+                else 
+                {
+                	if($model->isNewRecord)
+                	{
+                		$btnName = 'Create';
+                	}
+                	else 
+                	{
+                		$btnName = 'Save';
+                	}
+                }
+                ?>
                 <?php echo $form->errorSummary($model); ?>
                 <?= Html::submitButton(
                 '<span class="glyphicon glyphicon-check"></span> ' .
-                ($model->isNewRecord ? 'Create' : 'Save'),
+                $btnName,
                 [
                     'id' => 'save-' . $model->formName(),
                     'class' => 'btn btn-success'
                 ]
                 );
-                ?>
+                ?>&nbsp;&nbsp;&nbsp;
+                
+                <?php echo Html::a('Cancel', Url::previous(), ['class' => 'btn btn-danger']) ?>
 
                 <?php ActiveForm::end(); ?>
 

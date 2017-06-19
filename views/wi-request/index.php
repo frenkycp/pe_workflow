@@ -143,7 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					);
 				},
 				'closing' => function ($url, $model, $key) {
-				return Html::a('<span class="glyphicon glyphicon-check" style="padding-left: 5px;"></span>',
+				return $model->status == 1 ? '<span class="glyphicon glyphicon-check" style="padding-left: 5px; color: rgba(60, 141, 188, 0.48);"></span>' : Html::a('<span class="glyphicon glyphicon-check" style="padding-left: 5px;"></span>',
 						['closing', 'id' => $model->id],
 						[
 								'title' => 'Closing Request',

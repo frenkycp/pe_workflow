@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = WiRemark::find();
+$query = WiRemark::find()->orderBy('status ASC, id DESC');
 
 if($params['status'] == 'open')
 {

@@ -17,6 +17,36 @@ class WiRequest extends BaseWiRequest
 	public $record_no;
 	public $rev_no;
 	public $doc_title;
+	public $uploadFile;
+	
+	public function rules()
+	{
+		return [
+				[['wi_id', 'request_type', 'requestor_id', 'status', 'flag'], 'integer'],
+				[['uploadFile'], 'file', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => true, 'extensions' => 'pdf'],
+				[['request_type', 'request_from', 'page_no', 'reason'], 'required'],
+				[['request_date', 'required_date', 'closing_date'], 'safe'],
+				[['request_file', 'request_filename'], 'string'],
+				[['request_from', 'reason'], 'string', 'max' => 20],
+				[['page_no'], 'string', 'max' => 30],
+				[['change_item'], 'string', 'max' => 100]
+		];
+	}
+	
+	public function upload()
+	{
+		if ($this->validate()) {
+			$this->uploadFile->saveAs(\Yii::getAlias('@webroot') . '/../../workflow/files/wi_request/' . $this->uploadFile->baseName . '.' . $this->uploadFile->extension);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static function getUploadPath()
+	{
+		return \Yii::getAlias('@webroot') . '/../../workflow/files/wi_request/';
+	}
 	
 	public function getRequestType()
 	{

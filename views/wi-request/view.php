@@ -1,10 +1,8 @@
 <?php
 
-use dmstr\helpers\Html;
+use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\GridView;
 use yii\widgets\DetailView;
-use yii\widgets\Pjax;
 use dmstr\bootstrap\Tabs;
 
 /**
@@ -111,7 +109,12 @@ CSS;
     		'attribute' => 'status',
     		'value' => $model->status == 0 ? 'OPEN' : 'CLOSED',
     	],
-        //'flag',
+    		[
+    		'attribute'=>'request_file',
+    				'label' => 'Attachment',
+    		'format'=>'raw',
+    		'value' => ($model->request_file == null || $model->request_file == '') ? '-' : Html::a($model->request_filename, Yii::$app->request->hostInfo . '/workflow/' . $model->request_file, ['target' => '_blank']),
+    		],
     ],
     ]); ?>
 
