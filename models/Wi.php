@@ -30,6 +30,7 @@ class Wi extends BaseWi
 	
 	public $revised_date;
 	public $release_date;
+	public $part_no;
 	
 	public function attributeLabels()
     {
@@ -78,6 +79,11 @@ class Wi extends BaseWi
     	} else {
     		return false;
     	}
+    }
+    
+    public function getWiPart()
+    {
+    	return $this->hasMany(WiPart::className(), ['masterlist_id' => 'wi_id']);
     }
     
     public static function getUploadPath()

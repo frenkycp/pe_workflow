@@ -17,15 +17,17 @@ use yii\widgets\ActiveForm;
 		'method' => 'get',
 	]); ?>
 
-		<?= $form->field($model, 'wi_id') ?>
+		<?= $form->field($model, 'part_no') ?>
+		
+		<?= ''; //$form->field($model, 'wi_id') ?>
 
-		<?= $form->field($model, 'wi_model') ?>
+		<?= ''; //$form->field($model, 'wi_model') ?>
 
-		<?= $form->field($model, 'wi_section') ?>
+		<?= ''; //$form->field($model, 'wi_section') ?>
 
-		<?= $form->field($model, 'wi_docno') ?>
+		<?= ''; //$form->field($model, 'wi_docno') ?>
 
-		<?= $form->field($model, 'wi_title') ?>
+		<?= ''; //$form->field($model, 'wi_title') ?>
 
 		<?php // echo $form->field($model, 'wi_stagestat') ?>
 
@@ -55,7 +57,7 @@ use yii\widgets\ActiveForm;
 
 		<div class="form-group">
 			<?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-			<?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+			<?= ''; //Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
 		</div>
 
 	<?php ActiveForm::end(); ?>

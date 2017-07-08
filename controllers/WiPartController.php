@@ -70,13 +70,15 @@ class WiPartController extends Controller
 		$model = new WiPart;
 		if ($model->load($_POST))
 		{
-			$column_arr = ['masterlist_id', 'sap_item_id'];
+			$column_arr = ['masterlist_id', 'sap_partno'];
 			$masterlistId = $model->masterlist_id;
-			$arr_partno = preg_split("/\r\n|\n|\r/", $model->part_arr);
+			$tmp_arr_partno = trim(preg_replace('/\t+/', '', $model->part_arr));
+			$arr_partno = preg_split("/\r\n|\n|\r/", $tmp_arr_partno);
 			foreach ($arr_partno as $partno)
 			{
+				$partno = str_replace(' ', '', $partno);
 				$isNewWiPart = false;
-				$sap_id = 0;
+				$sap_partno = 0;
 				$tmp_part = SapItem::find()->where(['sap_partno' => $partno])->one();
 				if(empty($tmp_part))
 				{
@@ -95,7 +97,7 @@ class WiPartController extends Controller
 				}
 				else
 				{
-					$tmpWiPart = WiPart::find()->where(['masterlist_id' => $masterlistId, 'sap_item_id' => $tmp_part->item_id])->one();
+					$tmpWiPart = WiPart::find()->where(['masterlist_id' => $masterlistId, 'sap_partno' => $tmp_part->sap_partno])->one();
 					if(empty($tmpWiPart))
 					{
 						$isNewWiPart = true;
@@ -105,19 +107,21 @@ class WiPartController extends Controller
 						$isNewWiPart = false;
 					}
 				}
-				$sap_id = $tmp_part->item_id;
+				$sap_partno = $tmp_part->sap_partno;
 				if($isNewWiPart == true)
 				{
-					$wipart_arr[] = [$masterlistId, $sap_id];
+					$wipart_arr[] = [$masterlistId, $sap_partno];
 				}
 	
 			}
+			//return print_r($wipart_arr);
 			if(count($wipart_arr) > 0)
 			{
-				$insertCount = \Yii::$app->db->createCommand()->batchInsert('wi_part', $column_arr, $wipart_arr)->execute();
-				return $this->redirect(['index']);
+				$insertCount = \Yii::$app->db->createCommand()->batchInsert('dbworkflow.wi_part', $column_arr, $wipart_arr)->execute();
+				
 				//return $this->redirect(Url::previous());
 			}
+			return $this->redirect(['index']);
 		}
 	
 		return $this->render('create', ['model' => $model]);

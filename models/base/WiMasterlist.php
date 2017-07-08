@@ -127,7 +127,4 @@ class WiMasterlist extends \yii\db\ActiveRecord
         return $this->hasMany(\app\models\WiPart::className(), ['masterlist_id' => 'masterlist_id']);
     }
 
-
-
-
 }

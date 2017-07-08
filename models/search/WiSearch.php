@@ -22,7 +22,7 @@ public function rules()
 return [
 [['wi_id'], 'integer'],
 		[['wi_id', 'wi_status'], 'integer'],
-		[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'safe'],
+		[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn', 'part_no'], 'safe'],
 ];
 }
 
@@ -46,7 +46,8 @@ public function search($params)
 {
 $query = Wi::find()->select('*,
 		(SELECT wi_history.revised_date FROM wi_history WHERE wi_history.wi_id = wi.wi_id AND wi_history.wi_rev = wi.wi_rev ORDER BY wi_history.id ASC LIMIT 1) as revised_date,
-		(SELECT wi_history.release_date FROM wi_history WHERE wi_history.wi_id = wi.wi_id AND wi_history.wi_rev = wi.wi_rev ORDER BY wi_history.id DESC LIMIT 1) as release_date');
+		(SELECT wi_history.release_date FROM wi_history WHERE wi_history.wi_id = wi.wi_id AND wi_history.wi_rev = wi.wi_rev ORDER BY wi_history.id DESC LIMIT 1) as release_date')
+		->joinWith('wiPart')->groupBy('wi_id');
 	if($params['index_type'] == 'open')
 	{
 		$query = $query->where(['not in', 'wi_status', [3, 13]]);
@@ -148,10 +149,20 @@ if (!$this->validate()) {
 return $dataProvider;
 }
 
+$arr_partno = NULL;
+//$partno = str_replace(' ', '', $this->sap_partno);
+$partno = $this->part_no;
+if(!empty($partno))
+{
+	//$arr_partno = explode(",", $partno);
+	$arr_partno = explode(" ", $partno);
+}
+
 $query->andFilterWhere([
             'wi_id' => $this->wi_id,
 			'wi_status' => $this->wi_status,
 			'wi_issue' => $this->wi_issue,
+			'wi_part.sap_partno' => $arr_partno,
         ]);
 
         $query->andFilterWhere(['like', 'wi_model', $this->wi_model])

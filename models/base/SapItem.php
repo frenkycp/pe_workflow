@@ -41,7 +41,7 @@ class SapItem extends \yii\db\ActiveRecord
         return [
             [['sap_partno'], 'required'],
             [['insert_type', 'flag'], 'integer'],
-            [['sap_partno'], 'string', 'max' => 10],
+            [['sap_partno'], 'string', 'max' => 15],
             [['description'], 'string', 'max' => 50],
             [['uom', 'item_class'], 'string', 'max' => 5],
             [['analyst_group', 'issue_type_desc'], 'string', 'max' => 20],

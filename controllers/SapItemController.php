@@ -44,7 +44,7 @@ class SapItemController extends Controller
 	
 	public function actionInsertData()
 	{
-		$fileName = 'sap_item_14_dec16.xls';
+		$fileName = 'sap_item_03_jul17.xls';
 		$columnNameArr = [
 				'sap_partno', 'description', 'uom', 'analyst_group', 'analyst_desc', 'issue_type_desc', 'item_class', 'insert_type', 'flag'
 		];
@@ -60,6 +60,48 @@ class SapItemController extends Controller
 		$highestRow = $sheet->getHighestRow();
 		$highestColumn = $sheet->getHighestColumn();
 		
+		/* $rowData = $sheet->rangeToArray('A2:' . $highestColumn . $highestRow,
+				NULL,
+				TRUE,
+				FALSE);
+		
+		for ($row = 2; $row <= $highestRow; $row++){
+			$sapItem = SapItem::find()->where(['sap_partno' => $rowData[$row][0]])->one();
+			if(count($sapItem) == 0)
+			{
+				$arrayData[] = [
+						$rowData[$row][0], //sap_partno
+						$rowData[$row][2], //description
+						$rowData[$row][3], //uom
+						$rowData[$row][4], //analyst_group
+						$rowData[$row][6], //analyst_desc
+						$rowData[$row][20], //issue_type_desc
+						$rowData[$row][30], //item_class
+						1, //insert_type
+						1 //flag
+				];
+			}
+			else 
+			{
+				
+			}
+		} */
+		
+		//$sapItem = SapItem::find()->where(['sap_partno' => $rowData[0][0]])->one();
+		/* $sapItem = SapItem::find()->asArray()->all();
+		$i = 0;
+		foreach ($sapItem as $item)
+		{
+			$i++;
+			if($i == 20)
+			{
+				exit();
+			}
+			//print_r($item) ;
+			echo $item['sap_partno'] . '</br>';
+		}
+		return ; */
+		
 		//  Loop through each row of the worksheet in turn
 		for ($row = 2; $row <= $highestRow; $row++){
 			//  Read a row of data into an array
@@ -67,13 +109,44 @@ class SapItemController extends Controller
 					NULL,
 					TRUE,
 					FALSE);
+			
+			$sapItem = SapItem::find()->where(['sap_partno' => $rowData[0][0]])->one();
 			//  Insert row data array into your database of choice here
 			//if($row > 1 && $row < 11)
 			//{
+			
+			if(count($sapItem) == 0)
+			{
 				$arrayData[] = [
-						$rowData[0][0], $rowData[0][2], $rowData[0][3], $rowData[0][4], $rowData[0][6], $rowData[0][20], 
-						$rowData[0][30], 1, 1
+						$rowData[0][0], //sap_partno
+						$rowData[0][2], //description
+						$rowData[0][3], //uom
+						$rowData[0][4], //analyst_group
+						$rowData[0][6], //analyst_desc
+						$rowData[0][20], //issue_type_desc
+						$rowData[0][30], //item_class
+						1, //insert_type
+						1 //flag
 				];
+			}
+			else 
+			{
+				//if($sapItem->insert_type == 2)
+				//{
+					$sapItem->description = $rowData[0][2];
+					$sapItem->uom = $rowData[0][3];
+					$sapItem->analyst_group = $rowData[0][4];
+					$sapItem->analyst_desc = $rowData[0][6];
+					$sapItem->issue_type_desc = $rowData[0][20];
+					$sapItem->item_class = $rowData[0][30];
+					$sapItem->insert_type = 1;
+					if(!$sapItem->save())
+					{
+						return json_encode($sapItem->errors);
+					}
+				//}
+			}
+				
 			//}
 		}
 		

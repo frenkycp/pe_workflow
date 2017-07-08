@@ -5,15 +5,12 @@ namespace app\models\base;
 use Yii;
 
 /**
- * This is the base-model class for table "wi_part".
+ * This is the base-model class for table "dbworkflow.wi_part".
  *
  * @property integer $wi_part_id
  * @property integer $masterlist_id
- * @property integer $sap_item_id
+ * @property string $sap_partno
  * @property integer $flag
- *
- * @property \app\models\SapItem $sapItem
- * @property \app\models\WiMasterlist $masterlist
  */
 class WiPart extends \yii\db\ActiveRecord
 {
@@ -25,7 +22,7 @@ class WiPart extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'wi_part';
+        return 'dbworkflow.wi_part';
     }
 
     /**
@@ -34,8 +31,9 @@ class WiPart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['masterlist_id', 'sap_item_id'], 'required'],
-            [['masterlist_id', 'sap_item_id', 'flag'], 'integer']
+            [['masterlist_id'], 'required'],
+            [['masterlist_id', 'flag'], 'integer'],
+            [['sap_partno'], 'string', 'max' => 15]
         ];
     }
 
@@ -47,28 +45,9 @@ class WiPart extends \yii\db\ActiveRecord
         return [
             'wi_part_id' => 'Wi Part ID',
             'masterlist_id' => 'Masterlist ID',
-            'sap_item_id' => 'Sap Item ID',
+            'sap_partno' => 'Sap Partno',
             'flag' => 'Flag',
         ];
     }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSapItem()
-    {
-        return $this->hasOne(\app\models\SapItem::className(), ['item_id' => 'sap_item_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMasterlist()
-    {
-        return $this->hasOne(\app\models\WiMasterlist::className(), ['masterlist_id' => 'masterlist_id']);
-    }
-
-
-
 
 }

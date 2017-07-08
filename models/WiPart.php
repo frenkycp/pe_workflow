@@ -20,8 +20,8 @@ class WiPart extends BaseWiPart
 		return [
 				'wi_part_id' => 'Wi Part ID',
 				'masterlist_id' => 'Document No.',
-				'sap_item_id' => 'Part No',
 				'part_arr' => 'Part No',
+				'sap_partno' => 'Part No',
 				'flag' => 'Flag',
 		];
 	}
@@ -30,7 +30,8 @@ class WiPart extends BaseWiPart
 	{
 		return [
 				[['masterlist_id', 'part_arr'], 'required'],
-				[['masterlist_id', 'sap_item_id', 'flag'], 'integer']
+				[['masterlist_id', 'flag'], 'integer'],
+				[['sap_partno'], 'string', 'max' => 15],
 		];
 	}
 	
@@ -42,6 +43,20 @@ class WiPart extends BaseWiPart
 	public function getPartName()
 	{
 		return $this->sapItem->description;
+	}
+
+	public static function getDb() {
+       return Yii::$app->get('db2'); // second database
+	}
+	
+	public function getWi()
+	{
+		return $this->hasOne(\app\models\Wi::className(), ['wi_id' => 'masterlist_id']);
+	}
+	
+	public function getSapItem()
+	{
+		return $this->hasOne(\app\models\SapItem::className(), ['sap_partno' => 'sap_partno']);
 	}
 	
 }

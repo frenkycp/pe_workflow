@@ -63,7 +63,7 @@ class WiController extends Controller
         Tabs::rememberActiveState();
         $wi = $this->findModel($wi_id);
         $wiHistory = WiHistory::find()->where(['wi_id' => $wi_id])->andWhere(['not',['rejector_id' => 'null']])->orderBy('id DESC')->one();
-        $allHistory = WiHistory::find()->where(['wi_id' => $wi_id, 'wi_rev' => $wi->wi_rev])->all();
+        $allHistory = WiHistory::find()->where(['wi_id' => $wi_id])->all();
         foreach ($allHistory as $hist)
         {
         	$historyID[] = $hist->id;

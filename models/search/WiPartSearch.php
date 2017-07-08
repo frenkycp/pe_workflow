@@ -2,6 +2,7 @@
 
 namespace app\models\search;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\WiPart;
@@ -17,8 +18,8 @@ class WiPartSearch extends WiPart
 public function rules()
 {
 return [
-		[['wi_part_id', 'masterlist_id', 'sap_item_id', 'flag'], 'integer'],
-		[['partNo', 'partName', 'documentNo'], 'safe']
+[['wi_part_id', 'masterlist_id', 'flag'], 'integer'],
+            [['sap_partno', 'documentNo'], 'safe'],
 ];
 }
 
@@ -40,28 +41,11 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = WiPart::find()->joinWith('sapItem')->joinWith('masterlist')->where(['wi_part.flag' => 1])->orderBy('wi_masterlist.doc_no ASC, sap_item.sap_partno ASC');
+$query = WiPart::find()->joinWith('wi');
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,
 ]);
-
-/* $dataProvider->setSort([
-		'attributes' => [
-				//'id',
-				'partNo' => [
-						'asc' => ['sap_item.sap_partno' => SORT_ASC],
-						'desc' => ['sap_item.sap_partno' => SORT_DESC],
-						'label' => 'Part No',
-				],
-				'documentNo' => [
-						'asc' => ['wi_masterlist.doc_no' => SORT_ASC],
-						'desc' => ['wi_masterlist.doc_no' => SORT_DESC],
-						'label' => 'Document No',
-				],
-				//'country_id'
-		]
-]); */
 
 $this->load($params);
 
@@ -71,24 +55,23 @@ if (!$this->validate()) {
 return $dataProvider;
 }
 
+$arr_partno = NULL;
+//$partno = str_replace(' ', '', $this->sap_partno);
+$partno = $this->sap_partno;
+if(!empty($partno))
+{
+	//$arr_partno = explode(",", $partno);
+	$arr_partno = explode(" ", $partno);
+}
+
 $query->andFilterWhere([
             'wi_part_id' => $this->wi_part_id,
             'masterlist_id' => $this->masterlist_id,
-            'sap_item_id' => $this->sap_item_id,
             'flag' => $this->flag,
         ]);
 
-$query->andFilterWhere([
-		'like', 'sap_item.sap_partno', $this->partNo,
-]);
-
-$query->andFilterWhere([
-		'like', 'sap_item.description', $this->partName
-]);
-
-$query->andFilterWhere([
-		'like', 'wi_masterlist.doc_no', $this->documentNo,
-]);
+        $query->andFilterWhere(['sap_partno' => $arr_partno])
+        ->andFilterWhere(['like', 'wi.wi_docno', $this->documentNo]);
 
 return $dataProvider;
 }

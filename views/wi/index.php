@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="giiant-crud wi-index">
 
-    <?php //     echo $this->render('_search', ['model' =>$searchModel]);
+    <?php      echo $this->render('_search', ['model' =>$searchModel]);
     ?>
 
     <div class="clearfix">
