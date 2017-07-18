@@ -6,9 +6,6 @@ use kartik\grid\GridView;
 use app\models\Wi;
 use yii\helpers\ArrayHelper;
 use app\models\WiStatus;
-use app\models\WiRequest;
-use app\models\WiHistory;
-
 /**
 * @var yii\web\View $this
 * @var yii\data\ActiveDataProvider $dataProvider

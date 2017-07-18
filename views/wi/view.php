@@ -153,6 +153,13 @@ $this->params['breadcrumbs'][] = 'View';
 						'controller' => 'wi-remark'
             	],
             	[
+            			'attribute' => 'remarkRevision',
+            			'label' => 'Rev.',
+            			'hAlign' => 'center',
+            			'vAlign' => 'middle',
+            			'width' => '50px',
+            	],
+            	[
             			'attribute' => 'username',
             			'label' => 'Author',
             			'format' => 'raw',

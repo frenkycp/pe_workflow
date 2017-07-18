@@ -66,4 +66,9 @@ class User extends \app\models\base\User implements \yii\web\IdentityInterface
     {
         return $this->password === md5($password);
     }
+    
+    public function getWiRemarks()
+    {
+    	return $this->hasMany(\app\models\WiRemark::className(), ['user_id' => 'id']);
+    }
 }

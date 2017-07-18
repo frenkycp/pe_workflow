@@ -12,6 +12,7 @@ class WiRemark extends BaseWiRemark
 {
 
 	public $wi_status;
+	public $user_name;
 	
 	public function rules()
     {
@@ -55,6 +56,17 @@ class WiRemark extends BaseWiRemark
 	{
 		$user = $this->hasOne(User::className(), ['id' => 'user_id'])->one();
 		return $user->name;
+	}
+	
+	public function getRemarkRevision()
+	{
+	    $history = $this->getHistory()->one();
+	    return $history->wi_rev;
+	}
+	
+	public function getUser()
+	{
+		return $this->hasOne(\app\models\User::className(), ['id' => 'user_id']);
 	}
 	
 }

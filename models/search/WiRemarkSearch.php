@@ -19,7 +19,7 @@ public function rules()
 {
 return [
 [['id', 'user_id', 'history_id', 'status', 'flag'], 'integer'],
-		[['remark', 'remark_date', 'feedback', 'feedback_date'], 'safe'],
+		[['remark', 'remark_date', 'feedback', 'feedback_date', 'user_name'], 'safe'],
 ];
 }
 
@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = WiRemark::find()->orderBy('status ASC, id DESC');
+$query = WiRemark::find()->joinWith('user')->joinWith('history')->orderBy('status ASC, id DESC');
 
 if($params['status'] == 'open')
 {
@@ -71,6 +71,7 @@ $query->andFilterWhere([
         ]);
 
 $query->andFilterWhere(['like', 'remark', $this->remark])
+->andFilterWhere(['like', 'user.name', $this->user_name])
 ->andFilterWhere(['like', 'feedback', $this->feedback]);
 
 return $dataProvider;

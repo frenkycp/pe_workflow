@@ -71,7 +71,4 @@ class WiRemark extends \yii\db\ActiveRecord
         return $this->hasOne(\app\models\WiHistory::className(), ['id' => 'history_id']);
     }
 
-
-
-
 }
