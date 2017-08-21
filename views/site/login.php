@@ -11,7 +11,7 @@ $this->title = 'Sign In';
 $this->registerCss('.login-box{width: 360px; margin: auto; padding-top: 5%; height: 900px;} 
 		.login-logo a{color: rgba(249, 249, 249, 0.5); font-size: 45px;} 
 		.login-logo{margin-bottom: 10px;} 
-		.login-box-body{opacity: 0.7} 
+		.login-box-body{opacity: 0.8} 
 		.login-page{overflow-y: hidden;}');
 
 $fieldOptions1 = [
@@ -25,7 +25,7 @@ $fieldOptions2 = [
 ];
 
 ?>
-<div class="login-container" style="background-image: url(<?php echo Yii::$app->urlManager->baseUrl ?>/uploads/pict2.jpg); background-size: cover; background-position-y: 0px">
+<div class="login-container" style="background-image: url(<?php echo Yii::$app->urlManager->baseUrl ?>/uploads/wp1.jpg); background-size: cover; background-position-y: 0px">
 <div style="background-color: rgba(0,0,0,0.6)">
 <div class="login-box">
     <div class="login-logo">
