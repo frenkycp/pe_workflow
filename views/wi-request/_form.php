@@ -62,7 +62,7 @@ if(Yii::$app->controller->action->id == 'closing')
     		
 			<?= $form->field($model, 'request_type', ['horizontalCssClasses' => [
         		'wrapper' => 'col-sm-3',
-    		]])->dropDownList([1 => 'CHANGE REQUEST', 2 => 'CONTROLLED COPY'], ['disabled' => $model->isNewRecord ? false : true]) ?>
+    		]])->dropDownList([1 => 'CHANGE REQUEST', 2 => 'CONTROLLED COPY']) ?>
     		
     		<?= $form->field($model, 'requestor_name', ['horizontalCssClasses' => [
         		'wrapper' => 'col-sm-2',

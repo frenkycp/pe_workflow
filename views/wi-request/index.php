@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             }
             if(strtolower(Yii::$app->user->identity->role->name) == 'pe admin 1')
             {
-            	$template = '{view} {closing}';
+            	$template = '{view} {update} {closing}';
             }
             if(strtolower(Yii::$app->user->identity->role->name) == 'pe admin 2')
             {
