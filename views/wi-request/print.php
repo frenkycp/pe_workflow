@@ -130,7 +130,7 @@ tr{
 				<tr>
 					<td class="col1">REQUIRED DATE</td>
 					<td class="col2">: </td>
-					<td class="col3"><?php echo date('d - m - Y', strtotime($model->required_date)); ?></td>
+					<td class="col3"><?php echo $model->required_date == NULL ? '-' : date('d - m - Y', strtotime($model->required_date)); ?></td>
 				</tr>
 				<tr>
 					<td class="col1">DOCUMENT NO</td>
