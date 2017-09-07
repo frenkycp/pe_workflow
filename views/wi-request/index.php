@@ -208,11 +208,11 @@ $this->params['breadcrumbs'][] = $this->title;
 		    		if($rel = $model->getWi()->one())
 		    		{
 		    			$wiModel = $rel->wi_model;
-		    			if(strlen($wiModel) > 23)
+		    			 if(strlen($wiModel) > 23)
 		    			{
 		    				$wiModel = substr($wiModel, 0, 20) . '...';
 		    				return '<span title="' . $model->wi_model . '">' . $wiModel . '</span>';
-		    			}
+		    			} 
 		    			return $wiModel;
 		    		}
 		    		else {
@@ -221,7 +221,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	    		},
 	    		'hAlign' => 'center',
 	    		'vAlign' => 'middle',
-	    		'noWrap' => true,
+	    		'noWrap' => false,
 	    		'width' => '200px',
     		],*/
     		//'wi_title',
@@ -244,6 +244,14 @@ $this->params['breadcrumbs'][] = $this->title;
 	    		'width' => '200px',
     		],
 			//'requestor_id',
+			[
+				'attribute' => 'page_no',
+				'hAlign' => 'center',
+				'vAlign' => 'middle',
+				'noWrap' => true,
+				'width' => '100px',
+				'hidden' => true,
+			],
     		[
 	    		'attribute' => 'requestor_id',
     			'label' => 'Requestor',
@@ -261,13 +269,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'width' => '100px',
 			], */
 			//'page_no',
-			/* [
-				'attribute' => 'page_no',
-				'hAlign' => 'center',
-				'vAlign' => 'middle',
-				'noWrap' => true,
-				'width' => '100px',
-			], */
+			
     		[
 	    		'attribute' => 'reason',
 	    		'hAlign' => 'center',
