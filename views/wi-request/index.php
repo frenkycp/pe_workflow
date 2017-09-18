@@ -129,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         [
             'class' => 'kartik\grid\ActionColumn',
-			'width' => '90px',
+			'width' => '100px',
 			'header'=>'Actions',
 			'template' => $template,
 			'buttons' => [
@@ -175,7 +175,28 @@ $this->params['breadcrumbs'][] = $this->title;
 			    'vAlign' => 'middle',
 			    'width'=>'150px',
 			],
-			//'request_type',
+			[
+	    		'attribute' => 'wi_model',
+	    		'value' => function ($model) {
+		    		if($rel = $model->getWi()->one())
+		    		{
+		    			$wiModel = $rel->wi_model;
+		    			/* if(strlen($wiModel) > 23)
+		    			{
+		    				$wiModel = substr($wiModel, 0, 20) . '...';
+		    				return '<span title="' . $model->wi_model . '">' . $wiModel . '</span>';
+		    			} */
+		    			return $wiModel;
+		    		}
+		    		else {
+		    			return '';
+		    		}
+	    		},
+	    		'hAlign' => 'center',
+	    		'vAlign' => 'middle',
+	    		'noWrap' => false,
+	    		'width' => '200px',
+    		],
 			[
 					'attribute' => 'request_type',
 					'value' => function ($model) {
@@ -201,30 +222,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	    		'noWrap' => true,
 	    		'width' => '100px',
     		],
-    		//'wi_model',
-    		/*[
-	    		'attribute' => 'wi_model',
-	    		'value' => function ($model) {
-		    		if($rel = $model->getWi()->one())
-		    		{
-		    			$wiModel = $rel->wi_model;
-		    			 if(strlen($wiModel) > 23)
-		    			{
-		    				$wiModel = substr($wiModel, 0, 20) . '...';
-		    				return '<span title="' . $model->wi_model . '">' . $wiModel . '</span>';
-		    			} 
-		    			return $wiModel;
-		    		}
-		    		else {
-		    			return '';
-		    		}
-	    		},
-	    		'hAlign' => 'center',
-	    		'vAlign' => 'middle',
-	    		'noWrap' => false,
-	    		'width' => '200px',
-    		],*/
-    		//'wi_title',
     		[
 	    		'attribute' => 'wi_title',
 	    		'format' => 'raw',
