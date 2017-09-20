@@ -19,7 +19,7 @@ public function rules()
 {
 return [
 [['id', 'wi_id', 'request_type', 'requestor_id', 'status', 'flag'], 'integer'],
-            [['request_from', 'request_date', 'required_date', 'page_no', 'change_item', 'reason', 'wi_docno', 'wi_title', 'wi_model'], 'safe'],
+            [['request_from', 'request_date', 'required_date', 'page_no', 'change_item', 'reason', 'wi_docno', 'wi_title', 'wi_model', 'requestor_name'], 'safe'],
 ];
 }
 
@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = WiRequest::find()->joinWith('wi')->where(['wi_request.flag' => 1])->orderBy('wi_request.status ASC, wi_request.id DESC');
+$query = WiRequest::find()->joinWith('wi')->joinWith('requestor')->where(['wi_request.flag' => 1])->orderBy('wi_request.status ASC, wi_request.id DESC');
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,
@@ -73,6 +73,7 @@ $query->andFilterWhere([
             ->andFilterWhere(['like', 'wi_model', $this->wi_model])
             ->andFilterWhere(['like', 'change_item', $this->change_item])
             ->andFilterWhere(['like', 'wi.wi_title', $this->wi_title])
+            ->andFilterWhere(['like', 'user.name', $this->requestor_name])
             ->andFilterWhere(['like', 'reason', $this->reason]);
 
 return $dataProvider;

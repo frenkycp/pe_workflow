@@ -12,6 +12,17 @@ use kartik\grid\GridView;
 
 $this->title = 'Wi Requests';
 $this->params['breadcrumbs'][] = $this->title;
+
+$filterOptions = [
+				'pickerButton' => false,
+				'readonly' => true,
+				'size' => 'sm',
+				'pluginOptions' => [
+						'autoclose'=>true,
+						'format' => 'yyyy-mm-dd',
+						'todayHighlight' => true,
+				],
+		];
 ?>
 
 <div class="giiant-crud wi-request-index">
@@ -215,12 +226,15 @@ $this->params['breadcrumbs'][] = $this->title;
     				'filter' => [1 => 'CHANGE REQUEST', 2 => 'CONTROLLED COPY'],
     		],
     		[
+    			'class' => '\kartik\grid\DataColumn',
 	    		'attribute' => 'request_date',
     			'format' => ['date', 'php:d-M-Y'],
 	    		'hAlign' => 'center',
 	    		'vAlign' => 'middle',
 	    		'noWrap' => true,
-	    		'width' => '100px',
+	    		'width' => '160px',
+	    		'filterType' => GridView::FILTER_DATE,
+	    		'filterWidgetOptions' => $filterOptions,
     		],
     		[
 	    		'attribute' => 'wi_title',
@@ -250,7 +264,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'hidden' => true,
 			],
     		[
-	    		'attribute' => 'requestor_id',
+	    		'attribute' => 'requestor_name',
     			'label' => 'Requestor',
 	    		'value' => 'requestor.name',
 	    		'hAlign' => 'center',
