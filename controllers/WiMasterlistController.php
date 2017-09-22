@@ -133,7 +133,21 @@ class WiMasterlistController extends Controller
 	{
 		$model = $this->findModel($masterlist_id);
 
-		if ($model->load($_POST) && $model->save()) {
+		if ($model->load($_POST)) {
+			if($model->save())
+			{
+				$wi = Wi::find()->where(['wi_docno' => $model->doc_no])->one();
+				if(!empty($wi))
+				{
+					$wi->wi_title = $model->doc_title;
+					$wi->wi_section = $model->docSection->section_name;
+					$wi->wi_model = $model->speaker_model;
+					if(!$wi->save())
+					{
+						return json_encode($wi_errors());
+					}
+				}
+			}
             return $this->redirect(Url::previous());
 		} else {
 			return $this->render('update', [
