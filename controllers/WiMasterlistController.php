@@ -136,16 +136,34 @@ class WiMasterlistController extends Controller
 		if ($model->load($_POST)) {
 			if($model->save())
 			{
-				$wi = Wi::find()->where(['wi_docno' => $model->doc_no])->one();
-				if(!empty($wi))
+				$wi = new Wi();
+				$tmpWi = Wi::find()->where(['wi_docno' => $model->doc_no])->one();
+				if(!empty($tmpWi))
 				{
-					$wi->wi_title = $model->doc_title;
-					$wi->wi_section = $model->docSection->section_name;
-					$wi->wi_model = $model->speaker_model;
-					if(!$wi->save())
-					{
-						return json_encode($wi_errors());
-					}
+					$wi = $tmpWi;
+					
+				}
+				else
+				{
+        			$wi->wi_model = $model->speaker_model;
+        			$wi->wi_section = $model->docSection->section_name;
+        			$wi->wi_docno = $model->doc_no;
+        			$wi->wi_title = $model->doc_title;
+        			$wi->wi_status = 1;
+        			$wi->wi_rev = '-1';
+        			$wi->wi_stagestat = 'TP';
+        			$wi->wi_maker = $model->pic->name;
+        			if(!$wi->save())
+        			{
+        				return json_encode($wi->errors);
+        			}
+				}
+				$wi->wi_title = $model->doc_title;
+				$wi->wi_section = $model->docSection->section_name;
+				$wi->wi_model = $model->speaker_model;
+				if(!$wi->save())
+				{
+					return json_encode($wi_errors());
 				}
 			}
             return $this->redirect(Url::previous());

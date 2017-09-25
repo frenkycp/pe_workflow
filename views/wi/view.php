@@ -19,6 +19,9 @@ $this->title = 'Work Instruction';
 $this->params['breadcrumbs'][] = ['label' => 'Wis', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->wi_id, 'url' => ['view', 'wi_id' => $model->wi_id]];
 $this->params['breadcrumbs'][] = 'View';
+
+$this->registerCss("table.detail-view th {width: 20%;} table.detail-view td {width: 80%;}");
+
 ?>
 <div class="giiant-crud wi-view">
 
@@ -105,7 +108,7 @@ $this->params['breadcrumbs'][] = 'View';
 		    ],
         [
           'attribute'=>'wi_file3',
-          'label' => 'Approved WI (Scan)',
+          'label' => 'WI (Scan)',
           'format'=>'raw',
           'value' => $model->wi_file3 == null || $model->wi_file3 == '' ? '-' : Html::a($model->wi_filename3, Yii::$app->request->hostInfo . '/workflow/' . $model->wi_file3),
           //'value' => Html::a($model->wi_filename, 'http://pe12/workflow/' . $model->wi_file, ['style' => in_array($model->wi_status, ['OPEN', 'CLOSE']) ? '' : 'display: none;']),
