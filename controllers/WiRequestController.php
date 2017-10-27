@@ -208,8 +208,29 @@ class WiRequestController extends Controller
 		$model->wi_model = $wi->wi_model;
 		$model->wi_title = $wi->wi_title;
 
-		if ($model->load($_POST) && $model->save()) {
-            return $this->redirect(Url::previous());
+		if ($model->load($_POST)) {
+                    $tmpFile = UploadedFile::getInstance($model, 'uploadFile');
+                    if(!empty($tmpFile)){
+                            $delete = $model->oldAttributes['uploadFile'];
+                            $model->uploadFile = $tmpFile;
+                            $model->request_filename = $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
+                            $model->request_file = "./files/wi_request/" . $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
+                    }else{
+                            $model->uploadFile = $model->oldAttributes['uploadFile'];
+                    }
+                    if($model->save()){
+                            if(!empty($tmpFile)){
+                                    if(!$model->upload()){
+                                            return $model->errors;
+                                    }
+
+                            }
+                            \Yii::$app->session->addFlash("success", "Request for Document no.  " . $wi->wi_docno . " on " . date('d-M-Y', strtotime($model->request_date)) . " has been closed...");
+                            return $this->redirect(Url::previous());
+                    }else{
+                            return $model->errors;
+                    }
+                    return $this->redirect(Url::previous());
 		} else {
 			return $this->render('update', [
 				'model' => $model,

@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = 'View';
 
     
 <?php $this->beginBlock('RoleMenuses'); ?>
-<div style='position: relative'><div style='position:absolute; right: 0px; top 0px;'>
+<div style='position: relative'><div style='position:absolute; right: 0px; top: 0px;'>
   <?= Html::a(
             '<span class="glyphicon glyphicon-list"></span> ' . 'List All' . ' Role Menuses',
             ['role-menu/index'],
@@ -128,7 +128,7 @@ $this->params['breadcrumbs'][] = 'View';
 
 
 <?php $this->beginBlock('Users'); ?>
-<div style='position: relative'><div style='position:absolute; right: 0px; top 0px;'>
+<div style='position: relative'><div style='position:absolute; right: 0px; top: 0px;'>
   <?= Html::a(
             '<span class="glyphicon glyphicon-list"></span> ' . 'List All' . ' Users',
             ['user/index'],

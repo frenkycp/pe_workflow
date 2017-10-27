@@ -62,7 +62,7 @@ tr{
 }
 
 .sign-col{
-	style="width: 7cm;
+	width: 7cm;
 	text-align: center;
 }
 

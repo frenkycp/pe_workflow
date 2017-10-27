@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = 'View';
 
     
 <?php $this->beginBlock('WiRemarks'); ?>
-<div style='position: relative'><div style='position:absolute; right: 0px; top 0px;display:none;'>
+<div style='position: relative'><div style='position:absolute; right: 0px; top: 0px;display:none;'>
   <?= Html::a(
             '<span class="glyphicon glyphicon-list"></span> ' . 'List All' . ' Wi Remarks',
             ['wi-remark/index'],

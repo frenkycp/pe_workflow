@@ -213,7 +213,7 @@ $this->registerCss("table.detail-view th {width: 20%;} table.detail-view td {wid
 	<?php $this->endBlock(); ?>
 
 	<?php $this->beginBlock('WiHistories'); ?> 
-<div style='position: relative'><div style='position:absolute; right: 0px; top 0px;'> 
+<div style='position: relative'><div style='position:absolute; right: 0px; top: 0px;'> 
  <?= ''; /* Html::a( 
            '<span class="glyphicon glyphicon-list"></span> ' . 'List All' . ' Wi Histories', 
            ['wi-history/index'], 
@@ -323,7 +323,7 @@ $this->registerCss("table.detail-view th {width: 20%;} table.detail-view td {wid
 <?php $this->endBlock() ?>
 
 <?php $this->beginBlock('WiRequest'); ?> 
-<div style='position: relative'><div style='position:absolute; right: 0px; top 0px;'> 
+<div style='position: relative'><div style='position:absolute; right: 0px; top: 0px;'> 
  <?= ''; /* Html::a( 
            '<span class="glyphicon glyphicon-list"></span> ' . 'List All' . ' Wi Histories', 
            ['wi-history/index'], 
@@ -351,7 +351,7 @@ $this->registerCss("table.detail-view th {width: 20%;} table.detail-view td {wid
    'urlCreator' => function ($action, $model, $key, $index) { 
        // using the column name as key, not mapping to 'id' like the standard generator 
        $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key]; 
-       $params[0] = 'wi-history' . '/' . $action; 
+       $params[0] = 'wi-request' . '/' . $action; 
        return $params; 
    }, 
    'buttons'   => [ 

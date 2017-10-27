@@ -127,6 +127,20 @@ class WiPartController extends Controller
 				
 				//return $this->redirect(Url::previous());
 			}
+                        date_default_timezone_set('Asia/Jakarta');
+                        $partDetail = \app\models\WiPartDetail::find()->where(
+                                ['masterlist_id' => $masterlistId]
+                        )->one();
+                        if(count($partDetail) == 0)
+                        {
+                            $partDetail = new \app\models\WiPartDetail;
+                            $partDetail->masterlist_id = $masterlistId;
+                            $partDetail->update_date = date('Y-m-d');
+                            if(!$partDetail->save())
+                            {
+                                return json_encode($partDetail->errors);
+                            }
+                        }
 			return $this->redirect(['index']);
 		}
 	
