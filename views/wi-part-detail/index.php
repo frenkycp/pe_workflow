@@ -126,8 +126,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Doc. No.',
                         'value' => function ($model)
                         {
-                            $masterlist = \app\models\WiMasterlist::find()->where([
-                                'masterlist_id' => $model->masterlist_id
+                            $masterlist = \app\models\Wi::find()->where([
+                                'wi_id' => $model->masterlist_id
                             ])->one();
                             if(count($masterlist) != 0)
                             {
