@@ -131,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ])->one();
                             if(count($masterlist) != 0)
                             {
-                                return $masterlist->doc_no;
+                                return $masterlist->wi_docno;
                             }
                         }
                         ],
