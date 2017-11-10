@@ -68,45 +68,46 @@ $this->params['breadcrumbs'][] = $this->title;
                 'pager'        => [
                     'class'          => yii\widgets\LinkPager::className(),
                     'firstPageLabel' => 'First',
-                    'lastPageLabel'  => 'Last'                ],
+                    'lastPageLabel'  => 'Last'                
+                ],
                 'filterModel' => $searchModel,
-                    'panel' => [
-                                    'type' => 'primary',
-                                    'heading' => 'WI Masterlists',
-                                    'before' => ' ',
-                                    'after' => false,
-                    ],
-                    'toolbar' => [
-                                    '{export}',
-                                    '{toggleData}'
-                    ],
-                    'export' => [
-                                    'target' => '_self',
-                                    'fontAwesome'=>true,
-                    ],
-                    'exportConfig' => [
-                                    /* GridView::PDF => [
-                                                    'filename' => 'Document Masterlists',
-                                                    'config' => [
-                                                                    'methods' => [
-                                                                                    'SetHeader' => [
-                                                                                                    ['odd' => $pdfHeader, 'even' => $pdfHeader]
-                                                                                    ],
-                                                                                    'SetFooter' => [
-                                                                                                    ['odd' => $pdfFooter, 'even' => $pdfFooter]
-                                                                                    ],
-                                                                    ],
-                                                                    'options' => [
-                                                                                    'title' => 'Document Masterlists',
-                                                                                    'subject' => 'Document Masterlists',
-                                                                                    'keywords' => 'pdf, preceptors, export, other, keywords, here'
-                                                                    ],
-                                                    ]
-                                    ], */
-                                    GridView::EXCEL => [
-                                                    'filename' => 'Library_Update_List_' . date('Ymd'),
-                                    ],
-                    ],
+                'panel' => [
+                                'type' => 'primary',
+                                'heading' => 'Library Update Info',
+                                'before' => ' ',
+                                'after' => false,
+                ],
+                'toolbar' => [
+                                '{export}',
+                                '{toggleData}'
+                ],
+                'export' => [
+                                'target' => '_self',
+                                'fontAwesome'=>true,
+                ],
+                'exportConfig' => [
+                                /* GridView::PDF => [
+                                                'filename' => 'Document Masterlists',
+                                                'config' => [
+                                                                'methods' => [
+                                                                                'SetHeader' => [
+                                                                                                ['odd' => $pdfHeader, 'even' => $pdfHeader]
+                                                                                ],
+                                                                                'SetFooter' => [
+                                                                                                ['odd' => $pdfFooter, 'even' => $pdfFooter]
+                                                                                ],
+                                                                ],
+                                                                'options' => [
+                                                                                'title' => 'Document Masterlists',
+                                                                                'subject' => 'Document Masterlists',
+                                                                                'keywords' => 'pdf, preceptors, export, other, keywords, here'
+                                                                ],
+                                                ]
+                                ], */
+                                GridView::EXCEL => [
+                                                'filename' => 'Library_Update_List_' . date('Ymd'),
+                                ],
+                ],
                 'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
                 'headerRowOptions' => ['class'=>'x'],
                 'columns' => [
@@ -121,21 +122,36 @@ $this->params['breadcrumbs'][] = $this->title;
             },
             'contentOptions' => ['nowrap'=>'nowrap']
         ],
-                    [
-                        'attribute' => masterlist_id,
-                        'label' => 'Doc. No.',
-                        'value' => function ($model)
-                        {
-                            $masterlist = \app\models\Wi::find()->where([
-                                'wi_id' => $model->masterlist_id
-                            ])->one();
-                            if(count($masterlist) != 0)
-                            {
-                                return $masterlist->wi_docno;
-                            }
-                        }
+                        [
+                            'class'=>'kartik\grid\SerialColumn',
+                            'contentOptions'=>['class'=>'kartik-sheet-style'],
+                            'width'=>'36px',
+                            'header'=>'',
+                            'headerOptions'=>['class'=>'kartik-sheet-style']
                         ],
-			'update_date',
+                        [
+                            'attribute' => masterlist_id,
+                            'label' => 'Doc. No.',
+                            'hAlign' => 'center',
+                            'value' => function ($model)
+                            {
+                                $masterlist = \app\models\Wi::find()->where([
+                                    'wi_id' => $model->masterlist_id
+                                ])->one();
+                                if(count($masterlist) != 0)
+                                {
+                                    return $masterlist->wi_docno;
+                                }
+                            }
+                        ],
+                        [
+                            'attribute' => 'update_date',
+                            'hAlign' => 'center',
+                            'value' => function($model)
+                            {
+                                return date('d-M-y', strtotime($model->update_date));
+                            }
+                        ],
                 ],
             ]); ?>
                 </div>

@@ -66,19 +66,24 @@ class WiPartDetailController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model = new WiPartDetail;
-
-		try {
-            if ($model->load($_POST) && $model->save()) {
-                return $this->redirect(Url::previous());
-            } elseif (!\Yii::$app->request->isPost) {
-                $model->load($_GET);
+            $model = new WiPartDetail;
+            try {
+                if ($model->load($_POST)) {
+                    $updateDate = date('Y-m-d', strtotime($model->update_date));
+                    $model->update_date = $updateDate;
+                    if(!$model->save())
+                    {
+                        return json_encode($model->errors);
+                    }
+                    return $this->redirect(['index']);
+                } elseif (!\Yii::$app->request->isPost) {
+                    $model->load($_GET);
+                }
+            } catch (\Exception $e) {
+                $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
+                $model->addError('_exception', $msg);
             }
-        } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-            $model->addError('_exception', $msg);
-		}
-        return $this->render('create', ['model' => $model]);
+            return $this->render('create', ['model' => $model]);
 	}
 
 	/**

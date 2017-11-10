@@ -43,7 +43,7 @@ class WiPartDetail extends \yii\db\ActiveRecord
     {
         return [
             'wi_part_detail_id' => 'Wi Part Detail ID',
-            'masterlist_id' => 'Masterlist ID',
+            'masterlist_id' => 'Doc. No.',
             'update_date' => 'Update Date',
         ];
     }

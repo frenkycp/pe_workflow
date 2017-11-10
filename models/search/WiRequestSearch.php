@@ -19,7 +19,7 @@ public function rules()
 {
 return [
 [['id', 'wi_id', 'request_type', 'requestor_id', 'status', 'flag'], 'integer'],
-            [['request_from', 'request_date', 'required_date', 'page_no', 'change_item', 'reason', 'wi_docno', 'wi_title', 'wi_model', 'requestor_name'], 'safe'],
+            [['request_from', 'request_date', 'required_date', 'page_no', 'change_item', 'reason', 'wi_docno', 'wi_title', 'wi_model', 'requestor_name', 'wiSection'], 'safe'],
 ];
 }
 
@@ -73,6 +73,7 @@ $query->andFilterWhere([
             ->andFilterWhere(['like', 'wi_model', $this->wi_model])
             ->andFilterWhere(['like', 'change_item', $this->change_item])
             ->andFilterWhere(['like', 'wi.wi_title', $this->wi_title])
+            ->andFilterWhere(['like', 'wi.wi_section', $this->wiSection])
             ->andFilterWhere(['like', 'user.name', $this->requestor_name])
             ->andFilterWhere(['like', 'reason', $this->reason]);
 

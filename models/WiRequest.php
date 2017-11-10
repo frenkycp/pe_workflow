@@ -18,6 +18,7 @@ class WiRequest extends BaseWiRequest
 	public $rev_no;
 	public $doc_title;
 	public $uploadFile;
+        public $wiSection;
 	
 	public function rules()
 	{

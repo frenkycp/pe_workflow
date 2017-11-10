@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use \dmstr\bootstrap\Tabs;
+use kartik\widgets\Select2;
+use kartik\widgets\DatePicker;
 
 /**
 * @var yii\web\View $this
@@ -36,9 +38,33 @@ use \dmstr\bootstrap\Tabs;
 
                 <p>
                     
-			<?= $form->field($model, 'wi_part_detail_id')->textInput() ?>
-			<?= $form->field($model, 'masterlist_id')->textInput() ?>
-			<?= $form->field($model, 'update_date')->textInput() ?>
+			<?= ''; //$form->field($model, 'wi_part_detail_id')->textInput() ?>
+                    <?php
+                    $detailArr = \app\models\WiPartDetail::find()->select('masterlist_id')->asArray();
+                    ?>
+			<?= $form->field($model, 'masterlist_id')->widget(Select2::className(), [
+                            'data' => yii\helpers\ArrayHelper::map(
+                                app\models\Wi::find()->where(['<>', 'wi_docno', '-'])
+                                    //->andWhere(['not in', 'wi_id', $detailArr])
+                                    ->orderBy('wi_docno ASC')->all(), 
+                                'wi_id', 
+                                'wi_docno'
+                            ),
+                            'options' => ['placeholder' => 'Select a document ...'],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                            'theme' => 'bootstrap',
+                        ]) ?>
+                        <?= $form->field($model, 'update_date')->widget(DatePicker::classname(), [
+                                'options' => ['placeholder' => 'Enter update date ...'],
+                                'pluginOptions' => [
+                                    'autoclose'=>true,
+                                    'format' => 'dd-M-yyyy',
+                                ]
+                            ]);
+                        ?>
+			<?= ''; //$form->field($model, 'update_date')->textInput() ?>
                 </p>
                 <?php $this->endBlock(); ?>
                 
