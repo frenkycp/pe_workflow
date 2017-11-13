@@ -363,7 +363,7 @@ $this->params['breadcrumbs'][] = $this->title;
             	{
            			return '<span class="text-aqua"><b><i>no history</i></span></b>';
            		}
-				return date('d-M-Y', strtotime($model->revised_date));
+				return date('d-M-Y H:i:s', strtotime($model->revised_date));
            		//return date('Y-m-d H:i:s', strtotime($model->revised_date));
            	},
             'hAlign' => 'center',
