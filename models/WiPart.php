@@ -31,6 +31,7 @@ class WiPart extends BaseWiPart
 		return [
 				[['masterlist_id'], 'required'],
 				[['masterlist_id', 'flag'], 'integer'],
+				[['part_arr'], 'string'],
 				[['sap_partno'], 'string', 'max' => 15],
 		];
 	}
