@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = 'Edit';
         <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ' . 'View', ['view', 'wi_part_id' => $model->wi_part_id], ['class' => 'btn btn-default']) ?>
     </p>
 
-	<?php echo $this->render('_form', [
+	<?php echo $this->render('_updateForm', [
 		'model' => $model,
 	]); ?>
 

@@ -54,10 +54,13 @@ $this->params['breadcrumbs'][] = 'View';
     <?= DetailView::widget([
     'model' => $model,
     'attributes' => [
-            'wi_part_id',
-        'masterlist_id',
+            //'wi_part_id',
+		[
+			'attribute' => 'masterlist_id',
+			'value' => $model->wi->wi_docno,
+		],
         'sap_partno',
-        'flag',
+        //'flag',
     ],
     ]); ?>
 

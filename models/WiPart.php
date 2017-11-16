@@ -29,7 +29,7 @@ class WiPart extends BaseWiPart
 	public function rules()
 	{
 		return [
-				[['masterlist_id', 'part_arr'], 'required'],
+				[['masterlist_id'], 'required'],
 				[['masterlist_id', 'flag'], 'integer'],
 				[['sap_partno'], 'string', 'max' => 15],
 		];
