@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = ['label' => (string)$model->wi_id, 'url' => ['v
 $this->params['breadcrumbs'][] = 'View';
 
 $this->registerCss("table.detail-view th {width: 20%;} table.detail-view td {width: 80%;}");
-
+Yii::$app->timeZone = 'UTC';
 ?>
 <div class="giiant-crud wi-view">
 
@@ -266,56 +266,56 @@ $this->registerCss("table.detail-view th {width: 20%;} table.detail-view td {wid
    ],
 		//'revised_date',
 		[
-		'attribute' => 'revised_date',
-		'format' => ['date', 'php:d-M-Y H:i:s'],
-		'label' => 'Revised',
+                    'attribute' => 'revised_date',
+                    'format' => ['date', 'php:d-M-Y H:i:s'],
+                    'label' => 'Revised',
    		],
 		//'check1_date', 
 		[
-		'attribute' => 'check1_date',
-		'format' => ['date', 'php:d-M-Y H:i:s'],
-		'label' => 'Masterlist Check',
+                    'attribute' => 'check1_date',
+                    'format' => ['date', 'php:d-M-Y H:i:s'],
+                    'label' => 'Masterlist Check',
 		],
 		//'check2_date', 
 		[
-		'attribute' => 'check2_date',
-		'format' => ['date', 'php:d-M-Y H:i:s'],
-		'label' => 'SMILE Check',
+                    'attribute' => 'check2_date',
+                    'format' => ['date', 'php:d-M-Y H:i:s'],
+                    'label' => 'SMILE Check',
 		],
 		//'check3_date', 
 		[
-		'attribute' => 'check3_date',
-		'format' => ['date', 'php:d-M-Y H:i:s'],
-		'label' => 'Final Check',
+                    'attribute' => 'check3_date',
+                    'format' => ['date', 'php:d-M-Y H:i:s'],
+                    'label' => 'Final Check',
 		],
 		//'approved_date', 
 		[
-		'attribute' => 'approved_date',
-		'format' => ['date', 'php:d-M-Y H:i:s'],
-		'label' => 'Approved',
+                    'attribute' => 'approved_date',
+                    'format' => ['date', 'php:d-M-Y H:i:s'],
+                    'label' => 'Approved',
 		],
 		//'release_date', 
 		[
-		'attribute' => 'release_date',
-		'format' => ['date', 'php:d-M-Y H:i:s'],
-		'label' => 'Release',
+                    'attribute' => 'release_date',
+                    'format' => ['date', 'php:d-M-Y H:i:s'],
+                    'label' => 'Release',
 		],
 		[
-		'attribute' => 'reject_date',
-		'format' => ['date', 'php:d-M-Y H:i:s'],
-		'label' => 'Reject',
+                    'attribute' => 'reject_date',
+                    'format' => ['date', 'php:d-M-Y H:i:s'],
+                    'label' => 'Reject',
 		],
 		[
-		'attribute' => 'rejector_id',
-		'value' => 'rejector.name',
-		'label' => 'Reject By',
+                    'attribute' => 'rejector_id',
+                    'value' => 'rejector.name',
+                    'label' => 'Reject By',
 		],
-       [
-       		'attribute' => 'linkedRemark',
-       		'format' => 'raw',
-       		'hAlign' => 'center',
-       		'label' => 'Uncompleted Task',
-       		'hidden' => true,
+                [
+                    'attribute' => 'linkedRemark',
+                    'format' => 'raw',
+                    'hAlign' => 'center',
+                    'label' => 'Uncompleted Task',
+                    'hidden' => true,
        		],
 ] 
 ]) . '</div>' ?> 
