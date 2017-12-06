@@ -82,7 +82,7 @@ class SiteController extends Controller
             if($model->password != ""){
                 $model->password = md5($model->password);
             }else{
-                $model->password = $oldMd5Password;
+                $model->password = $model->oldAttributes['password'];
             }
 
             # get the uploaded file instance

@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = 'View';
 
 $this->registerCss("table.detail-view th {width: 20%;} table.detail-view td {width: 80%;}");
 Yii::$app->timeZone = 'UTC';
+
 ?>
 <div class="giiant-crud wi-view">
 
@@ -210,21 +211,10 @@ Yii::$app->timeZone = 'UTC';
 ]
 ]) . '</div>' ?>
 <?php Pjax::end() ?>
-	<?php $this->endBlock(); ?>
+<?php $this->endBlock(); ?>
 
-	<?php $this->beginBlock('WiHistories'); ?> 
-<div style='position: relative'><div style='position:absolute; right: 0px; top: 0px;'> 
- <?= ''; /* Html::a( 
-           '<span class="glyphicon glyphicon-list"></span> ' . 'List All' . ' Wi Histories', 
-           ['wi-history/index'], 
-           ['class'=>'btn text-muted btn-xs'] 
-       ) */ ?> 
- <?= '';/* Html::a( 
-           '<span class="glyphicon glyphicon-plus"></span> ' . 'New' . ' Wi History', 
-           ['wi-history/create', 'WiHistory' => ['wi_id' => $model->wi_id]], 
-           ['class'=>'btn btn-success btn-xs'] 
-       ); */ ?> 
-</div></div><?php Pjax::begin(['id'=>'pjax-WiHistories', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-WiHistories ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?> 
+<?php $this->beginBlock('WiHistories'); ?> 
+<?php Pjax::begin(['id'=>'pjax-WiHistories', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-WiHistories ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?> 
 <?= '<div class="table-responsive">' . kartik\grid\GridView::widget([ 
    'layout' => '{summary}{pager}<br/>{items}{pager}', 
    'dataProvider' => new \yii\data\ActiveDataProvider(['query' => $model->getWiHistories()->where(['flag' => 1]), 'pagination' => ['pageSize' => 20, 'pageParam'=>'page-wihistories']]), 
@@ -323,18 +313,7 @@ Yii::$app->timeZone = 'UTC';
 <?php $this->endBlock() ?>
 
 <?php $this->beginBlock('WiRequest'); ?> 
-<div style='position: relative'><div style='position:absolute; right: 0px; top: 0px;'> 
- <?= ''; /* Html::a( 
-           '<span class="glyphicon glyphicon-list"></span> ' . 'List All' . ' Wi Histories', 
-           ['wi-history/index'], 
-           ['class'=>'btn text-muted btn-xs'] 
-       ) */ ?> 
- <?= '';/* Html::a( 
-           '<span class="glyphicon glyphicon-plus"></span> ' . 'New' . ' Wi History', 
-           ['wi-history/create', 'WiHistory' => ['wi_id' => $model->wi_id]], 
-           ['class'=>'btn btn-success btn-xs'] 
-       ); */ ?> 
-</div></div><?php Pjax::begin(['id'=>'pjax-WiRequest', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-WiRequest ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?> 
+<?php Pjax::begin(['id'=>'pjax-WiRequest', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-WiRequest ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?> 
 <?= '<div class="table-responsive">' . kartik\grid\GridView::widget([ 
    'layout' => '{summary}{pager}<br/>{items}{pager}', 
    'dataProvider' => new \yii\data\ActiveDataProvider(['query' => $model->getWiRequest()->where(['flag' => 1]), 'pagination' => ['pageSize' => 20, 'pageParam'=>'page-wihistories']]), 
@@ -403,33 +382,83 @@ Yii::$app->timeZone = 'UTC';
 <?php Pjax::end() ?> 
 <?php $this->endBlock() ?>
     
+<?php $this->beginBlock('DcnWi'); ?> 
+<?php Pjax::begin(['id'=>'pjax-DcnWi', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-DcnWi ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?> 
+<?= '<div class="table-responsive">' . kartik\grid\GridView::widget([ 
+   'layout' => '{summary}{pager}<br/>{items}{pager}', 
+   'dataProvider' => new \yii\data\ActiveDataProvider(['query' => $model->getDcnWi(), 'pagination' => ['pageSize' => 20, 'pageParam'=>'page-dcnwi']]), 
+   'pager'       => [ 
+       'class'         => yii\widgets\LinkPager::className(), 
+       'firstPageLabel' => 'First', 
+       'lastPageLabel' => 'Last' 
+   ], 
+   'columns' => [
+        /* [
+            'class'=>'kartik\grid\SerialColumn',
+            'contentOptions'=>['class'=>'kartik-sheet-style', 'style' => 'text-align: center;'],
+            'width'=>'36px',
+            'header'=>'No.',
+            'headerOptions'=>['class'=>'kartik-sheet-style']
+        ], */
+        [
+            'attribute' => 'dcnNo',
+            'hAlign' => 'center',
+            'width'=>'100px',
+            'format' => 'raw',
+            'vAlign' => 'middle',
+        ],
+        [
+            'attribute' => 'dcnStatus',
+            'hAlign' => 'center',
+            'vAlign' => 'middle',
+            'width' => '100px',
+            'format' => 'raw',
+        ],
+        [
+            'attribute' => 'dcnTitle',
+            'hAlign' => 'left',
+        ],
+   
+] 
+]) . '</div>' ?> 
+<?php Pjax::end() ?> 
+<?php $this->endBlock() ?>
+    
+    <?php
+    $tabItems = [
+        [
+            'label'  => '<b class="">Detail '.'</b>',
+            //'label'  => '<b class=""># '.$model->wi_id.'</b>',
+            'content' => $this->blocks['app\models\Wi'],
+            'active' => true,
+        ],
+        [
+            'content' => $this->blocks['WiRemarks'],
+            'label'  => '<small>WI Remark <span class="badge badge-default">'.$wi_rmk->count().'</span></small>',
+            'active' => false,
+        ],
+        [ 
+            'content' => $this->blocks['WiHistories'], 
+            'label'  => '<small>WI Histories <span class="badge badge-default">'.count($model->getWiHistories()->where(['flag' => 1])->asArray()->all()).'</span></small>', 
+            'active' => false, 
+        ],
+        [
+            'content' => $this->blocks['WiRequest'],
+            'label'  => '<small>WI Request <span class="badge badge-default">'.count($model->getWiRequest()->where(['flag' => 1])->asArray()->all()).'</span></small>',
+            'active' => false,
+        ],
+        [
+            'content' => $this->blocks['DcnWi'],
+            'label'  => '<small>DCN <span class="badge badge-default">'.count($model->getDcnWi()->asArray()->all()).'</span></small>',
+            'active' => false,
+        ],
+    ];
+    ?>
     <?= Tabs::widget(
                  [
                      'id' => 'relation-tabs',
                      'encodeLabels' => false,
-                     'items' => [
-                     		[
-							   'label'  => '<b class="">Detail '.'</b>',
-							   //'label'  => '<b class=""># '.$model->wi_id.'</b>',
-							   'content' => $this->blocks['app\models\Wi'],
-							   'active' => true,
-							],
-                     		[
-                     		'content' => $this->blocks['WiRemarks'],
-                     		'label'  => '<small>WI Remark <span class="badge badge-default">'.$wi_rmk->count().'</span></small>',
-                     		'active' => false,
-                     		],
-                     		[ 
-							   'content' => $this->blocks['WiHistories'], 
-							   'label'  => '<small>WI Histories <span class="badge badge-default">'.count($model->getWiHistories()->where(['flag' => 1])->asArray()->all()).'</span></small>', 
-							   'active' => false, 
-							],
-                     		[
-                     		'content' => $this->blocks['WiRequest'],
-                     		'label'  => '<small>WI Request <span class="badge badge-default">'.count($model->getWiRequest()->where(['flag' => 1])->asArray()->all()).'</span></small>',
-                     		'active' => false,
-                     		],
-                     ]
+                     'items' => $tabItems
                 ]
     );
     ?>

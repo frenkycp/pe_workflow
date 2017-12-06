@@ -86,6 +86,11 @@ class Wi extends BaseWi
     	return $this->hasMany(WiPart::className(), ['masterlist_id' => 'wi_id']);
     }
     
+    public function getDcnWi()
+    {
+        return $this->hasOne(\app\models\DcnWi::className(), ['widocno' => 'wi_docno']);
+    }
+    
     public static function getUploadPath()
     {
     	return \Yii::getAlias('@webroot') . '/../../workflow/files/wi/';
