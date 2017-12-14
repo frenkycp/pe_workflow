@@ -15,6 +15,8 @@ use app\models\WiStatus;
 $this->title = 'Work Instruction Record';
 $this->params['breadcrumbs'][] = $this->title;
 
+$wiStatusArr = ArrayHelper::map(WiStatus::find()->where(['flag' => 1])->orderBy('status_name ASC')->all(), 'status_id', 'status_name');
+
 if(in_array(\Yii::$app->user->identity->role_id, [1, 2]))
 {
     $template = '{view} {update} {delete}';
@@ -356,7 +358,7 @@ $columns = [
             <!-- <div class="panel-heading">
                 <h2>
                     <i><?php 
-                    	$wiStatusArr = ArrayHelper::map(WiStatus::find()->where(['flag' => 1])->orderBy('status_name ASC')->all(), 'status_id', 'status_name');
+                    	
                     	/* $wiStatusArr = [
                     			wi::$_STATUS_APPROVE, wi::$_STATUS_CHECK_FINAL, wi::$_STATUS_CHECK_MASTERLIST, wi::$_STATUS_CHECK_SMILE,
                     			wi::$_STATUS_CHECKIN, wi::$_STATUS_CHECKOUT, wi::$_STATUS_CLOSE, wi::$_STATUS_OPEN, wi::$_STATUS_REJECT,
