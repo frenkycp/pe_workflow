@@ -2,7 +2,7 @@
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 	
-	$this->title = "HOME";
+	$this->title = "WI Distribution";
 ?>
 <section class="content-header">
 	<h1>

@@ -145,22 +145,23 @@ class WiMasterlistController extends Controller
 				}
 				else
 				{
-        			$wi->wi_model = $model->speaker_model;
-        			$wi->wi_section = $model->docSection->section_name;
-        			$wi->wi_docno = $model->doc_no;
-        			$wi->wi_title = $model->doc_title;
-        			$wi->wi_status = 1;
-        			$wi->wi_rev = '-1';
-        			$wi->wi_stagestat = 'TP';
-        			$wi->wi_maker = $model->pic->name;
-        			if(!$wi->save())
-        			{
-        				return json_encode($wi->errors);
-        			}
+                                    $wi->wi_model = $model->speaker_model;
+                                    $wi->wi_section = $model->docSection->section_name;
+                                    $wi->wi_docno = $model->doc_no;
+                                    $wi->wi_title = $model->doc_title;
+                                    $wi->wi_status = 1;
+                                    $wi->wi_rev = '-1';
+                                    $wi->wi_stagestat = 'TP';
+                                    
+                                    if(!$wi->save())
+                                    {
+                                            return json_encode($wi->errors);
+                                    }
 				}
 				$wi->wi_title = $model->doc_title;
 				$wi->wi_section = $model->docSection->section_name;
 				$wi->wi_model = $model->speaker_model;
+                                $wi->wi_maker = $model->pic->name;
 				if(!$wi->save())
 				{
 					return json_encode($wi_errors());
