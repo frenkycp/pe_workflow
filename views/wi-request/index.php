@@ -25,6 +25,19 @@ $filterOptions = [
     ],
 ];
 
+if(strtolower(Yii::$app->user->identity->role->name) == 'prod. admin')
+{
+    $template = '{view} {print}';
+}
+if(strtolower(Yii::$app->user->identity->role->name) == 'pe admin 1')
+{
+    $template = '{view} {print} {update} {closing}';
+}
+if(strtolower(Yii::$app->user->identity->role->name) == 'pe admin 2')
+{
+    $template = '{view} {update} {closing} {print}';
+}
+
 $columns = [
     [
         'class' => 'kartik\grid\ActionColumn',
@@ -237,18 +250,13 @@ $columns = [
     ],
 ];
         
-$exportColumn = $columns;
+/* $exportColumn = $columns;
 $exportColumn[6] = [
         'attribute' => 'wi_title',
         'format' => 'raw',
         'value' => function ($model)
         {
             $wiTitle = $model->wi->wi_title;
-            /* if(strlen($wiTitle) > 24)
-            {
-                $wiTitle = substr($wiTitle, 0, 21) . '...';
-                return '<span title="' . $model->wi_title . '">' . $wiTitle . '</span>';
-            }*/
             return $wiTitle;
         },
         'hAlign' => 'center',
@@ -271,7 +279,7 @@ $fullExportMenu = ExportMenu::widget([
         ],
     ],
     'filename' => 'WI_Request_' . date('d-M-Y'),
-]);
+]); */
 
 ?>
 
@@ -289,18 +297,7 @@ $fullExportMenu = ExportMenu::widget([
 
                                                     
             <?= '';
-            if(strtolower(Yii::$app->user->identity->role->name) == 'prod. admin')
-            {
-            	$template = '{view} {print}';
-            }
-            if(strtolower(Yii::$app->user->identity->role->name) == 'pe admin 1')
-            {
-            	$template = '{view} {print} {update} {closing}';
-            }
-            if(strtolower(Yii::$app->user->identity->role->name) == 'pe admin 2')
-            {
-            	$template = '{view} {update} {closing} {print}';
-            }
+            
             /*
             \yii\bootstrap\ButtonDropdown::widget(
                 [

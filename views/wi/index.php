@@ -59,7 +59,7 @@ $exportConfig = [
 ];
 
 $buttons = [
-    'take_job' => function ($url, $model, $key) {
+    /*'take_job' => function ($url, $model, $key) {
         return in_array($model->wi_status, [1, 3, 5, 7, 9, 11, 13, 14]) && Yii::$app->controller->id == 'available-jobs' ? Html::a('<span class="glyphicon glyphicon-edit" style="padding-left: 5px;"></span>',
             ['take-job', 'id'=>$model->wi_id],
             [
@@ -71,7 +71,7 @@ $buttons = [
         return strtoupper(Yii::$app->user->identity->role->name) == 'PROD. ADMIN' ? Html::a('REQUEST',
             ['/wi-request/create', 'wi_id' => $model->wi_id], 
             ['class' => 'btn btn-primary btn-xs']) : '';
-    },
+    }, */
     'submit' => function ($url, $model, $key) {
         return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? Html::a('REVISE',
             ['/my-job/submit', 'id'=>$model->wi_id],
@@ -105,7 +105,7 @@ $buttons = [
             ]) : "";
         //return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
     },
-    'remark' => function ($url, $model, $key) {
+    /*'remark' => function ($url, $model, $key) {
         //return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
         return in_array(Yii::$app->user->identity->role_id, [Yii::$app->params['roleid_admin1'], Yii::$app->params['roleid_admin2']]) && Yii::$app->controller->id == 'my-job' ?
         Html::a('REMARK',
@@ -122,7 +122,7 @@ $buttons = [
                                         //'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
                         ]
         ) : ""; */
-    },
+    //},
     'view' => function ($url, $model, $key) {
         //return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
         return Html::a('VIEW',
@@ -372,6 +372,8 @@ $columns = [
                 <div class="table-responsive">
                 <?= GridView::widget([
                 'layout' => '{items} {summary} {pager}',
+                    'pjax' => true,
+                'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
                 'dataProvider' => $dataProvider,
                 		'resizableColumns'=>false,
                 'pager'        => [
