@@ -66,12 +66,12 @@ $buttons = [
                 'title'=> Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? 'Revise' : 'Process',
                 'data-confirm' => Yii::t('yii', 'Are you sure you want to process this item?'),
             ]) : '';
-    },
+    }, */
     'request' => function ($url, $model, $key) {
         return strtoupper(Yii::$app->user->identity->role->name) == 'PROD. ADMIN' ? Html::a('REQUEST',
             ['/wi-request/create', 'wi_id' => $model->wi_id], 
             ['class' => 'btn btn-primary btn-xs']) : '';
-    }, */
+    },
     'submit' => function ($url, $model, $key) {
         return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? Html::a('REVISE',
             ['/my-job/submit', 'id'=>$model->wi_id],
