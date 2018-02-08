@@ -44,7 +44,7 @@ class SapItemController extends Controller
 	
 	public function actionInsertData()
 	{
-		$fileName = 'sap_item_03_jul17.xls';
+		$fileName = 'sap_item_05_dec_17.xlsx';
 		$columnNameArr = [
 				'sap_partno', 'description', 'uom', 'analyst_group', 'analyst_desc', 'issue_type_desc', 'item_class', 'insert_type', 'flag'
 		];

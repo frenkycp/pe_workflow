@@ -168,7 +168,7 @@ class WiRequestController extends Controller
 						
 				}
 				\Yii::$app->session->addFlash("success", "Request for Document no.  " . $wi->wi_docno . " on " . date('d-M-Y', strtotime($model->request_date)) . " has been closed...");
-				return $this->redirect(Url::previous());
+				return $this->redirect(['index']);
 			}else{
 				return $model->errors;
 			}
@@ -226,11 +226,11 @@ class WiRequestController extends Controller
 
                             }
                             \Yii::$app->session->addFlash("success", "Request for Document no.  " . $wi->wi_docno . " on " . date('d-M-Y', strtotime($model->request_date)) . " has been closed...");
-                            return $this->redirect(Url::previous());
+                            return $this->redirect(['view', 'id' => $id]);
                     }else{
                             return $model->errors;
                     }
-                    return $this->redirect(Url::previous());
+                    return $this->redirect(['view', 'id' => $id]);
 		} else {
 			return $this->render('update', [
 				'model' => $model,

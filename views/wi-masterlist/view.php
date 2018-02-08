@@ -98,7 +98,7 @@ $this->params['breadcrumbs'][] = 'View';
 
     <hr/>
 
-    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> ' . 'Delete', ['delete', 'masterlist_id' => $model->masterlist_id],
+    <?= ''; Html::a('<span class="glyphicon glyphicon-trash"></span> ' . 'Delete', ['delete', 'masterlist_id' => $model->masterlist_id],
     [
     'class' => 'btn btn-danger',
     'data-confirm' => '' . 'Are you sure to delete this item?' . '',

@@ -108,7 +108,7 @@ class WiMasterlistController extends Controller
             		}
             		
             		\Yii::$app->session->addFlash("success", "Document no " . $model->doc_no . " has been generated...");
-            		return $this->redirect(Url::previous());
+            		return $this->redirect(['index']);
             	}
                 return json_encode($model->errors);
             } elseif (!\Yii::$app->request->isPost) {
@@ -134,40 +134,40 @@ class WiMasterlistController extends Controller
 		$model = $this->findModel($masterlist_id);
 
 		if ($model->load($_POST)) {
-			if($model->save())
-			{
-				$wi = new Wi();
-				$tmpWi = Wi::find()->where(['wi_docno' => $model->doc_no])->one();
-				if(!empty($tmpWi))
-				{
-					$wi = $tmpWi;
-					
-				}
-				else
-				{
-                                    $wi->wi_model = $model->speaker_model;
-                                    $wi->wi_section = $model->docSection->section_name;
-                                    $wi->wi_docno = $model->doc_no;
-                                    $wi->wi_title = $model->doc_title;
-                                    $wi->wi_status = 1;
-                                    $wi->wi_rev = '-1';
-                                    $wi->wi_stagestat = 'TP';
-                                    
-                                    if(!$wi->save())
-                                    {
-                                            return json_encode($wi->errors);
-                                    }
-				}
-				$wi->wi_title = $model->doc_title;
-				$wi->wi_section = $model->docSection->section_name;
-				$wi->wi_model = $model->speaker_model;
-                                $wi->wi_maker = $model->pic->name;
-				if(!$wi->save())
-				{
-					return json_encode($wi_errors());
-				}
-			}
-            return $this->redirect(Url::previous());
+                    if($model->save())
+                    {
+                            $wi = new Wi();
+                            $tmpWi = Wi::find()->where(['wi_docno' => $model->doc_no])->one();
+                            if(!empty($tmpWi))
+                            {
+                                    $wi = $tmpWi;
+
+                            }
+                            else
+                            {
+                                $wi->wi_model = $model->speaker_model;
+                                $wi->wi_section = $model->docSection->section_name;
+                                $wi->wi_docno = $model->doc_no;
+                                $wi->wi_title = $model->doc_title;
+                                $wi->wi_status = 1;
+                                $wi->wi_rev = '-1';
+                                $wi->wi_stagestat = 'TP';
+
+                                if(!$wi->save())
+                                {
+                                        return json_encode($wi->errors);
+                                }
+                            }
+                            $wi->wi_title = $model->doc_title;
+                            $wi->wi_section = $model->docSection->section_name;
+                            $wi->wi_model = $model->speaker_model;
+                            $wi->wi_maker = $model->pic->name;
+                            if(!$wi->save())
+                            {
+                                    return json_encode($wi_errors());
+                            }
+                    }
+                    return $this->redirect(['view', 'masterlist_id' => $masterlist_id]);
 		} else {
 			return $this->render('update', [
 				'model' => $model,

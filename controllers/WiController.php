@@ -170,7 +170,7 @@ class WiController extends Controller
 					
 				}
 				
-				return $this->redirect(Url::previous());
+				return $this->redirect(['view', 'wi_id' => $wi_id]);
 			}else{
 				return $model->errors;
 			}

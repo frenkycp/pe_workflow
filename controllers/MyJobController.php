@@ -105,7 +105,7 @@ class MyJobController extends Controller
 				return json_encode($wiHistory->errors);
 			}
 			\Yii::$app->session->addFlash("success", 'Document <b><a href="' . Url::to(['wi/view', 'wi_id'=>$model->wi_id]) . '">' . $model->wi_docno . ' Rev. ' . $model->wi_rev . '</a></b> has been authorized...');
-			return $this->redirect(Url::previous());
+			return $this->redirect(['index']);
 		}else{
 			return json_encode($model->errors);
 		}
@@ -158,7 +158,7 @@ class MyJobController extends Controller
 			if(\Yii::$app->user->identity->name != $model->wi_maker)
 			{
 				\Yii::$app->session->addFlash("warning", "This WI " . $model->wi_docno . " was revising by " . $model->wi_maker . ". You can't revise this WI until the process done...");
-				return $this->redirect(Url::previous());
+				return $this->redirect(['index']);
 			}
 		}
 		
@@ -230,7 +230,7 @@ class MyJobController extends Controller
 					return json_encode($wiHistory->errors);
 				}
 				\Yii::$app->session->addFlash("success", "WI " . $model->wi_docno . " Rev. " . $model->wi_rev . ' has been successfully revised by ' . $model->wi_maker);
-				return $this->redirect(Url::previous());
+				return $this->redirect(['index']);
 			}else{
 				return $model->errors;
 			}
@@ -260,7 +260,7 @@ class MyJobController extends Controller
 			if($wiHistory->save())
 			{
 				\Yii::$app->session->addFlash("danger", 'Document <b><a href="' . Url::to(['wi/view', 'wi_id'=>$model->wi_id]) . '">' . $model->wi_docno . ' Rev. ' . $model->wi_rev . '</a></b> has been rejected...');
-				return $this->redirect(Url::previous());
+				return $this->redirect(['index']);
 			}else{
 				return json_encode($wiHistory->errors);
 			}
