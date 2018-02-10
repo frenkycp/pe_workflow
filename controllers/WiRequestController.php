@@ -168,7 +168,7 @@ class WiRequestController extends Controller
 						
 				}
 				\Yii::$app->session->addFlash("success", "Request for Document no.  " . $wi->wi_docno . " on " . date('d-M-Y', strtotime($model->request_date)) . " has been closed...");
-				return $this->redirect(['index']);
+				return $this->redirect(Url::previous());
 			}else{
 				return $model->errors;
 			}
