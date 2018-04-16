@@ -12,8 +12,10 @@ use \app\models\base\Wi as BaseWi;
 class Wi extends BaseWi
 {
 	public $uploadFile;
-	
-	public static $_STATUS_OPEN = 'OPEN';
+        public $wiModelFull;
+        public $wiTitleFull;
+
+        public static $_STATUS_OPEN = 'OPEN';
 	public static $_STATUS_CHECKOUT = 'CHECK OUT';
 	public static $_STATUS_CHECKIN = 'CHECK IN';
 	public static $_STATUS_CHECK_MASTERLIST = 'CHECK MASTERLIST';
