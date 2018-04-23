@@ -339,9 +339,20 @@ $columns = [
 ?>
 
 <div class="giiant-crud wi-index">
-
-    <?php      echo $this->render('_search', ['model' =>$searchModel]);
-    ?>
+    
+    <div class="box box-default collapsed-box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Search Using Part No</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <?php echo $this->render('_search', ['model' =>$searchModel]); ?>
+        </div>
+    </div>
+    
 
     <div class="clearfix">
         <p class="pull-left">
@@ -393,7 +404,6 @@ $columns = [
                 <div class="table-responsive">
                 <?= GridView::widget([
                 'layout' => '{items} {summary} {pager}',
-                    'pjax' => true,
                 'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
                 'dataProvider' => $dataProvider,
                 		'resizableColumns'=>false,
@@ -410,8 +420,10 @@ $columns = [
                 				'after' => false,
                 		],
                 		'toolbar' => [
-                				'{export}',
-                				'{toggleData}'
+                                    Html::a('Template WI', Url::to(['wi/template']), ['class' => 'btn btn-info']),
+                                    Html::a('WI Checker', Url::to(['wi/checker1']), ['class' => 'btn btn-info']),
+                                    '{export}',
+                                    '{toggleData}'
                 		],
                 		'export' => [
                 				'target' => '_self',

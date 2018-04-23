@@ -10,6 +10,7 @@ use dmstr\bootstrap\Tabs;
 use yii\web\UploadedFile;
 use app\models\WiHistory;
 use app\models\WiRemark;
+
 class MyJobController extends Controller
 {
 	public $enableCsrfValidation = false;
@@ -71,7 +72,7 @@ class MyJobController extends Controller
 		$status = $model->wi_status;
 		if($status == 4)
 		{
-			$model->wi_status = 6;
+			$model->wi_status = 8;
 			$wiHistory->check1_date = date('Y-m-d H:i:s');
 		}
 		else if($status == 6)
