@@ -191,12 +191,25 @@ class MyJobController extends Controller
 			}
 			
 			if(!empty($tmpFile)){
-				$delete = $model->oldAttributes['uploadFile'];
+				$wi_doc_no = $model->wi_docno;
 				$model->uploadFile = $tmpFile;
-				$model->wi_filename = $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
-				$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
+				if (strpos($model->uploadFile->baseName, $wi_doc_no) !== false) {
+					$delete = $model->oldAttributes['uploadFile'];
+					$model->wi_filename = $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
+					$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
+				} else {
+					\Yii::$app->session->addFlash("danger", "You're uploaded the wrong file. Please check the file before uploaded...!");
+					return $this->render('/wi/checkin', [
+							'model' => $model,
+					]);
+				}
+				
 			}else{
-				$model->uploadFile = $model->oldAttributes['uploadFile'];
+				\Yii::$app->session->addFlash("warning", "Please upload a file...!");
+				return $this->render('/wi/checkin', [
+						'model' => $model,
+				]);
+				//$model->uploadFile = $model->oldAttributes['uploadFile'];
 			}
 			$model->wi_status = 4;
 			$model->wi_issue = NULL;
