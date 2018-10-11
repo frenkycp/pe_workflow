@@ -68,11 +68,20 @@ class WiMasterlist extends BaseWiMasterlist
 				$tmp_class = $result->class_code;
 				//echo $this->doc_class . ' - ' . $tmp_class . ' - ';
 				//exit();
-				$result->class_count++;
+				if ($this->doc_type == 2) {
+					$result->wg_count++;
+					$this->doc_no = $result->class_code . 'G' . str_pad($result->wg_count, 4, '0', STR_PAD_LEFT);
+				} elseif ($this->doc_type == 4) {
+					$result->sok_count++;
+					$this->doc_no = $result->class_code . 'K' . str_pad($result->sok_count, 4, '0', STR_PAD_LEFT);
+				} else {
+					$result->class_count++;
+					$this->doc_no = $result->class_code . str_pad($result->class_count, 4, '0', STR_PAD_LEFT);
+				}
+				
 				if ($result->save())
 				{
 					$this->user_id = Yii::$app->user->id;
-					$this->doc_no = $result->class_code . str_pad($result->class_count, 4, '0', STR_PAD_LEFT);
 				}
             }
 			$this->doc_class = $result->primaryKey;

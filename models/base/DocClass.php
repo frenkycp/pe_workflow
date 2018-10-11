@@ -11,9 +11,9 @@ use Yii;
  * @property string $class_code
  * @property string $class_detail
  * @property integer $class_count
+ * @property integer $wg_count
+ * @property integer $sok_count
  * @property integer $flag
- *
- * @property \app\models\WiMasterlist[] $wiMasterlists
  */
 class DocClass extends \yii\db\ActiveRecord
 {
@@ -35,7 +35,7 @@ class DocClass extends \yii\db\ActiveRecord
     {
         return [
             [['class_code', 'class_detail'], 'required'],
-            [['class_count', 'flag'], 'integer'],
+            [['class_count', 'wg_count', 'sok_count', 'flag'], 'integer'],
             [['class_code'], 'string', 'max' => 10],
             [['class_detail'], 'string', 'max' => 30]
         ];
@@ -51,16 +51,10 @@ class DocClass extends \yii\db\ActiveRecord
             'class_code' => 'Class Code',
             'class_detail' => 'Class Detail',
             'class_count' => 'Class Count',
+            'wg_count' => 'Wg Count',
+            'sok_count' => 'Sok Count',
             'flag' => 'Flag',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWiMasterlists()
-    {
-        return $this->hasMany(\app\models\WiMasterlist::className(), ['doc_class' => 'doc_class_id']);
     }
 
 
