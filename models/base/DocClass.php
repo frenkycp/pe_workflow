@@ -35,7 +35,7 @@ class DocClass extends \yii\db\ActiveRecord
     {
         return [
             [['class_code', 'class_detail'], 'required'],
-            [['class_count', 'wg_count', 'sok_count', 'flag'], 'integer'],
+            [['class_count', 'wg_count', 'sok_count', 'mfg_std_count', 'flag'], 'integer'],
             [['class_code'], 'string', 'max' => 10],
             [['class_detail'], 'string', 'max' => 30]
         ];
@@ -48,11 +48,12 @@ class DocClass extends \yii\db\ActiveRecord
     {
         return [
             'doc_class_id' => 'Doc Class ID',
-            'class_code' => 'Class Code',
-            'class_detail' => 'Class Detail',
-            'class_count' => 'Class Count',
-            'wg_count' => 'Wg Count',
-            'sok_count' => 'Sok Count',
+            'class_code' => 'Code Name',
+            'class_detail' => 'Code Detail',
+            'class_count' => 'Total WI',
+            'wg_count' => 'Total WG',
+            'sok_count' => 'Total SOK',
+            'mfg_std_count' => 'Total Mfg. Standart',
             'flag' => 'Flag',
         ];
     }

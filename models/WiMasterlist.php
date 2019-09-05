@@ -74,6 +74,9 @@ class WiMasterlist extends BaseWiMasterlist
 				} elseif ($this->doc_type == 4) {
 					$result->sok_count++;
 					$this->doc_no = $result->class_code . 'K' . str_pad($result->sok_count, 4, '0', STR_PAD_LEFT);
+				} elseif ($this->doc_type == 5) {
+					$result->mfg_std_count++;
+					$this->doc_no = $result->class_code . 'MS' . str_pad($result->mfg_std_count, 4, '0', STR_PAD_LEFT);
 				} else {
 					$result->class_count++;
 					$this->doc_no = $result->class_code . str_pad($result->class_count, 4, '0', STR_PAD_LEFT);

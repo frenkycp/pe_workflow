@@ -89,6 +89,9 @@ $this->params['breadcrumbs'][] = $this->title;
 			'class_code',
 			'class_detail',
 			'class_count',
+            'wg_count',
+            'sok_count',
+            'mfg_std_count',
                 ],
             ]); ?>
                 </div>
