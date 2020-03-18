@@ -27,7 +27,7 @@ Yii::$app->timeZone = 'UTC';
 <div class="giiant-crud wi-view">
 
     <!-- menu buttons -->
-    <p class='pull-left' style="<?= in_array(Yii::$app->user->identity->role_id, [1, Yii::$app->params['roleid_admin2']]) ? '' : 'display:none;'?>">
+    <p class='pull-left' style="<?= in_array(Yii::$app->user->identity->role_id, [1, 8, Yii::$app->params['roleid_admin2']]) ? '' : 'display:none;'?>">
         <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> ' . 'Edit', ['update', 'wi_id' => $model->wi_id],['class' => 'btn btn-info']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . 'New', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-edit"></span> ' . 'Add Remark', ['wi-remark/create', 'wi_id' => $model->wi_id, 'remark_only' => 1],['class' => 'btn btn-primary']) ?>
