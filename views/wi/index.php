@@ -73,7 +73,7 @@ $buttons = [
             ['class' => 'btn btn-primary btn-xs']) : '';
     },
     'submit' => function ($url, $model, $key) {
-        return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] ? Html::a('REVISE',
+        return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] && $model->wi_status != 3 ? Html::a('REVISE',
             ['/my-job/submit', 'id'=>$model->wi_id],
             [
                             'title'=> in_array($model->wi_status, [1, 2, 3, 13, 14]) ? '' : 'WI still in Workflow...',
