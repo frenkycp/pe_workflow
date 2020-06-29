@@ -109,14 +109,14 @@ Yii::$app->timeZone = 'UTC';
 		    ],
         [
           'attribute'=>'wi_file3',
-          'label' => 'WI (Scan) - Released',
+          'label' => 'WI (PDF) - Released',
           'format'=>'raw',
           'value' => $model->wi_file3 == null || $model->wi_file3 == '' ? '-' : Html::a($model->wi_filename3, Yii::$app->request->hostInfo . '/workflow/' . $model->wi_file3),
           //'value' => Html::a($model->wi_filename, 'http://pe12/workflow/' . $model->wi_file, ['style' => in_array($model->wi_status, ['OPEN', 'CLOSE']) ? '' : 'display: none;']),
         ],
         [
           'attribute'=>'file_4',
-          'label' => 'WI (Scan) - On Progress',
+          'label' => 'WI (PDF) - On Progress',
           'format'=>'raw',
           'value' => $model->file_4 == null || $model->file_4 == '' ? '-' : Html::a($model->wi_filename3, Yii::$app->request->hostInfo . '/workflow/' . $model->file_4),
           //'value' => Html::a($model->wi_filename, 'http://pe12/workflow/' . $model->wi_file, ['style' => in_array($model->wi_status, ['OPEN', 'CLOSE']) ? '' : 'display: none;']),
