@@ -92,11 +92,15 @@ class MyJobController extends Controller
 			WiRemark::updateAll(['status' => 1], ['status' => 0, 'flag' =>1, 'history_id' => $wiHistory->id]);
 			$wiHistory->approved_date = date('Y-m-d H:i:s');
 		}
-		else if($status == 12)
+		else if($status == 12) // waiting distribution -> release
 		{
 			$model->wi_status = 13;
 			$model->wi_issue = date('Y-m-d');
 			$wiHistory->release_date = date('Y-m-d H:i:s');
+			if ($model->filename_4 != null) {
+				$model->wi_filename3 = $model->filename_4;
+				$model->wi_file3 = $model->file_4;
+			}
 		}
 	
 		if($model->save())
@@ -181,6 +185,7 @@ class MyJobController extends Controller
 	
 		if ($model->load($_POST)) {
 			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
+			$tmpFile2 = UploadedFile::getInstance($model, 'uploadFile2');
 			$tmp = WiHistory::find()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->orderBy('id DESC')->one();
 			if($tmp->release_date != NULL)
 			{
@@ -190,13 +195,16 @@ class MyJobController extends Controller
 				]);
 			}
 			
-			if(!empty($tmpFile)){
+			if(!empty($tmpFile) && !empty($tmpFile2)){
 				$wi_doc_no = $model->wi_docno;
 				$model->uploadFile = $tmpFile;
-				if (strpos($model->uploadFile->baseName, $wi_doc_no) !== false) {
+				$model->uploadFile2 = $tmpFile2;
+				if (strpos($model->uploadFile->baseName, $wi_doc_no) !== false && strpos($model->uploadFile2->baseName, $wi_doc_no) !== false) {
 					$delete = $model->oldAttributes['uploadFile'];
 					$model->wi_filename = $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
 					$model->wi_file = "./files/wi/" . $model->uploadFile->baseName . '.' . $model->uploadFile->extension;
+					$model->filename_4 = $model->uploadFile2->baseName . '.' . $model->uploadFile2->extension;
+					$model->file_4 = "./files/wi/" . $model->uploadFile2->baseName . '.' . $model->uploadFile2->extension;
 				} else {
 					\Yii::$app->session->addFlash("danger", "You're uploaded the wrong file. Please check the file before uploaded...!");
 					return $this->render('/wi/checkin', [
@@ -205,7 +213,7 @@ class MyJobController extends Controller
 				}
 				
 			}else{
-				\Yii::$app->session->addFlash("warning", "Please upload a file...!");
+				\Yii::$app->session->addFlash("warning", "Please upload WI (Excel + PDF) file...!");
 				return $this->render('/wi/checkin', [
 						'model' => $model,
 				]);

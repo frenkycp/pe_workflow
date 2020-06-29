@@ -23,10 +23,11 @@ use Yii;
  * @property string $wi_file2
  * @property string $wi_filename3
  * @property string $wi_file3
+ * @property string $filename_4
+ * @property string $file_4
  * @property string $wi_remark
  * @property string $wi_dcn
- *
- * @property \app\models\WiStatus $wiStatus
+ * @property string $wi_loc
  */
 class Wi extends \yii\db\ActiveRecord
 {
@@ -47,14 +48,14 @@ class Wi extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['wi_status'], 'required'],
             [['wi_status'], 'integer'],
             [['wi_issue'], 'safe'],
-            [['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'string'],
-            [['wi_model'], 'string', 'max' => 200],
+            [['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'filename_4', 'file_4', 'wi_remark', 'wi_dcn'], 'string'],
+            [['wi_model', 'wi_title'], 'string', 'max' => 200],
             [['wi_section', 'wi_docno', 'wi_stagestat'], 'string', 'max' => 50],
-            [['wi_title', 'wi_maker'], 'string', 'max' => 200],
-            [['wi_rev'], 'string', 'max' => 5]
+            [['wi_rev'], 'string', 'max' => 5],
+            [['wi_maker'], 'string', 'max' => 100],
+            [['wi_loc'], 'string', 'max' => 10]
         ];
     }
 
@@ -80,27 +81,17 @@ class Wi extends \yii\db\ActiveRecord
             'wi_file2' => 'Wi File2',
             'wi_filename3' => 'Wi Filename3',
             'wi_file3' => 'Wi File3',
+            'filename_4' => 'Filename 4',
+            'file_4' => 'File 4',
             'wi_remark' => 'Wi Remark',
             'wi_dcn' => 'Wi Dcn',
+            'wi_loc' => 'Wi Loc',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getWiStatus()
-    {
-        return $this->hasOne(\app\models\WiStatus::className(), ['status_id' => 'wi_status']);
-    }
-
-    public function getWiHistories()
-    {
-    	return $this->hasMany(\app\models\WiHistory::className(), ['wi_id' => 'wi_id']);
-    }
-
-    public function getWiRequest()
-    {
-    	return $this->hasMany(\app\models\WiRequest::className(), ['wi_id' => 'wi_id']);
-    }
+    
 
 }

@@ -11,7 +11,7 @@ use \app\models\base\Wi as BaseWi;
  */
 class Wi extends BaseWi
 {
-	public $uploadFile;
+	public $uploadFile, $uploadFile2;
         public $wiModelFull;
         public $wiTitleFull;
 
@@ -64,7 +64,7 @@ class Wi extends BaseWi
     			[['wi_status'], 'required'],
     			[['wi_status'], 'integer'],
     			[['wi_issue'], 'safe'],
-    			[['uploadFile'], 'file', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => true, 'extensions' => 'xls, xlsx, pdf'],
+    			[['uploadFile', 'uploadFile2'], 'file', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => true, 'extensions' => 'xls, xlsx, pdf'],
     			[['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'string'],
     			[['wi_model'], 'string', 'max' => 200],
     			[['wi_section', 'wi_docno', 'wi_stagestat'], 'string', 'max' => 50],
@@ -77,10 +77,25 @@ class Wi extends BaseWi
     {
     	if ($this->validate()) {
     		$this->uploadFile->saveAs(\Yii::getAlias('@webroot') . '/../../workflow/files/wi/' . $this->uploadFile->baseName . '.' . $this->uploadFile->extension);
+            $this->uploadFile2->saveAs(\Yii::getAlias('@webroot') . '/../../workflow/files/wi/' . $this->uploadFile2->baseName . '.' . $this->uploadFile2->extension);
     		return true;
     	} else {
     		return false;
     	}
+    }
+    public function getWiStatus()
+    {
+        return $this->hasOne(\app\models\WiStatus::className(), ['status_id' => 'wi_status']);
+    }
+
+    public function getWiHistories()
+    {
+        return $this->hasMany(\app\models\WiHistory::className(), ['wi_id' => 'wi_id']);
+    }
+
+    public function getWiRequest()
+    {
+        return $this->hasMany(\app\models\WiRequest::className(), ['wi_id' => 'wi_id']);
     }
     
     public function getWiPart()
