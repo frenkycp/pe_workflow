@@ -88,6 +88,7 @@ use app\models\WiStatus;
 			]) ?>
 			<?= ''//$form->field($model, 'wi_filename')->textarea(['rows' => 6]) ?>
 			<?= $form->field($model, 'uploadFile')->fileInput() ?>
+            <?= $form->field($model, 'uploadFile2')->fileInput() ?>
 			<?= ''//$form->field($model, 'wi_filename2')->textarea(['rows' => 6]) ?>
 			<?= ''//$form->field($model, 'wi_file2')->textarea(['rows' => 6]) ?>
                 </p>

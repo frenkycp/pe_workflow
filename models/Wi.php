@@ -55,6 +55,8 @@ class Wi extends BaseWi
         	'wi_file3' => 'Wi File3',
         	'wi_remark' => 'Remark',
         	'wi_dcn' => 'Purpose',
+            'uploadFile' => 'WI File (Excel)',
+            'uploadFile2' => 'WI File (PDF)',
         ];
     }
     
