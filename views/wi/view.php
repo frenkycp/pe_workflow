@@ -118,7 +118,7 @@ Yii::$app->timeZone = 'UTC';
           'attribute'=>'file_4',
           'label' => 'WI (PDF) - On Progress',
           'format'=>'raw',
-          'value' => $model->file_4 == null || $model->file_4 == '' ? '-' : Html::a($model->wi_filename3, Yii::$app->request->hostInfo . '/workflow/' . $model->file_4),
+          'value' => $model->file_4 == null || $model->file_4 == '' ? '-' : Html::a($model->filename_4, Yii::$app->request->hostInfo . '/workflow/' . $model->file_4),
           //'value' => Html::a($model->wi_filename, 'http://pe12/workflow/' . $model->wi_file, ['style' => in_array($model->wi_status, ['OPEN', 'CLOSE']) ? '' : 'display: none;']),
         ],
 		    'wi_dcn:ntext',
