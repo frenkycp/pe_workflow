@@ -36,6 +36,7 @@ class WiPartController extends Controller
 	public function actionIndex()
 	{
 		$searchModel  = new WiPartSearch;
+		$searchModel->flag = 1;
 		$dataProvider = $searchModel->search($_GET);
 
 		Tabs::clearLocalStorage();
@@ -178,6 +179,7 @@ class WiPartController extends Controller
             $deletedModel = $this->findModel($wi_part_id);
             $deletedModel->flag = 0;
             $deletedModel->save();
+			return $this->redirect(Url::previous());
         } catch (\Exception $e) {
             $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
             \Yii::$app->getSession()->setFlash('error', $msg);
