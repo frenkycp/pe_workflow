@@ -219,7 +219,7 @@ class MyJobController extends Controller
 				]);
 				//$model->uploadFile = $model->oldAttributes['uploadFile'];
 			}
-			$model->wi_status = 4;
+			$model->wi_status = 8;
 			$model->wi_issue = NULL;
 			if($model->save()){
 				if(!empty($tmpFile)){
