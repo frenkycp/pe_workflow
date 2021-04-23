@@ -112,6 +112,8 @@ class WiPartController extends Controller
 					else
 					{
 						$isNewWiPart = false;
+						$tmpWiPart->flag = 1;
+						$tmpWiPart->save();
 					}
 				}
 				$sap_partno = $tmp_part->sap_partno;
