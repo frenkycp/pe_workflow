@@ -22,7 +22,7 @@ public function rules()
 return [
 [['wi_id'], 'integer'],
 		[['wi_id', 'wi_status'], 'integer'],
-		[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn', 'part_no', 'last_issue_datetime', 'last_revise_datetime'], 'safe'],
+		[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn', 'part_no', 'last_issue_datetime', 'last_revise_datetime', 'rev_page_no'], 'safe'],
 ];
 }
 
@@ -44,7 +44,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = Wi::find()->joinWith('wiPart')->groupBy('wi_id');
+$query = Wi::find()/*->joinWith('wiPart')->groupBy('wi_id')*/;
 	if($params['index_type'] == 'open')
 	{
 		$query = $query->where(['not in', 'wi_status', [3, 13]]);
@@ -128,14 +128,11 @@ $query = Wi::find()->joinWith('wiPart')->groupBy('wi_id');
 	
 $dataProvider = new ActiveDataProvider([
 	'query' => $query,
-	'pagination' => [
-		'pagesize' => 10,
+	'sort' => [
+		'defaultOrder' => [
+			'last_revise_datetime' => SORT_DESC
+		],
 	],
-	'sort' => ['attributes' => [
-			'wi_docno',
-			'wi_model',
-			'revised_date',
-	]],
 ]);
 
 $this->load($params);
@@ -159,12 +156,13 @@ $query->andFilterWhere([
             'wi_id' => $this->wi_id,
 			'wi_status' => $this->wi_status,
 			'wi_issue' => $this->wi_issue,
-			'wi_part.sap_partno' => $arr_partno,
+			//'wi_part.sap_partno' => $arr_partno,
         ]);
 
         $query->andFilterWhere(['like', 'wi_model', $this->wi_model])
             ->andFilterWhere(['like', 'wi_section', $this->wi_section])
             ->andFilterWhere(['like', 'wi_docno', $this->wi_docno])
+            ->andFilterWhere(['like', 'rev_page_no', $this->rev_page_no])
             ->andFilterWhere(['<>', 'wi_docno', '-'])
             ->andFilterWhere(['like', 'wi_title', $this->wi_title])
             ->andFilterWhere(['like', 'wi_stagestat', $this->wi_stagestat])

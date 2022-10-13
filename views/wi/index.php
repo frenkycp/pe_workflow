@@ -148,7 +148,6 @@ $buttons = [
 $columns = [
     [
         'class' => 'kartik\grid\ActionColumn',
-        'width' => '150px',
         'header'=>'Actions',
         'vAlign' => 'middle',
         'template' => $template,
@@ -168,7 +167,6 @@ $columns = [
         'attribute' => 'wi_docno',
         'hAlign' => 'center',
         'vAlign' => 'middle',
-        'width'=>'150px',
         'value' => function ($model)
         {
             $wiDocno = $model->wi_docno;
@@ -200,7 +198,6 @@ $columns = [
         //'hidden' => true,
         //'noWrap' => true,
         'hiddenFromExport' => true,
-        'width' => '180px',
     ],
     [
         'class' => '\kartik\grid\DataColumn',
@@ -210,7 +207,6 @@ $columns = [
         'value' => 'wi_model',
         'hidden' => true,
         //'noWrap' => true,
-        'width' => '180px',
     ],
     //'wi_section',
     [
@@ -219,8 +215,6 @@ $columns = [
         'attribute' => 'wi_section',
         'value' => 'wi_section',
         'hidden' => true,
-        'noWrap' => true,
-        'width' => '80px',
     ],
     //'wi_docno',
     //'wi_title',
@@ -239,8 +233,6 @@ $columns = [
         },
         'hAlign' => 'center',
         'vAlign' => 'middle',
-        'noWrap' => true,
-        'width' => '200px',
         'hiddenFromExport' => true,
     ],
     [
@@ -248,8 +240,6 @@ $columns = [
         'value' => 'wi_title',
         'hAlign' => 'center',
         'vAlign' => 'middle',
-        'noWrap' => true,
-        'width' => '200px',
         'hidden' => true,
     ],
     //'wi_stagestat',
@@ -275,18 +265,19 @@ $columns = [
         'hAlign' => 'center',
         'vAlign' => 'middle',
         'filter' => $wiStatusArr,
-        'noWrap' => true,
-        'width' => '200px',
     ],
     [
         'class' => '\kartik\grid\DataColumn',
         'hAlign' => 'center',
         'vAlign' => 'middle',
         'attribute' => 'wi_rev',
-        'value' => 'wi_rev',
-        'hidden' => false,
-        'noWrap' => true,
-        'width' => '50px',
+    ],
+    [
+        'class' => '\kartik\grid\DataColumn',
+        'hAlign' => 'center',
+        'vAlign' => 'middle',
+        'attribute' => 'rev_page_no',
+        'label' => 'Rev. Page No.',
     ],
     [
         'class' => '\kartik\grid\DataColumn',
@@ -294,9 +285,6 @@ $columns = [
         'vAlign' => 'middle',
         'attribute' => 'wi_maker',
         'value' => 'wi_maker',
-        'hidden' => false,
-        'noWrap' => true,
-        'width' => '100px',
     ],
     [
         'attribute' => 'last_revise_datetime',
@@ -311,7 +299,6 @@ $columns = [
         },*/
         'hAlign' => 'center',
         'vAlign' => 'middle',
-        'width' => '100px',
         'format' => 'raw',
     ],
     [
@@ -330,7 +317,6 @@ $columns = [
         },
         'hAlign' => 'center',
         'vAlign' => 'middle',
-        'width' => '100px',
         'format' => 'raw',
     ],
     /*[
@@ -351,7 +337,6 @@ $columns = [
         'hAlign' => 'center',
         'vAlign' => 'middle',
         'hidden' => true,
-        'width' => '90px',
         'format' => 'raw',
     ],*/
 ];
@@ -359,7 +344,7 @@ $columns = [
 
 <div class="giiant-crud wi-index">
     
-    <div class="box box-default collapsed-box">
+    <div class="box box-default collapsed-box" style="display: none;">
         <div class="box-header with-border">
             <h3 class="box-title">Search Using Part No</h3>
             <div class="box-tools pull-right">
@@ -368,7 +353,7 @@ $columns = [
             </div>
         </div>
         <div class="box-body">
-            <?php echo $this->render('_search', ['model' =>$searchModel]); ?>
+            <?php //echo $this->render('_search', ['model' =>$searchModel]); ?>
         </div>
     </div>
     
