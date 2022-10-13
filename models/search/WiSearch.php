@@ -22,7 +22,7 @@ public function rules()
 return [
 [['wi_id'], 'integer'],
 		[['wi_id', 'wi_status'], 'integer'],
-		[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn', 'part_no'], 'safe'],
+		[['wi_model', 'wi_section', 'wi_docno', 'wi_title', 'wi_stagestat', 'wi_issue', 'wi_rev', 'wi_maker', 'wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn', 'part_no', 'last_issue_datetime', 'last_revise_datetime'], 'safe'],
 ];
 }
 
@@ -44,10 +44,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = Wi::find()->select('*,
-		(SELECT wi_history.revised_date FROM wi_history WHERE wi_history.wi_id = wi.wi_id AND wi_history.wi_rev = wi.wi_rev ORDER BY wi_history.id ASC LIMIT 1) as revised_date,
-		(SELECT wi_history.release_date FROM wi_history WHERE wi_history.wi_id = wi.wi_id AND wi_history.wi_rev = wi.wi_rev ORDER BY wi_history.id DESC LIMIT 1) as release_date')
-		->joinWith('wiPart')->groupBy('wi_id');
+$query = Wi::find()->joinWith('wiPart')->groupBy('wi_id');
 	if($params['index_type'] == 'open')
 	{
 		$query = $query->where(['not in', 'wi_status', [3, 13]]);
@@ -181,6 +178,8 @@ $query->andFilterWhere([
             ->andFilterWhere(['like', 'wi_filename3', $this->wi_filename3])
             ->andFilterWhere(['like', 'wi_file3', $this->wi_file3])
             ->andFilterWhere(['like', 'wi_remark', $this->wi_remark])
+            ->andFilterWhere(['like', 'last_issue_datetime', $this->last_issue_datetime])
+            ->andFilterWhere(['like', 'last_revise_datetime', $this->last_revise_datetime])
             ->andFilterWhere(['like', 'wi_dcn', $this->wi_dcn]);
 
 return $dataProvider;

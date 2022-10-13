@@ -67,6 +67,7 @@ class MyJobController extends Controller
 	public function actionAuthorize($id)
 	{
 		date_default_timezone_set ('Asia/Jakarta');
+		$this_time = date('Y-m-d H:i:s');
 		$model = $this->findModel($id);
 		$wiHistory = WiHistory::find()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->orderBy('id DESC')->one();
 		$status = $model->wi_status;
@@ -96,6 +97,7 @@ class MyJobController extends Controller
 		{
 			$model->wi_status = 13;
 			$model->wi_issue = date('Y-m-d');
+			$model->last_issue_datetime = $this_time;
 			$wiHistory->release_date = date('Y-m-d H:i:s');
 			if ($model->filename_4 != null) {
 				$model->wi_filename3 = $model->filename_4;
@@ -141,6 +143,7 @@ class MyJobController extends Controller
 		date_default_timezone_set ('Asia/Jakarta');
 		$tmpFile;
 		$model = $this->findModel($id);
+		$this_time = date('Y-m-d H:i:s');
 		
 		//$model->wi_status = 4;
 		if($model->wi_rev == '-' || $model->wi_rev == '' || $model->wi_rev == NULL)
@@ -220,6 +223,8 @@ class MyJobController extends Controller
 				//$model->uploadFile = $model->oldAttributes['uploadFile'];
 			}
 			$model->wi_status = 8;
+			$model->last_revise_datetime = $this_time;
+			$model->last_issue_datetime = null;
 			$model->wi_issue = NULL;
 			if($model->save()){
 				if(!empty($tmpFile)){
@@ -236,7 +241,7 @@ class MyJobController extends Controller
 				} */
 				$wiHistory->wi_id = $model->wi_id;
 				$wiHistory->wi_stagestat = $model->wi_stagestat;
-				$wiHistory->revised_date = date('Y-m-d H:i:s');
+				$wiHistory->revised_date = $this_time;
 				//$wiHistory->check1_date = NULL;
 				//$wiHistory->check2_date = NULL;
 				//$wiHistory->check3_date = NULL;

@@ -299,22 +299,41 @@ $columns = [
         'width' => '100px',
     ],
     [
-        'attribute' => 'revised_date',
+        'attribute' => 'last_revise_datetime',
         'label' => 'WI Maker Issue',
-        'value' => function ($model){
-            if($model->revised_date == NULL)
+        /*'value' => function ($model){
+            if($model->last_revised_date == NULL)
             {
                 return '<span class="text-aqua"><b><i>no history</i></span></b>';
             }
             return date('d-M-Y H:i:s', strtotime($model->revised_date));
             //return date('Y-m-d H:i:s', strtotime($model->revised_date));
-        },
+        },*/
         'hAlign' => 'center',
         'vAlign' => 'middle',
         'width' => '100px',
         'format' => 'raw',
     ],
     [
+        'attribute' => 'last_issue_datetime',
+        'label' => 'Release Date',
+        'value' => function ($model){
+            if($model->last_issue_datetime == NULL)
+            {
+                    if($model->last_revise_datetime != null)
+                    {
+                            return '<span class="text-light-blue"><b><i>in progress</i></span></b>';
+                    }
+            return '<span class="text-aqua"><b><i>no history</i></span></b>';
+            }
+            return date('d-M-Y', strtotime($model->last_issue_datetime));
+        },
+        'hAlign' => 'center',
+        'vAlign' => 'middle',
+        'width' => '100px',
+        'format' => 'raw',
+    ],
+    /*[
         'attribute' => 'release_date',
         'label' => 'Release Date',
         'value' => function ($model){
@@ -334,7 +353,7 @@ $columns = [
         'hidden' => true,
         'width' => '90px',
         'format' => 'raw',
-    ],
+    ],*/
 ];
 ?>
 
