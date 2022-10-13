@@ -260,7 +260,7 @@ $columns = [
             {
                 $labelClass = 'bg-yellow';
             }
-            return '<span style="padding: 1px 15px;" class="' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
+            return '<span style="" class="badge ' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
         },
         'hAlign' => 'center',
         'vAlign' => 'middle',
