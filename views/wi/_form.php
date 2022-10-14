@@ -74,7 +74,7 @@ use app\models\WiStatus;
 			</div>
 			
 			<?= $form->field($model, 'wi_rev')->textInput(['maxlength' => true, 'readonly' => Yii::$app->controller->action->id == 'submit' ? true : false]) ?>
-			<?= $form->field($model, 'rev_page_no')->textInput(['maxlength' => true])->label('Rev. Page No.') ?>
+			<?= $form->field($model_required, 'rev_page_no')->textInput(['maxlength' => true])->label('Rev. Page No.') ?>
 			<?= ''; //$form->field($model, 'wi_dcn')->textarea(['rows' => 5, 'style' => 'resize: vertical;']) ?>
 			<?= $form->field($model, 'wi_maker')->widget(Select2::className(), [
 					'data' => \yii\helpers\ArrayHelper::map(app\models\User::find()->where(['role_id' => [4,7,8]])->orderBy('name')->all(), 'name', 'name'),

@@ -104,8 +104,15 @@ class WiController extends Controller
             date_default_timezone_set ('Asia/Jakarta');
             $model = new Wi;
 
+            $model_required = new \yii\base\DynamicModel([
+                'rev_page_no'
+            ]);
+            $model_required->addRule(['rev_page_no'], 'string');
+
             try {
         if ($model->load($_POST)) {
+            $model_required->load($_POST);
+            $model->rev_page_no = $model_required->rev_page_no;
             $tmpFile = UploadedFile::getInstance($model, 'uploadFile');
             if(!empty($tmpFile)){
                     $delete = $model->oldAttributes['uploadFile'];
@@ -136,7 +143,7 @@ class WiController extends Controller
         $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
         $model->addError('_exception', $msg);
             }
-    return $this->render('create', ['model' => $model, 'wi_maker_list' => $wi_maker_list]);
+    return $this->render('create', ['model' => $model, 'model_required' => $model_required, 'wi_maker_list' => $wi_maker_list]);
     }
 
     /**
@@ -150,7 +157,14 @@ class WiController extends Controller
             $tmpFile;
             $model = $this->findModel($wi_id);
 
+            $model_required = new \yii\base\DynamicModel([
+                'rev_page_no'
+            ]);
+            $model_required->addRule(['rev_page_no'], 'string');
+
             if ($model->load($_POST)) {
+                    $model_required->load($_POST);
+                    $model->rev_page_no = $model_required->rev_page_no;
                     $tmpFile = UploadedFile::getInstance($model, 'uploadFile');
                     if(!empty($tmpFile)){
                             $delete = $model->oldAttributes['uploadFile'];
@@ -192,10 +206,12 @@ class WiController extends Controller
         //return $this->redirect(Url::previous());
                     return $this->render('update', [
                                     'model' => $model,
+                                    'model_required' => $model_required,
                     ]);
             } else {
                     return $this->render('update', [
                             'model' => $model,
+                            'model_required' => $model_required,
                     ]);
             }
     }

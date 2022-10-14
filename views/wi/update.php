@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 
 	<?php echo $this->render('_form', [
 		'model' => $model,
+        'model_required' => $model_required,
 	]); ?>
 
 </div>

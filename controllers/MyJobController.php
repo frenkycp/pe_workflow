@@ -98,6 +98,8 @@ class MyJobController extends Controller
 			$model->wi_status = 13;
 			$model->wi_issue = date('Y-m-d');
 			$model->last_issue_datetime = $this_time;
+			$model->email_sent_status = 'O';
+			$model->email_sent_datetime = null;
 			$wiHistory->release_date = date('Y-m-d H:i:s');
 			if ($model->filename_4 != null) {
 				$model->wi_filename3 = $model->filename_4;
@@ -144,6 +146,11 @@ class MyJobController extends Controller
 		$tmpFile;
 		$model = $this->findModel($id);
 		$this_time = date('Y-m-d H:i:s');
+
+		$model_required = new \yii\base\DynamicModel([
+            'rev_page_no'
+        ]);
+        $model_required->addRule(['rev_page_no'], 'required');
 		
 		//$model->wi_status = 4;
 		if($model->wi_rev == '-' || $model->wi_rev == '' || $model->wi_rev == NULL)
@@ -187,6 +194,8 @@ class MyJobController extends Controller
 		} */
 	
 		if ($model->load($_POST)) {
+			$model_required->load($_POST);
+			$model->rev_page_no = $model_required->rev_page_no;
 			$tmpFile = UploadedFile::getInstance($model, 'uploadFile');
 			$tmpFile2 = UploadedFile::getInstance($model, 'uploadFile2');
 			$tmp = WiHistory::find()->where(['wi_id' => $model->wi_id, 'wi_rev' => $model->wi_rev])->orderBy('id DESC')->one();
@@ -268,6 +277,7 @@ class MyJobController extends Controller
 		} else {
 			return $this->render('/wi/checkin', [
 					'model' => $model,
+					'model_required' => $model_required,
 			]);
 		}
 	}

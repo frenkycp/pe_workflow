@@ -2,8 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=dbworkflow',
+    'dsn' => 'mysql:host=10.110.52.3;dbname=dbworkflow',
     'username' => 'root',
-    'password' => '0908',
+    'password' => 'yemipe',
     'charset' => 'utf8',
 ];
