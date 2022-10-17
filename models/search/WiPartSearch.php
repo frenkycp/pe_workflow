@@ -19,7 +19,7 @@ public function rules()
 {
 return [
 [['wi_part_id', 'masterlist_id', 'flag'], 'integer'],
-            [['sap_partno', 'documentNo'], 'safe'],
+            [['sap_partno', 'documentNo', 'sap_partname'], 'safe'],
 ];
 }
 
@@ -71,7 +71,8 @@ $query->andFilterWhere([
         ]);
 
         $query->andFilterWhere(['sap_partno' => $arr_partno])
-        ->andFilterWhere(['like', 'wi.wi_docno', $this->documentNo]);
+        ->andFilterWhere(['like', 'wi.wi_docno', $this->documentNo])
+        ->andFilterWhere(['like', 'sap_partname', $this->sap_partname]);
 
 return $dataProvider;
 }

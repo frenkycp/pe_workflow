@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\SapItem;
+use app\models\MitaSapItem;
 
 /**
  * WiPartController implements the CRUD actions for WiPart model.
@@ -77,7 +78,7 @@ class WiPartController extends Controller
 		$model = new WiPart;
 		if ($model->load($_POST))
 		{
-			$column_arr = ['masterlist_id', 'sap_partno'];
+			$column_arr = ['masterlist_id', 'sap_partno', 'sap_partname'];
 			$masterlistId = $model->masterlist_id;
 			$tmp_arr_partno = trim(preg_replace('/\t+/', '', $model->part_arr));
 			$arr_partno = preg_split("/\r\n|\n|\r/", $tmp_arr_partno);
@@ -85,41 +86,29 @@ class WiPartController extends Controller
 			{
 				$partno = str_replace(' ', '', $partno);
 				$isNewWiPart = false;
-				$sap_partno = 0;
-				$tmp_part = SapItem::find()->where(['sap_partno' => $partno])->one();
-				if(empty($tmp_part))
+				$sap_partno = $sap_partname = null;
+				//$tmp_part = SapItem::find()->where(['sap_partno' => $partno])->one();
+				$tmp_part = MitaSapItem::find()->where(['material' => $partno])->one();
+				if ($tmp_part) {
+					$sap_partno = $tmp_part->material;
+					$sap_partname = $tmp_part->material_description;
+				}
+
+				$tmpWiPart = WiPart::find()->where(['masterlist_id' => $masterlistId, 'sap_partno' => $partno])->one();
+				if(!$tmpWiPart)
 				{
 					$isNewWiPart = true;
-					$sap_item = new SapItem();
-					$sap_item->sap_partno = $partno;
-					$sap_item->insert_type = 2;
-					if($sap_item->save())
-					{
-						$tmp_part = $sap_item;
-					}
-					else
-					{
-						return $tmp_part->errors;
-					}
 				}
 				else
 				{
-					$tmpWiPart = WiPart::find()->where(['masterlist_id' => $masterlistId, 'sap_partno' => $tmp_part->sap_partno])->one();
-					if(empty($tmpWiPart))
-					{
-						$isNewWiPart = true;
-					}
-					else
-					{
-						$isNewWiPart = false;
-						$tmpWiPart->flag = 1;
-						$tmpWiPart->save();
-					}
+					$isNewWiPart = false;
+					$tmpWiPart->flag = 1;
+					$tmpWiPart->save();
 				}
-				$sap_partno = $tmp_part->sap_partno;
+				//$sap_partno = $tmp_part->sap_partno;
 				if($isNewWiPart == true)
 				{
-					$wipart_arr[] = [$masterlistId, $sap_partno];
+					$wipart_arr[] = [$masterlistId, $sap_partno, $sap_partname];
 				}
 	
 			}

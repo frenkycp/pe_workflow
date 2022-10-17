@@ -155,12 +155,9 @@ $this->params['breadcrumbs'][] = $this->title;
     'format' => 'raw',
 ],
 [
-'class' => '\kartik\grid\DataColumn',
-'attribute' => 'partName',
-	'value' => function ($model){
-		return is_null($model->sapItem->description) ? '-' : $model->sapItem->description;
-    },
-'hAlign' => 'center',
+'attribute' => 'sap_partname',
+'label' => 'Part Name',
+'vAlign' => 'middle',
 ],
 			//'flag',
                 ],
