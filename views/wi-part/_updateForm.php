@@ -50,6 +50,8 @@ $form->field($model, 'masterlist_id')->widget(Select2::classname(),[
 ?>
            <?php echo $form->field($model, 'sap_partno')->textInput(); ?>
 
+           <?php echo $form->field($model, 'sap_partname')->textInput(); ?>
+
                 <?php $this->endBlock(); ?>
                 
                 <?=

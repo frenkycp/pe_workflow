@@ -143,13 +143,13 @@ $this->params['breadcrumbs'][] = $this->title;
 [
     'class' => '\kartik\grid\DataColumn',
     'attribute' => 'sap_partno',
-    'value' => function ($model) {
+    /*'value' => function ($model) {
         if($model->sapItem->sap_partno != NULL)
         {
             return Html::a($model->sapItem->sap_partno, ['sap-item/view', 'item_id' => $model->sapItem->item_id,], ['data-pjax' => 0, 'target' => '_blank']);
         }
         return $model->sap_partno;
-    },
+    },*/
 	'width' => '20%',
     'hAlign' => 'center',
     'format' => 'raw',
