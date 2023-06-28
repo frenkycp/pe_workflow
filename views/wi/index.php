@@ -424,6 +424,7 @@ $columns = [
                 				'after' => false,
                 		],
                 		'toolbar' => [
+									Html::a('WITOO v1.0', ['/uploads/WITOO v1.0.xlsm'], ['class' => 'btn btn-info']),
                                     Html::a('Template WI', Url::to(['wi/template']), ['class' => 'btn btn-info']),
                                     Html::a('WI Checker', Url::to(['wi/checker1']), ['class' => 'btn btn-info']),
                                     '{export}',
