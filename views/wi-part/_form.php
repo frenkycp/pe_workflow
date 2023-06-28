@@ -41,7 +41,8 @@ use kartik\select2\Select2;
 			
 <?= 
 $form->field($model, 'masterlist_id')->widget(Select2::classname(),[
-		'data' => \yii\helpers\ArrayHelper::map(app\models\Wi::find()->where(['not', ['wi_docno' => '-']])->orderBy('wi_docno ASC')->all(), 'wi_id', 'wi_docno'),
+		'data' => \yii\helpers\ArrayHelper::map(app\models\Wi::find()->where(['not', ['wi_docno' => '-']])
+            ->andWhere(['NOT LIKE', 'wi_model', '%COMMON%', false])->orderBy('wi_docno ASC')->all(), 'wi_id', 'wi_docno'),
 		'options' => ['placeholder' => 'Select Document No...'],
 		'pluginOptions' => [
 				'allowClear' => true
