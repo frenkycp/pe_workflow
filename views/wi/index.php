@@ -6,29 +6,27 @@ use kartik\grid\GridView;
 use app\models\Wi;
 use yii\helpers\ArrayHelper;
 use app\models\WiStatus;
+
 /**
-* @var yii\web\View $this
-* @var yii\data\ActiveDataProvider $dataProvider
-* @var app\models\search\WiSearch $searchModel
-*/
+ * @var yii\web\View $this
+ * @var yii\data\ActiveDataProvider $dataProvider
+ * @var app\models\search\WiSearch $searchModel
+ */
 
 $this->title = 'Work Instruction Record';
 $this->params['breadcrumbs'][] = $this->title;
 
 $wiStatusArr = ArrayHelper::map(WiStatus::find()->where(['flag' => 1])->orderBy('status_name ASC')->all(), 'status_id', 'status_name');
 
-if(in_array(\Yii::$app->user->identity->role_id, [1, 2]))
-{
+if (in_array(\Yii::$app->user->identity->role_id, [1, 2])) {
     $template = '{view} {update} {delete}';
-}else{
-    if(Yii::$app->controller->id == 'wi')
-    {
+} else {
+    if (Yii::$app->controller->id == 'wi') {
         $template = '{view} {request}';
-        if(Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'])
-        {
+        if (Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker']) {
             $template = '{take_job} {submit} {view}';
         }
-    }else{
+    } else {
         //$template = '{submit} {reject} {authorize} {remark}&nbsp;&nbsp;&nbsp;{view}';
         $template = '{view} {submit} {reject} {authorize}';
     }
@@ -68,41 +66,48 @@ $buttons = [
             ]) : '';
     }, */
     'request' => function ($url, $model, $key) {
-        return strtoupper(Yii::$app->user->identity->role->name) == 'PROD. ADMIN' ? Html::a('REQUEST',
-            ['/wi-request/create', 'wi_id' => $model->wi_id], 
-            ['class' => 'btn btn-primary btn-xs']) : '';
+        return strtoupper(Yii::$app->user->identity->role->name) == 'PROD. ADMIN' ? Html::a(
+            'REQUEST',
+            ['/wi-request/create', 'wi_id' => $model->wi_id],
+            ['class' => 'btn btn-primary btn-xs']
+        ) : '';
     },
     'submit' => function ($url, $model, $key) {
-        return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] && $model->wi_status != 3 && $model->wi_status != 15 ? Html::a('REVISE',
-            ['/my-job/submit', 'id'=>$model->wi_id],
+        return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] && $model->wi_status != 3 && $model->wi_status != 15 ? Html::a(
+            'REVISE',
+            ['/my-job/submit', 'id' => $model->wi_id],
             [
-                            'title'=> in_array($model->wi_status, [1, 2, 3, 13, 14]) ? '' : 'WI still in Workflow...',
-                            'data-confirm' => in_array($model->wi_status, [1, 2, 13, 14]) ? Yii::t('yii', 'Are you sure you want to revise WI ' . $model->wi_docno . ' ?') : false,
-                            'class' => 'btn btn-primary btn-xs',
-                            'onclick' => in_array($model->wi_status, [1, 2, 13, 14]) ? '' : 'return false',
-                            'disabled' => in_array($model->wi_status, [1, 2, 13, 14]) ? false : true,
-            ]) : "";
+                'title' => in_array($model->wi_status, [1, 2, 3, 13, 14]) ? '' : 'WI still in Workflow...',
+                'data-confirm' => in_array($model->wi_status, [1, 2, 13, 14]) ? Yii::t('yii', 'Are you sure you want to revise WI ' . $model->wi_docno . ' ?') : false,
+                'class' => 'btn btn-primary btn-xs',
+                'onclick' => in_array($model->wi_status, [1, 2, 13, 14]) ? '' : 'return false',
+                'disabled' => in_array($model->wi_status, [1, 2, 13, 14]) ? false : true,
+            ]
+        ) : "";
     },
     'authorize' => function ($url, $model, $key) {
-        return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) & Yii::$app->controller->id == 'my-job' ? 
-        Html::a('OK', ['authorize', 'id'=>$model->wi_id], [
-            //'title'=>'Authorize', 
-            'class' => 'btn btn-success btn-xs',
-            'style' => 'margin: 4px 2px;',
-            'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
-        ]) : "";
+        return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) & Yii::$app->controller->id == 'my-job' ?
+            Html::a('OK', ['authorize', 'id' => $model->wi_id], [
+                //'title'=>'Authorize', 
+                'class' => 'btn btn-success btn-xs',
+                'style' => 'margin: 4px 2px;',
+                'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
+            ]) : "";
     },
     'reject' => function ($url, $model, $key) {
-        return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ? 
-        Html::a('REJECT',
-            in_array(strtolower(Yii::$app->user->identity->role->name), ['pe admin 1', 'pe admin 2']) ? ['wi-remark/create', 'wi_id'=>$model->wi_id] : ['reject', 'id'=>$model->wi_id],
-            [
-                            //'title'=>'Reject',
-                            'class' => 'btn btn-danger btn-xs',
-                            'style' => 'margin: 4px 2px;',
-                            'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
+        return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
+            Html::a(
+                'REJECT',
+                ['wi-remark/create', 'wi_id' => $model->wi_id],
+                //in_array(strtolower(Yii::$app->user->identity->role->name), ['pe admin 1', 'pe admin 2']) ? ['wi-remark/create', 'wi_id' => $model->wi_id] : ['reject', 'id' => $model->wi_id],
+                [
+                    //'title'=>'Reject',
+                    'class' => 'btn btn-danger btn-xs',
+                    'style' => 'margin: 4px 2px;',
+                    'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
 
-            ]) : "";
+                ]
+            ) : "";
         //return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
     },
     /*'remark' => function ($url, $model, $key) {
@@ -125,22 +130,22 @@ $buttons = [
     //},
     'view' => function ($url, $model, $key) {
         //return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
-        return Html::a('VIEW',
-            ['wi/view', 'wi_id'=>$model->wi_id],
-            [
-                            'class' => 'btn btn-info btn-xs',
-                            'style' => 'margin: 4px 2px;',
-            ]);
+        return Html::a('OK', ['authorize', 'id' => $model->wi_id], [
+            //'title'=>'Authorize', 
+            'class' => 'btn btn-success btn-xs',
+            'style' => 'margin: 4px 2px;',
+            'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
+        ]);
     },
     'download' => function ($url, $model, $key) {
-        if(($model->wi_status == Wi::$_STATUS_CHECKOUT && $model->wi_maker == Yii::$app->user->identity->name)
+        if (($model->wi_status == Wi::$_STATUS_CHECKOUT && $model->wi_maker == Yii::$app->user->identity->name)
             || ($model->wi_status == Wi::$_STATUS_CHECK_MASTERLIST && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'])
             || ($model->wi_status == Wi::$_STATUS_CHECK_SMILE && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin2'])
             || ($model->wi_status == Wi::$_STATUS_CHECK_FINAL && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_checker'])
             || ($model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'])
-            || ($model->wi_status == Wi::$_STATUS_WAITING_DIST && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1']))
-        {
-                return Html::a('<span class="glyphicon glyphicon-download-alt" style="padding-left: 5px;"></span>', ['download', 'id'=>$model->wi_id],['title'=>'Download', 'target' => '_blank']);
+            || ($model->wi_status == Wi::$_STATUS_WAITING_DIST && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_admin1'])
+        ) {
+            return Html::a('<span class="glyphicon glyphicon-download-alt" style="padding-left: 5px;"></span>', ['download', 'id' => $model->wi_id], ['title' => 'Download', 'target' => '_blank']);
         }
     }
 ];
@@ -148,27 +153,26 @@ $buttons = [
 $columns = [
     [
         'class' => 'kartik\grid\ActionColumn',
-        'header'=>'Actions',
+        'header' => 'Actions',
         'vAlign' => 'middle',
         'template' => $template,
-        'buttons'=> $buttons,
-        'urlCreator' => function($action, $model, $key, $index) {
+        'buttons' => $buttons,
+        'urlCreator' => function ($action, $model, $key, $index) {
             // using the column name as key, not mapping to 'id' like the standard generator
             $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
             $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
             return Url::toRoute($params);
         },
-        'contentOptions' => ['nowrap'=>'nowrap', 'class' => 'center-text']
+        'contentOptions' => ['nowrap' => 'nowrap', 'class' => 'center-text']
     ],
-			//'wi_model',
+    //'wi_model',
     [
         'class' => '\kartik\grid\DataColumn',
         'format' => 'raw',
         'attribute' => 'wi_docno',
         'hAlign' => 'center',
         'vAlign' => 'middle',
-        'value' => function ($model)
-        {
+        'value' => function ($model) {
             $wiDocno = $model->wi_docno;
             /* if(strlen($wiDocno) > 13)
             {
@@ -185,13 +189,11 @@ $columns = [
         'vAlign' => 'middle',
         'format' => 'raw',
         'attribute' => 'wi_model',
-        'value' => function ($model)
-        {
+        'value' => function ($model) {
             $wiModel = $model->wi_model;
-            if(strlen($wiModel) > 23)
-            {
-                    $wiModel = substr($wiModel, 0, 20) . '...';
-                    return '<span title="' . $model->wi_model . '">' . $wiModel . '</span>';
+            if (strlen($wiModel) > 23) {
+                $wiModel = substr($wiModel, 0, 20) . '...';
+                return '<span title="' . $model->wi_model . '">' . $wiModel . '</span>';
             }
             return $wiModel;
         },
@@ -221,11 +223,9 @@ $columns = [
     [
         'attribute' => 'wi_title',
         'format' => 'raw',
-        'value' => function ($model)
-        {
+        'value' => function ($model) {
             $wiTitle = $model->wi_title;
-            if(strlen($wiTitle) > 24)
-            {
+            if (strlen($wiTitle) > 24) {
                 $wiTitle = substr($wiTitle, 0, 21) . '...';
                 return '<span title="' . $model->wi_title . '">' . $wiTitle . '</span>';
             }
@@ -247,17 +247,12 @@ $columns = [
     [
         'attribute' => 'wi_status',
         'format' => 'html',
-        'value' => function ($model){
-            if($model->wiStatus->status_id == 13)
-            {
+        'value' => function ($model) {
+            if ($model->wiStatus->status_id == 13) {
                 $labelClass = 'bg-green';
-            }
-            else if($model->wiStatus->status_id == 14 || $model->wiStatus->status_id == 1)
-            {
+            } else if ($model->wiStatus->status_id == 14 || $model->wiStatus->status_id == 1) {
                 $labelClass = 'bg-red';
-            }
-            else 
-            {
+            } else {
                 $labelClass = 'bg-yellow';
             }
             return '<span style="" class="badge ' . $labelClass . '">' . $model->wiStatus->status_name . '</span>';
@@ -304,14 +299,12 @@ $columns = [
     [
         'attribute' => 'last_issue_datetime',
         'label' => 'Release Date',
-        'value' => function ($model){
-            if($model->last_issue_datetime == NULL)
-            {
-                    if($model->last_revise_datetime != null)
-                    {
-                            return '<span class="text-light-blue"><b><i>in progress</i></span></b>';
-                    }
-            return '<span class="text-aqua"><b><i>no history</i></span></b>';
+        'value' => function ($model) {
+            if ($model->last_issue_datetime == NULL) {
+                if ($model->last_revise_datetime != null) {
+                    return '<span class="text-light-blue"><b><i>in progress</i></span></b>';
+                }
+                return '<span class="text-aqua"><b><i>no history</i></span></b>';
             }
             return date('d-M-Y', strtotime($model->last_issue_datetime));
         },
@@ -343,7 +336,7 @@ $columns = [
 ?>
 
 <div class="giiant-crud wi-index">
-    
+
     <div class="box box-default collapsed-box" style="display: none;">
         <div class="box-header with-border">
             <h3 class="box-title">Search Using Part No</h3>
@@ -353,10 +346,11 @@ $columns = [
             </div>
         </div>
         <div class="box-body">
-            <?php //echo $this->render('_search', ['model' =>$searchModel]); ?>
+            <?php //echo $this->render('_search', ['model' =>$searchModel]); 
+            ?>
         </div>
     </div>
-    
+
 
     <div class="clearfix">
         <p class="pull-left">
@@ -365,7 +359,7 @@ $columns = [
 
         <div class="pull-right">
 
-                        
+
             <?= '';
             /*\yii\bootstrap\ButtonDropdown::widget(
                 [
@@ -384,68 +378,68 @@ $columns = [
                     ]
                 ]
             ); */
-            ?>        </div>
+            ?> </div>
     </div>
 
-    
-        <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
 
-        <!-- <div class="panel panel-default"> -->
-            <!-- <div class="panel-heading">
+    <?php \yii\widgets\Pjax::begin(['id' => 'pjax-main', 'enableReplaceState' => false, 'linkSelector' => '#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success' => 'function(){alert("yo")}']]) ?>
+
+    <!-- <div class="panel panel-default"> -->
+    <!-- <div class="panel-heading">
                 <h2>
-                    <i><?php 
-                    	
-                    	/* $wiStatusArr = [
+                    <i><?php
+
+                        /* $wiStatusArr = [
                     			wi::$_STATUS_APPROVE, wi::$_STATUS_CHECK_FINAL, wi::$_STATUS_CHECK_MASTERLIST, wi::$_STATUS_CHECK_SMILE,
                     			wi::$_STATUS_CHECKIN, wi::$_STATUS_CHECKOUT, wi::$_STATUS_CLOSE, wi::$_STATUS_OPEN, wi::$_STATUS_REJECT,
                     			wi::$_STATUS_WAITING_APPR, Wi::$_STATUS_WAITING_DIST
                     	]; */
-					?></i>
+                        ?></i>
                 </h2>
             </div> -->
 
-            <!-- <div class="panel-body">  -->
-                <div class="table-responsive">
-                <?= GridView::widget([
-                'layout' => '{items} {summary} {pager}',
-                'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
-                'dataProvider' => $dataProvider,
-                		'resizableColumns'=>false,
-                'pager'        => [
-                    'class'          => yii\widgets\LinkPager::className(),
-                    'firstPageLabel' => 'First',
-                    'lastPageLabel'  => 'Last'
-                ],
-                		'filterModel' => $searchModel,
-                		'panel' => [
-                				'type' => 'primary',
-                				'heading' => 'WI Masterlists',
-                				'before' => ' ',
-                				'after' => false,
-                		],
-                		'toolbar' => [
-									Html::a('WITOO v1.0', ['/uploads/WITOO v1.0.xlsm'], ['class' => 'btn btn-info']),
-                                    Html::a('Template WI', Url::to(['wi/template']), ['class' => 'btn btn-info']),
-                                    Html::a('WI Checker', Url::to(['wi/checker1']), ['class' => 'btn btn-info']),
-                                    '{export}',
-                                    '{toggleData}'
-                		],
-                		'export' => [
-                				'target' => '_self',
-                				'fontAwesome'=>true,
-                		],
-                		'exportConfig' => $exportConfig,
-                'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
-                'headerRowOptions' => ['class'=>'x'],
-                'columns' => $columns,
-            ]); ?>
-                </div>
+    <!-- <div class="panel-body">  -->
+    <div class="table-responsive">
+        <?= GridView::widget([
+            'layout' => '{items} {summary} {pager}',
+            'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
+            'dataProvider' => $dataProvider,
+            'resizableColumns' => false,
+            'pager'        => [
+                'class'          => yii\widgets\LinkPager::className(),
+                'firstPageLabel' => 'First',
+                'lastPageLabel'  => 'Last'
+            ],
+            'filterModel' => $searchModel,
+            'panel' => [
+                'type' => 'primary',
+                'heading' => 'WI Masterlists',
+                'before' => ' ',
+                'after' => false,
+            ],
+            'toolbar' => [
+                Html::a('WITOO v1.0', ['/uploads/WITOO v1.0.xlsm'], ['class' => 'btn btn-info']),
+                Html::a('Template WI', Url::to(['wi/template']), ['class' => 'btn btn-info']),
+                Html::a('WI Checker', Url::to(['wi/checker1']), ['class' => 'btn btn-info']),
+                '{export}',
+                '{toggleData}'
+            ],
+            'export' => [
+                'target' => '_self',
+                'fontAwesome' => true,
+            ],
+            'exportConfig' => $exportConfig,
+            'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
+            'headerRowOptions' => ['class' => 'x'],
+            'columns' => $columns,
+        ]); ?>
+    </div>
 
-            <!-- </div> -->
+    <!-- </div> -->
 
-        <!-- </div>  -->
+    <!-- </div>  -->
 
-        <?php \yii\widgets\Pjax::end() ?>
+    <?php \yii\widgets\Pjax::end() ?>
 
-    
+
 </div>

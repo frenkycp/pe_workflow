@@ -40,11 +40,11 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-    	if(strtoupper(\Yii::$app->user->identity->role->name) == 'PROD. ADMIN')
-    	{
-    		return $this->render('index2');
-    	}
-		$wi_open = Wi::find()->where(['not in', 'wi_status', [3, 13]])->count();
+        if (strtoupper(\Yii::$app->user->identity->role->name) == 'PROD. ADMIN') {
+            return $this->render('index2');
+        }
+        $wi_open = Wi::find()->where(['wi_status' => [1]])->count();
+        $wi_rejected = Wi::find()->where(['wi_status' => [14]])->count();
         $wi_close = Wi::find()->where(['wi_status' => [3, 13]])->andWhere("wi_docno <> '-'")->count();
         $wi_wimaker = Wi::find()->where(['wi_status' => [1, 2, 14]])->count();
         //$wi_checkout = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKOUT])->count();
@@ -54,34 +54,34 @@ class SiteController extends Controller
         $wi_detail_check = Wi::find()->where(['wi_status' => [8, 9]])->count();
         $wi_waiting_app = Wi::find()->where(['wi_status' => [10, 11]])->count();
         $wi_waiting_dist = Wi::find()->where(['wi_status' => 12])->count();
-        return $this->render('index',[
-        		'wi_open' => $wi_open,
-        		'wi_close' => $wi_close,
-        		'wi_wimaker' => $wi_wimaker,
-        		//'wi_checkout' => $wi_checkout,
-        		//'wi_checkin' => $wi_checkin,
-        		'wi_doc_check' => $wi_doc_check,
-        		'wi_smile_check' => $wi_smile_check,
-        		'wi_detail_check' => $wi_detail_check,
-        		'wi_waiting_app' => $wi_waiting_app,
-        		'wi_waiting_dist' => $wi_waiting_dist,
-		]);
+        return $this->render('index', [
+            'wi_open' => $wi_open,
+            'wi_close' => $wi_close,
+            'wi_wimaker' => $wi_wimaker,
+            'wi_rejected' => $wi_rejected,
+            //'wi_checkin' => $wi_checkin,
+            'wi_doc_check' => $wi_doc_check,
+            'wi_smile_check' => $wi_smile_check,
+            'wi_detail_check' => $wi_detail_check,
+            'wi_waiting_app' => $wi_waiting_app,
+            'wi_waiting_dist' => $wi_waiting_dist,
+        ]);
     }
 
     public function actionProfile()
     {
-        $model = User::find()->where(["id"=>Yii::$app->user->id])->one();
+        $model = User::find()->where(["id" => Yii::$app->user->id])->one();
         $oldMd5Password = $model->password;
         $oldPhotoUrl = $model->photo_url;
 
         $model->password = "";
 
-        if ($model->load($_POST)){
+        if ($model->load($_POST)) {
             //password
             $model->name = strtoupper($model->name);
-            if($model->password != ""){
+            if ($model->password != "") {
                 $model->password = md5($model->password);
-            }else{
+            } else {
                 $model->password = $model->oldAttributes['password'];
             }
 
@@ -99,14 +99,14 @@ class SiteController extends Controller
                 # the path to save file
                 $path = Yii::getAlias("@app/web/uploads/") . $model->photo_url;
                 $image->saveAs($path);
-            }else{
+            } else {
                 $model->photo_url = $oldPhotoUrl;
             }
 
-            if($model->save()){
+            if ($model->save()) {
                 Yii::$app->session->addFlash("success", "Profile successfully updated.");
                 return $this->redirect(['site/index']);
-            }else{
+            } else {
                 Yii::$app->session->addFlash("danger", "Profile cannot updated.");
                 return $this->redirect(["profile"]);
             }
