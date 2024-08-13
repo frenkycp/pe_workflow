@@ -130,11 +130,10 @@ $buttons = [
     //},
     'view' => function ($url, $model, $key) {
         //return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
-        return Html::a('OK', ['authorize', 'id' => $model->wi_id], [
+        return Html::a('VIEW', ['/wi/view', 'wi_id' => $model->wi_id], [
             //'title'=>'Authorize', 
-            'class' => 'btn btn-success btn-xs',
+            'class' => 'btn btn-primary btn-xs',
             'style' => 'margin: 4px 2px;',
-            'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
         ]);
     },
     'download' => function ($url, $model, $key) {
