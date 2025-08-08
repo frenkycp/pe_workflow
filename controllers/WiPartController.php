@@ -17,19 +17,19 @@ use app\models\MitaSapItem;
  */
 class WiPartController extends Controller
 {
-    /**
-     * @var boolean whether to enable CSRF validation for the actions in this controller.
-     * CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
-     */
-    public $enableCsrfValidation = false;
-    
-    public function behaviors()
-    {
-    	//apply role_action table for privilege (doesn't apply to super admin)
-    	return \app\models\Action::getAccess($this->id);
-    }
+	/**
+	 * @var boolean whether to enable CSRF validation for the actions in this controller.
+	 * CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
+	 */
+	public $enableCsrfValidation = false;
 
-	
+	public function behaviors()
+	{
+		//apply role_action table for privilege (doesn't apply to super admin)
+		return \app\models\Action::getAccess($this->id);
+	}
+
+
 	/**
 	 * Lists all WiPart models.
 	 * @return mixed
@@ -42,8 +42,8 @@ class WiPartController extends Controller
 
 		Tabs::clearLocalStorage();
 
-        Url::remember();
-        \Yii::$app->session['__crudReturnUrl'] = null;
+		Url::remember();
+		\Yii::$app->session['__crudReturnUrl'] = null;
 
 		return $this->render('index', [
 			'dataProvider' => $dataProvider,
@@ -54,16 +54,16 @@ class WiPartController extends Controller
 	/**
 	 * Displays a single WiPart model.
 	 * @param integer $wi_part_id
-     *
+	 *
 	 * @return mixed
 	 */
 	public function actionView($wi_part_id)
 	{
-        \Yii::$app->session['__crudReturnUrl'] = Url::previous();
-        Url::remember();
-        Tabs::rememberActiveState();
+		\Yii::$app->session['__crudReturnUrl'] = Url::previous();
+		Url::remember();
+		Tabs::rememberActiveState();
 
-        return $this->render('view', [
+		return $this->render('view', [
 			'model' => $this->findModel($wi_part_id),
 		]);
 	}
@@ -76,66 +76,56 @@ class WiPartController extends Controller
 	public function actionCreate()
 	{
 		$model = new WiPart;
-		if ($model->load($_POST))
-		{
+		if ($model->load($_POST)) {
 			$column_arr = ['masterlist_id', 'sap_partno', 'sap_partname'];
 			$masterlistId = $model->masterlist_id;
 			$tmp_arr_partno = trim(preg_replace('/\t+/', '', $model->part_arr));
 			$arr_partno = preg_split("/\r\n|\n|\r/", $tmp_arr_partno);
-			foreach ($arr_partno as $partno)
-			{
+			foreach ($arr_partno as $partno) {
 				$partno = str_replace(' ', '', $partno);
 				$isNewWiPart = false;
-				$sap_partno = $sap_partname = null;
+				$sap_partno = $partno;
+				$sap_partname = null;
 				//$tmp_part = SapItem::find()->where(['sap_partno' => $partno])->one();
 				$tmp_part = MitaSapItem::find()->where(['material' => $partno])->one();
 				if ($tmp_part) {
-					$sap_partno = $tmp_part->material;
 					$sap_partname = $tmp_part->material_description;
 				}
 
 				$tmpWiPart = WiPart::find()->where(['masterlist_id' => $masterlistId, 'sap_partno' => $partno])->one();
-				if(!$tmpWiPart)
-				{
+				if (!$tmpWiPart) {
 					$isNewWiPart = true;
-				}
-				else
-				{
+				} else {
 					$isNewWiPart = false;
 					$tmpWiPart->flag = 1;
 					$tmpWiPart->save();
 				}
 				//$sap_partno = $tmp_part->sap_partno;
-				if($isNewWiPart == true)
-				{
+				if ($isNewWiPart == true) {
 					$wipart_arr[] = [$masterlistId, $sap_partno, $sap_partname];
 				}
-	
 			}
 			//return print_r($wipart_arr);
-			if(count($wipart_arr) > 0)
-			{
+			if (count($wipart_arr) > 0) {
 				$insertCount = \Yii::$app->db->createCommand()->batchInsert('dbworkflow.wi_part', $column_arr, $wipart_arr)->execute();
-				
+
 				//return $this->redirect(Url::previous());
 			}
-                        date_default_timezone_set('Asia/Jakarta');
-                        $partDetail = \app\models\WiPartDetail::find()->where(
-                                ['masterlist_id' => $masterlistId]
-                        )->one();
-                        if(count($partDetail) == 0)
-                        {
-                            $partDetail = new \app\models\WiPartDetail;
-                            $partDetail->masterlist_id = $masterlistId;
-                            $partDetail->update_date = date('Y-m-d');
-                            if(!$partDetail->save())
-                            {
-                                return json_encode($partDetail->errors);
-                            }
-                        }
+			date_default_timezone_set('Asia/Jakarta');
+			$partDetail = \app\models\WiPartDetail::find()->where(
+				['masterlist_id' => $masterlistId]
+			)->one();
+			if (count($partDetail) == 0) {
+				$partDetail = new \app\models\WiPartDetail;
+				$partDetail->masterlist_id = $masterlistId;
+				$partDetail->update_date = date('Y-m-d');
+				if (!$partDetail->save()) {
+					return json_encode($partDetail->errors);
+				}
+			}
 			return $this->redirect(['index']);
 		}
-	
+
 		return $this->render('create', ['model' => $model]);
 	}
 
@@ -150,7 +140,7 @@ class WiPartController extends Controller
 		$model = $this->findModel($wi_part_id);
 
 		if ($model->load($_POST) && $model->save()) {
-            return $this->redirect(Url::previous());
+			return $this->redirect(Url::previous());
 		} else {
 			return $this->render('update', [
 				'model' => $model,
@@ -166,30 +156,30 @@ class WiPartController extends Controller
 	 */
 	public function actionDelete($wi_part_id)
 	{
-        try {
-            $deletedModel = $this->findModel($wi_part_id);
-            $deletedModel->flag = 0;
-            $deletedModel->save();
+		try {
+			$deletedModel = $this->findModel($wi_part_id);
+			$deletedModel->flag = 0;
+			$deletedModel->save();
 			return $this->redirect(Url::previous());
-        } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-            \Yii::$app->getSession()->setFlash('error', $msg);
-            return $this->redirect(Url::previous());
-        }
+		} catch (\Exception $e) {
+			$msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+			\Yii::$app->getSession()->setFlash('error', $msg);
+			return $this->redirect(Url::previous());
+		}
 
-        // TODO: improve detection
-        $isPivot = strstr('$wi_part_id',',');
-        if ($isPivot == true) {
-            return $this->redirect(Url::previous());
-        } elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
+		// TODO: improve detection
+		$isPivot = strstr('$wi_part_id', ',');
+		if ($isPivot == true) {
+			return $this->redirect(Url::previous());
+		} elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
 			Url::remember(null);
 			$url = \Yii::$app->session['__crudReturnUrl'];
 			\Yii::$app->session['__crudReturnUrl'] = null;
 
 			return $this->redirect($url);
-        } else {
-            return $this->redirect(['index']);
-        }
+		} else {
+			return $this->redirect(['index']);
+		}
 	}
 
 	/**
