@@ -31,7 +31,7 @@ class WiController extends Controller
     
     public function actionTemplate()
     {
-        $path = \Yii::getAlias('@webroot').'/uploads/WI F03 WI Template rev5 (001).xls';
+        $path = \Yii::getAlias('@webroot').'/uploads/EF1 WI Template rev5.B.xls';
         if (file_exists($path)) {
             return \Yii::$app->response->sendFile($path);
         }

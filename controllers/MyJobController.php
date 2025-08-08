@@ -117,7 +117,7 @@ class MyJobController extends Controller
 				return json_encode($wiHistory->errors);
 			}
 			\Yii::$app->session->addFlash("success", 'Document <b><a href="' . Url::to(['wi/view', 'wi_id' => $model->wi_id]) . '">' . $model->wi_docno . ' Rev. ' . $model->wi_rev . '</a></b> has been authorized...');
-			return $this->redirect(Url::previous());
+			return $this->redirect(['index']);
 		} else {
 			return json_encode($model->errors);
 		}
