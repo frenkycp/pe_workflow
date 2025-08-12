@@ -417,9 +417,9 @@ $columns = [
                 'after' => false,
             ],
             'toolbar' => [
-                Html::a('WITOO v1.0', ['/uploads/WITOO v1.0.xlsm'], ['class' => 'btn btn-info']),
-                Html::a('Template WI', Url::to(['wi/template']), ['class' => 'btn btn-info']),
-                Html::a('WI Checker', Url::to(['wi/checker1']), ['class' => 'btn btn-info']),
+                Html::a('Template QCPC', ['/uploads/QCPC Form.xlsx'], ['class' => 'btn btn-info']),
+                Html::a('Template WI', Url::to(['/uploads/WI rev.08 excel (rev1).xlsx']), ['class' => 'btn btn-info']),
+                Html::a('WI Checker', Url::to(['/uploads/WI CHECKER_v2.0.xlsm']), ['class' => 'btn btn-info']),
                 '{export}',
                 '{toggleData}'
             ],
