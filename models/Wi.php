@@ -68,8 +68,7 @@ class Wi extends BaseWi
     			[['wi_issue'], 'safe'],
     			[['uploadFile'], 'file', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => true, 'extensions' => 'xls, xlsx'],
                 [['uploadFile2'], 'file', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => true, 'extensions' => 'pdf'],
-    			[['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn'], 'string'],
-    			[['wi_model'], 'string', 'max' => 200],
+    			[['wi_filename', 'wi_file', 'wi_filename2', 'wi_file2', 'wi_filename3', 'wi_file3', 'wi_remark', 'wi_dcn', 'wi_model'], 'string'],
     			[['wi_section', 'wi_docno', 'wi_stagestat'], 'string', 'max' => 50],
     			[['wi_title', 'wi_maker'], 'string', 'max' => 200],
     			[['wi_rev'], 'string', 'max' => 5]
