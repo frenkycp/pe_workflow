@@ -417,8 +417,8 @@ $columns = [
                 'after' => false,
             ],
             'toolbar' => [
-                Html::a('Template QCPC', ['/uploads/QCPC Form.xlsx'], ['class' => 'btn btn-info']),
-                Html::a('Template WI', Url::to(['/uploads/WI rev.08 excel (rev1).xlsx']), ['class' => 'btn btn-info']),
+                Html::a('Template QCPC', ['/uploads/QCPC Form Rev 1.xlsx'], ['class' => 'btn btn-info']),
+                Html::a('Template WI', Url::to(['/uploads/WI Form Rev8.1.xlsm']), ['class' => 'btn btn-info']),
                 Html::a('WI Checker', Url::to(['/uploads/WI CHECKER_v3.0.xlsm']), ['class' => 'btn btn-info']),
                 '{export}',
                 '{toggleData}'
