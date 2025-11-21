@@ -77,7 +77,7 @@ class WiPartController extends Controller
 	{
 		$model = new WiPart;
 		if ($model->load($_POST)) {
-			$column_arr = ['masterlist_id', 'sap_partno', 'sap_partname'];
+			$column_arr = ['masterlist_id', 'sap_partno', 'sap_partname', 'update_by_id', 'update_by_name', 'update_datetime'];
 			$masterlistId = $model->masterlist_id;
 			$tmp_arr_partno = trim(preg_replace('/\t+/', '', $model->part_arr));
 			$arr_partno = preg_split("/\r\n|\n|\r/", $tmp_arr_partno);
@@ -97,12 +97,15 @@ class WiPartController extends Controller
 					$isNewWiPart = true;
 				} else {
 					$isNewWiPart = false;
+					$tmpWiPart->update_by_id = \Yii::$app->user->identity->username;
+					$tmpWiPart->update_by_name = \Yii::$app->user->identity->name;
+					$tmpWiPart->update_datetime = date('Y-m-d H:i:s');
 					$tmpWiPart->flag = 1;
 					$tmpWiPart->save();
 				}
 				//$sap_partno = $tmp_part->sap_partno;
 				if ($isNewWiPart == true) {
-					$wipart_arr[] = [$masterlistId, $sap_partno, $sap_partname];
+					$wipart_arr[] = [$masterlistId, $sap_partno, $sap_partname, \Yii::$app->user->identity->username, \Yii::$app->user->identity->name, date('Y-m-d H:i:s')];
 				}
 			}
 			//return print_r($wipart_arr);
