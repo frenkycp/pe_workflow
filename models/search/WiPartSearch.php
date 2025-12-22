@@ -5,12 +5,12 @@ namespace app\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\WiPart;
+use app\models\ViewPartWiDocno;
 
 /**
 * WiPartSearch represents the model behind the search form about `app\models\WiPart`.
 */
-class WiPartSearch extends WiPart
+class WiPartSearch extends ViewPartWiDocno
 {
 /**
 * @inheritdoc
@@ -19,7 +19,7 @@ public function rules()
 {
 return [
 [['wi_part_id', 'masterlist_id', 'flag'], 'integer'],
-            [['sap_partno', 'documentNo', 'sap_partname'], 'safe'],
+            [['sap_partno', 'documentNo', 'sap_partname', 'update_by_id', 'update_by_name', 'update_datetime', 'wi_model'], 'safe'],
 ];
 }
 
@@ -41,10 +41,16 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = WiPart::find()->joinWith('wi');
+$query = ViewPartWiDocno::find();
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,
+'sort' => [
+                'defaultOrder' => [
+                    //'cust_desc' => SORT_ASC,
+                    'update_datetime' => SORT_DESC,
+                ]
+            ],
 ]);
 
 $this->load($params);
@@ -71,7 +77,11 @@ $query->andFilterWhere([
         ]);
 
         $query->andFilterWhere(['sap_partno' => $arr_partno])
-        ->andFilterWhere(['like', 'wi.wi_docno', $this->documentNo])
+        ->andFilterWhere(['like', 'wi_docno', $this->documentNo])
+        ->andFilterWhere(['like', 'wi_model', $this->wi_model])
+        ->andFilterWhere(['like', 'update_by_id', $this->update_by_id])
+        ->andFilterWhere(['like', 'update_by_name', $this->update_by_name])
+        ->andFilterWhere(['like', 'update_datetime', $this->update_datetime])
         ->andFilterWhere(['like', 'sap_partname', $this->sap_partname]);
 
 return $dataProvider;
