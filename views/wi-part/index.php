@@ -107,8 +107,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
                 'columns' => [
                         [
-            'class' => 'kartik\grid\ActionColumn',
-			'template'=>'{view} {update} {delete}',
+                    'class' => 'kartik\grid\ActionColumn',
+                    'template'=>'{view} {update} {delete}',
+                    'buttons' => [
+                        'view' => function($url, $model, $key){
+                            $url = ['view', 'wi_part_id' => $model->wi_part_id];
+                            $options = [
+                                'title' => 'View',
+                                'data-pjax' => '0',
+                            ];
+                            return Html::a('<button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button>', $url, $options);
+                        },
+                        'update' => function($url, $model, $key){
+                            $url = ['update', 'wi_part_id' => $model->wi_part_id];
+                            $options = [
+                                'title' => 'Edit',
+                                'data-pjax' => '0',
+                            ];
+                            return Html::a('<button class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button>', $url, $options);
+                        },
+                        'delete' => function($url, $model, $key){
+                            $url = ['delete', 'wi_part_id' => $model->wi_part_id];
+                            $options = [
+                                'data-pjax' => '0',
+                                'title' => 'Delete',
+                                'data-confirm' => 'Are you sure you want to delete this item?',
+                            ];
+                            
+                            return Html::a('<button class="btn btn-danger btn-sm"><i class="fa fa-remove"></i></button>', $url, $options);
+                        },
+                    ],
             'urlCreator' => function($action, $model, $key, $index) {
                 // using the column name as key, not mapping to 'id' like the standard generator
                 $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
