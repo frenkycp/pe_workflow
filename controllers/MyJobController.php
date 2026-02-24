@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Wi;
+use app\models\User;
 use app\models\search\WiSearch;
 use yii\web\Controller;
 use yii\helpers\Url;
@@ -162,6 +163,9 @@ class MyJobController extends Controller
 			}
 			$model->wi_status = 2;
 			$model->wi_maker = \Yii::$app->user->identity->name;
+			$get_user_info = User::find()->where([
+				'id' => \Yii::$app->user->identity->username
+			])->one();
 			if (!$model->save()) {
 				return json_encode($model->errors);
 			}

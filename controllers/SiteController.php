@@ -43,10 +43,12 @@ class SiteController extends Controller
         if (strtoupper(\Yii::$app->user->identity->role->name) == 'PROD. ADMIN') {
             return $this->render('index2');
         }
+
+        $user_id = \Yii::$app->user->identity->username;
         $wi_open = Wi::find()->where(['wi_status' => [1]])->count();
         $wi_rejected = Wi::find()->where(['wi_status' => [14]])->count();
         $wi_close = Wi::find()->where(['wi_status' => [3, 13]])->andWhere("wi_docno <> '-'")->count();
-        $wi_wimaker = Wi::find()->where(['wi_status' => [1, 2, 14]])->count();
+        $wi_wimaker = Wi::find()->where(['wi_status' => 2])->count();
         //$wi_checkout = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKOUT])->count();
         //$wi_checkin = Wi::find()->where(['like', 'wi_status', Wi::$_STATUS_CHECKIN])->count();
         $wi_doc_check = Wi::find()->where(['wi_status' => [4, 5]])->count();
@@ -54,6 +56,7 @@ class SiteController extends Controller
         $wi_detail_check = Wi::find()->where(['wi_status' => [8, 9]])->count();
         $wi_waiting_app = Wi::find()->where(['wi_status' => [10, 11]])->count();
         $wi_waiting_dist = Wi::find()->where(['wi_status' => 12])->count();
+        //$get_wi_rejected_by_pic = Wi::find()->where(['wi_status' => 14, 'wi_pic' => Yii::$app->user->identity->username])->all();
         return $this->render('index', [
             'wi_open' => $wi_open,
             'wi_close' => $wi_close,

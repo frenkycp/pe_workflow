@@ -52,7 +52,7 @@ class WiSearch extends Wi
 		} else if ($params['index_type'] == 'close') {
 			$query = $query->where(['wi_status' => [3, 13]]);
 		} else if ($params['index_type'] == 'wi_maker') {
-			$query = $query->where(['wi_status' => [1, 2, 3, 14]]);
+			$query = $query->where(['wi_status' => 2]);
 		} else if ($params['index_type'] == 'check_masterlist') {
 			$query = $query->where(['wi_status' => [4, 5]]);
 		} else if ($params['index_type'] == 'check_smile') {
