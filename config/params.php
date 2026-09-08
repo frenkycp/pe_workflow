@@ -22,7 +22,7 @@ return [
 		'roleid_admin2' => 6,
 		'roleid_checker' => 7,
 		'roleid_approval' => 8,
-		'roleid_rejector' => [5, 6, 7, 8],
+		'roleid_rejector' => [1, 5, 6, 7, 8],
 		'roleid_rejector_new' => [5, 7, 8],
 		'roleid_wimaker' => 4,
 		'roleid_wimaker2' => [4, 7],

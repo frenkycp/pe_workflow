@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $wiStatusArr = ArrayHelper::map(WiStatus::find()->where(['flag' => 1])->orderBy('status_name ASC')->all(), 'status_id', 'status_name');
 
 if (in_array(\Yii::$app->user->identity->role_id, [1, 2])) {
-    $template = '{view} {update} {delete}';
+    $template = '{view} {update} {delete} {submit} {reject} {authorize}';
 } else {
     if (Yii::$app->controller->id == 'wi') {
         $template = '{view} {request}';
@@ -73,7 +73,26 @@ $buttons = [
         ) : '';
     },
     'submit' => function ($url, $model, $key) {
-        return  Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] && $model->wi_status != 3 && $model->wi_status != 15 ? Html::a(
+        if ((Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] || Yii::$app->user->identity->role_id == 1) && $model->wi_status != 3 && $model->wi_status != 15) {
+            if ($model->current_approval_id != null) {
+                return Html::button('REVISE', [
+                    'title' => 'There is approval in MITA new system (Approval No. ' . $model->current_approval_id . '). Please use MITA new System...',
+                    'class' => 'btn btn-primary btn-xs disabled',
+                ]);
+            }
+            return Html::a(
+                'REVISE',
+                ['/my-job/submit', 'id' => $model->wi_id],
+                [
+                    'title' => in_array($model->wi_status, [1, 2, 3, 13, 14]) ? '' : 'WI still in Workflow...',
+                    'data-confirm' => in_array($model->wi_status, [1, 2, 13, 14]) ? Yii::t('yii', 'Are you sure you want to revise WI ' . $model->wi_docno . ' ?') : false,
+                    'class' => 'btn btn-primary btn-xs',
+                    'onclick' => in_array($model->wi_status, [1, 2, 13, 14]) ? '' : 'return false',
+                    'disabled' => in_array($model->wi_status, [1, 2, 13, 14]) ? false : true,
+                ]
+            );
+        }
+        return  (Yii::$app->user->identity->role_id == Yii::$app->params['roleid_wimaker'] || Yii::$app->user->identity->role_id == 1) && $model->wi_status != 3 && $model->wi_status != 15 ? Html::a(
             'REVISE',
             ['/my-job/submit', 'id' => $model->wi_id],
             [
@@ -86,28 +105,53 @@ $buttons = [
         ) : "";
     },
     'authorize' => function ($url, $model, $key) {
-        return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) & Yii::$app->controller->id == 'my-job' ?
-            Html::a('OK', ['authorize', 'id' => $model->wi_id], [
-                //'title'=>'Authorize', 
-                'class' => 'btn btn-success btn-xs',
-                'style' => 'margin: 4px 2px;',
-                'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
-            ]) : "";
+        if(in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) & Yii::$app->controller->id == 'my-job'){
+            if ($model->current_approval_id != null) {
+                return Html::button('OK', [
+                    'title' => 'Please use MITA new System...',
+                    'class' => 'btn btn-success btn-xs disabled',
+                    'style' => 'margin: 4px 2px;',
+                ]);
+            } else {
+                return Html::a('OK', ['authorize', 'id' => $model->wi_id], [
+                    //'title'=>'Authorize', 
+                    'class' => 'btn btn-success btn-xs',
+                    'style' => 'margin: 4px 2px;',
+                    'data-confirm' => Yii::t('yii', 'Are you sure you want to authorize this item?'),
+                ]);
+            }
+            
+        } else {
+            return '';
+        }
     },
     'reject' => function ($url, $model, $key) {
-        return in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job' ?
-            Html::a(
-                'REJECT',
-                ['wi-remark/create', 'wi_id' => $model->wi_id],
-                //in_array(strtolower(Yii::$app->user->identity->role->name), ['pe admin 1', 'pe admin 2']) ? ['wi-remark/create', 'wi_id' => $model->wi_id] : ['reject', 'id' => $model->wi_id],
-                [
-                    //'title'=>'Reject',
-                    'class' => 'btn btn-danger btn-xs',
-                    'style' => 'margin: 4px 2px;',
-                    'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
 
-                ]
-            ) : "";
+        if(in_array(Yii::$app->user->identity->role_id, Yii::$app->params['roleid_rejector']) && Yii::$app->controller->id == 'my-job'){
+            if ($model->current_approval_id != null) {
+                return Html::button('REJECT', [
+                    'title' => 'Please use MITA new System...',
+                    'class' => 'btn btn-danger btn-xs disabled',
+                    'style' => 'margin: 4px 2px;',
+                ]);
+            } else {
+                return Html::a(
+                    'REJECT',
+                    ['wi-remark/create', 'wi_id' => $model->wi_id],
+                    //in_array(strtolower(Yii::$app->user->identity->role->name), ['pe admin 1', 'pe admin 2']) ? ['wi-remark/create', 'wi_id' => $model->wi_id] : ['reject', 'id' => $model->wi_id],
+                    [
+                        //'title'=>'Reject',
+                        'class' => 'btn btn-danger btn-xs',
+                        'style' => 'margin: 4px 2px;',
+                        'data-confirm' => Yii::t('yii', 'Are you sure you want to reject this item?'),
+                    ]
+                );
+            }
+            
+        } else {
+            return '';
+        }
+        
         //return $model->wi_status == Wi::$_STATUS_WAITING_APPR && Yii::$app->user->identity->role_id == Yii::$app->params['roleid_approval'] ? Html::a('<span class="glyphicon glyphicon-thumbs-down" style="padding-left: 5px;"></span>', ['reject', 'id'=>$model->wi_id],['title'=>'Reject']) : "";
     },
     /*'remark' => function ($url, $model, $key) {
